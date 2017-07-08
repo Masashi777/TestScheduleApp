@@ -1,5 +1,6 @@
 package com.lifeistech.android.testschedule;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -58,5 +59,10 @@ public class MakeActivity extends AppCompatActivity {
 
         transaction.add(R.id.container, CardFragment.createInstance("hoge", Color.RED));
         transaction.add(R.id.container, CardFragment.createInstance("fuga", Color.BLUE));
+    }
+
+    public void next(View v) {
+        Intent intent = new Intent(this, ScheduleActivity.class);
+        startActivity(intent);
     }
 }

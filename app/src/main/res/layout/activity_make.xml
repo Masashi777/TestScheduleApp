@@ -29,6 +29,8 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:onClick="next"
             android:text="新しいテストを追加"
             android:textColor="@android:color/black"
             android:textSize="24sp"
