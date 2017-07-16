@@ -2,8 +2,6 @@ package com.lifeistech.android.testschedule;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -37,7 +35,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.lifeistech.android.testschedule.notimportant.DemoBase;
+import com.lifeistech.android.testschedule.MPAndroid.DemoBase;
 
 import java.util.ArrayList;
 

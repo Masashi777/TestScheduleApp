@@ -2,10 +2,10 @@ package com.lifeistech.android.testschedule;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -13,10 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.lifeistech.android.testschedule.CustomClass.MyFragmentStatePagerAdapter;
+import com.lifeistech.android.testschedule.TestClass.Test;
 
 public class MakeActivity extends AppCompatActivity {
 
+    TextView textView;
+
+    ViewPager viewPager1, viewPager2;
+
+    Test test;
 
 
     @Override
@@ -25,6 +32,16 @@ public class MakeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_make);
         LinearLayout cardLinear = (LinearLayout)this.findViewById(R.id.cardLinear);
         cardLinear.removeAllViews();
+
+        //ViewPagerを使用したfragment
+        viewPager1 = (ViewPager) findViewById(R.id.viewPager1);
+        viewPager1.setAdapter(
+                new MyFragmentStatePagerAdapter(
+                        getSupportFragmentManager()));
+        viewPager2 = (ViewPager) findViewById(R.id.viewPager2);
+        viewPager2.setAdapter(
+                new MyFragmentStatePagerAdapter(
+                        getSupportFragmentManager()));
 
         for(int i = 0; i< 15; i++) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -44,6 +61,10 @@ public class MakeActivity extends AppCompatActivity {
 
 //            LayoutInflater fragment_inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 //                Fragment fragment = (Fragment) inflater.inflate(R.id.fragment, null);
+
+            textView = (TextView) findViewById(R.id.textView);
+            final Typeface kf = Typeface.createFromAsset(getAssets(), "KFhimaji.otf");
+            textView.setTypeface(kf);
         }
 
         // Fragmentを作成します
@@ -61,8 +82,13 @@ public class MakeActivity extends AppCompatActivity {
         transaction.add(R.id.container, CardFragment.createInstance("fuga", Color.BLUE));
     }
 
-    public void next(View v) {
+    public void addTest(View v) {
+
+        //ここでカードビューからテスト詳細を取得
+
         Intent intent = new Intent(this, ScheduleActivity.class);
+//        intent.putExtra("test", test);
         startActivity(intent);
+
     }
 }

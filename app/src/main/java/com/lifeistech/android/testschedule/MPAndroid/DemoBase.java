@@ -1,14 +1,10 @@
 
-package com.lifeistech.android.testschedule.notimportant;
+package com.lifeistech.android.testschedule.MPAndroid;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatCallback;
-import android.support.v7.widget.Toolbar;
 
 import com.lifeistech.android.testschedule.R;
 

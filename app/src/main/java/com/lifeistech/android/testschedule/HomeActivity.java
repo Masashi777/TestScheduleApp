@@ -1,6 +1,7 @@
 package com.lifeistech.android.testschedule;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,8 +10,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
+    ListView homeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +38,35 @@ public class HomeActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
             }
         });
+
+        //オリジナル
+
+        final Typeface kf = Typeface.createFromAsset(getAssets(), "KFhimaji.otf");
+
+        homeList = (ListView) findViewById(R.id.homeList);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView textView = (TextView) super.getView(position, convertView, parent);
+                textView.setTypeface(kf);
+                return textView;
+            }
+        };
+
+        // 要素の追加（1）
+        adapter.add("ここにテスト一覧を表示");
+        adapter.add("右下のボタンから次のActivityへ");
+
+        homeList.setAdapter(adapter);
+
+        homeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Snackbar.make(view, "詳細画面へ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
+
     }
 
     @Override
