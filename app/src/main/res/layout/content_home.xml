@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.lifeistech.android.testschedule.HomeActivity"
-    tools:showIn="@layout/activity_home">
+    tools:showIn="@layout/app_bar_home">
 
     <ListView
         android:id="@+id/homeList"

@@ -35,7 +35,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.lifeistech.android.testschedule.MPAndroid.DemoBase;
 
 import java.util.ArrayList;
 
@@ -64,7 +63,7 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.content_schedule);
 
         //★AppCompatActivityじゃないとメソッドが呼び出せない★
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

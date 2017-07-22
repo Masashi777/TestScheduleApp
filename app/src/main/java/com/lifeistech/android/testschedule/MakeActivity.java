@@ -85,7 +85,7 @@ public class MakeActivity extends NavigationActivity {
 
         //ここでカードビューからテスト詳細を取得
 
-        Intent intent = new Intent(this, NavActivity.class);
+        Intent intent = new Intent(this, ScheduleActivity.class);
 //        intent.putExtra("test", test);
         startActivity(intent);
 

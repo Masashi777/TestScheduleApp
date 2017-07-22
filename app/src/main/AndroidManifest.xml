@@ -31,10 +31,6 @@
             android:name=".NavActivity"
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".NavigationActivity"
-            android:label="@string/title_activity_navigation"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
