@@ -39,7 +39,7 @@ import com.lifeistech.android.testschedule.MPAndroid.DemoBase;
 
 import java.util.ArrayList;
 
-public class ScheduleActivity extends DemoBase implements SeekBar.OnSeekBarChangeListener, OnChartValueSelectedListener {
+public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSeekBarChangeListener, OnChartValueSelectedListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

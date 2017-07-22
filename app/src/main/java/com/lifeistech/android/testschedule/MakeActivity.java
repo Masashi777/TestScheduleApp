@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 import com.lifeistech.android.testschedule.CustomClass.MyFragmentStatePagerAdapter;
 import com.lifeistech.android.testschedule.TestClass.Test;
 
-public class MakeActivity extends AppCompatActivity {
+public class MakeActivity extends NavigationActivity {
 
     TextView textView;
 
@@ -86,7 +85,7 @@ public class MakeActivity extends AppCompatActivity {
 
         //ここでカードビューからテスト詳細を取得
 
-        Intent intent = new Intent(this, NavigationActivity.class);
+        Intent intent = new Intent(this, NavActivity.class);
 //        intent.putExtra("test", test);
         startActivity(intent);
 
