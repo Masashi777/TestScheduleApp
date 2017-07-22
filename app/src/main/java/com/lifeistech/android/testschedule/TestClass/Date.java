@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Date {
 
-    public int month;
-    public int day;
-    public String week;
+    public int month = 00;
+    public int day = 00;
+    public String week = "noneWeek";
     public List<Subject> subjectList;
 
     public int getMonth() {

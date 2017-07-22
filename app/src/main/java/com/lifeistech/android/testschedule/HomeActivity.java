@@ -17,9 +17,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     ListView homeList;
+    List<TestList> mTestLists;
+    TestListAdapter testListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,15 @@ public class HomeActivity extends AppCompatActivity {
         adapter.add("ここにテスト一覧を表示");
         adapter.add("右下のボタンから次のActivityへ");
 
+        // テストの要素
+        mTestLists = new ArrayList<TestList>();
+        mTestLists.add(new TestList("●月✖日", "○○のテスト"));
+        mTestLists.add(new TestList("TestDate", "TestName"));
+
+        testListAdapter = new TestListAdapter(this, R.layout.test_list, mTestLists);
+
         homeList.setAdapter(adapter);
+        homeList.setAdapter(testListAdapter);
 
         homeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

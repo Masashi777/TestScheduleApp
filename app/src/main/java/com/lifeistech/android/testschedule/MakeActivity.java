@@ -86,7 +86,7 @@ public class MakeActivity extends AppCompatActivity {
 
         //ここでカードビューからテスト詳細を取得
 
-        Intent intent = new Intent(this, ScheduleActivity.class);
+        Intent intent = new Intent(this, NavigationActivity.class);
 //        intent.putExtra("test", test);
         startActivity(intent);
 

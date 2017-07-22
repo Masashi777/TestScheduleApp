@@ -6,8 +6,8 @@ package com.lifeistech.android.testschedule.TestClass;
 
 public class Subject {
 
-    public String subjectName;
-    public int priority;
+    public String subjectName = "noneSubject";
+    public int priority = 000;
 
     public String getSubjectName() {
         return subjectName;

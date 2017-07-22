@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Test {
 
-    public String testName;
+    public String testName = "noneName";
     public List<Date> dateList;
 
     public String getTestName() {
