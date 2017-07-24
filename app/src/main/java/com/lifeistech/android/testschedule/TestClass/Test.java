@@ -1,12 +1,13 @@
 package com.lifeistech.android.testschedule.TestClass;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/17.
  */
 
-public class Test {
+public class Test implements Serializable {
 
     public String testName = "noneName";
     public List<Date> dateList;

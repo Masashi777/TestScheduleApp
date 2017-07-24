@@ -1,7 +1,13 @@
 package com.lifeistech.android.testschedule;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -32,9 +38,11 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.lifeistech.android.testschedule.TestClass.Test;
 
 import java.util.ArrayList;
 
@@ -59,15 +67,36 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
 
+    Test test;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_schedule);
+        setContentView(R.layout.activity_schedule);
 
-        //★AppCompatActivityじゃないとメソッドが呼び出せない★
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -87,7 +116,18 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
 //            }
 //        });
 
+        // タイトルの設定
+        setTitle("スケジュール");
+
         //オリジナル
+
+        Intent intent = getIntent();
+        test = (Test) intent.getSerializableExtra("test");
+
+        TextView section_label = (TextView) findViewById(R.id.section_label);
+        section_label.setText(test.getTestName());
+
+
 
         tvX = (TextView) findViewById(R.id.tvXMax);
         tvY = (TextView) findViewById(R.id.tvYMax);
@@ -154,28 +194,6 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_schedule, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -251,81 +269,81 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
 
     //オリジナル
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.pie, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.pie, menu);
+        return true;
+    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        switch (item.getItemId()) {
-//            case R.id.actionToggleValues: {
-//                for (IDataSet<?> set : mChart.getData().getDataSets())
-//                    set.setDrawValues(!set.isDrawValuesEnabled());
-//
-//                mChart.invalidate();
-//                break;
-//            }
-//            case R.id.actionToggleIcons: {
-//                for (IDataSet<?> set : mChart.getData().getDataSets())
-//                    set.setDrawIcons(!set.isDrawIconsEnabled());
-//
-//                mChart.invalidate();
-//                break;
-//            }
-//            case R.id.actionToggleHole: {
-//                if (mChart.isDrawHoleEnabled())
-//                    mChart.setDrawHoleEnabled(false);
-//                else
-//                    mChart.setDrawHoleEnabled(true);
-//                mChart.invalidate();
-//                break;
-//            }
-//            case R.id.actionDrawCenter: {
-//                if (mChart.isDrawCenterTextEnabled())
-//                    mChart.setDrawCenterText(false);
-//                else
-//                    mChart.setDrawCenterText(true);
-//                mChart.invalidate();
-//                break;
-//            }
-//            case R.id.actionToggleXVals: {
-//
-//                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
-//                mChart.invalidate();
-//                break;
-//            }
-//            case R.id.actionSave: {
-//                // mChart.saveToGallery("title"+System.currentTimeMillis());
-//                mChart.saveToPath("title" + System.currentTimeMillis(), "");
-//                break;
-//            }
-//            case R.id.actionTogglePercent:
-//                mChart.setUsePercentValues(!mChart.isUsePercentValuesEnabled());
-//                mChart.invalidate();
-//                break;
-//            case R.id.animateX: {
-//                mChart.animateX(1400);
-//                break;
-//            }
-//            case R.id.animateY: {
-//                mChart.animateY(1400);
-//                break;
-//            }
-//            case R.id.animateXY: {
-//                mChart.animateXY(1400, 1400);
-//                break;
-//            }
-//            case R.id.actionToggleSpin: {
-//                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
-//                        .EaseInCubic);
-//                break;
-//            }
-//        }
-//        return true;
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.actionToggleValues: {
+                for (IDataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                for (IDataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHole: {
+                if (mChart.isDrawHoleEnabled())
+                    mChart.setDrawHoleEnabled(false);
+                else
+                    mChart.setDrawHoleEnabled(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionDrawCenter: {
+                if (mChart.isDrawCenterTextEnabled())
+                    mChart.setDrawCenterText(false);
+                else
+                    mChart.setDrawCenterText(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleXVals: {
+
+                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionSave: {
+                // mChart.saveToGallery("title"+System.currentTimeMillis());
+                mChart.saveToPath("title" + System.currentTimeMillis(), "");
+                break;
+            }
+            case R.id.actionTogglePercent:
+                mChart.setUsePercentValues(!mChart.isUsePercentValuesEnabled());
+                mChart.invalidate();
+                break;
+            case R.id.animateX: {
+                mChart.animateX(1400);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(1400);
+                break;
+            }
+            case R.id.animateXY: {
+                mChart.animateXY(1400, 1400);
+                break;
+            }
+            case R.id.actionToggleSpin: {
+                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
+                        .EaseInCubic);
+                break;
+            }
+        }
+        return true;
+    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
