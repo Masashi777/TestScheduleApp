@@ -67,7 +67,7 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
 
-    Test test;
+//    Test test;
 
 
     @Override
@@ -122,10 +122,10 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
         //オリジナル
 
         Intent intent = getIntent();
-        test = (Test) intent.getSerializableExtra("test");
+        String testName = intent.getStringExtra("test");
 
         TextView section_label = (TextView) findViewById(R.id.section_label);
-        section_label.setText(test.getTestName());
+        section_label.setText(testName);
 
 
 
