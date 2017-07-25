@@ -1,11 +1,10 @@
 package com.lifeistech.android.testschedule;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -15,27 +14,22 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.lifeistech.android.testschedule.CustomClass.MyFragmentStatePagerAdapter;
-import com.lifeistech.android.testschedule.TestClass.Date;
-import com.lifeistech.android.testschedule.TestClass.Subject;
-import com.lifeistech.android.testschedule.TestClass.Test;
 import com.rengwuxian.materialedittext.MaterialEditText;
-
-import java.util.Calendar;
-import java.util.List;
 
 public class MakeActivity extends NavigationActivity {
 
     TextView textView;
-    MaterialEditText editText, subject1, subject2, subject3, subject4;
+//    MaterialEditText editText, subject1, subject2, subject3, subject4;
     ViewPager viewPager;
+    MaterialEditText editText;
+    Button addButton;
 
-    private NumberPicker monthPicker, dayPicker, priority1, priority2, priority3, priority4;
+//    private NumberPicker monthPicker, dayPicker, priority1, priority2, priority3, priority4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +57,8 @@ public class MakeActivity extends NavigationActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        addButton = (Button) findViewById(R.id.button);
+        addButton.setOnClickListener(addButtonCliclListener);
 
         //ViewPagerを使用したfragment
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -109,24 +105,33 @@ public class MakeActivity extends NavigationActivity {
         // 最後にcommitを使用することで変更を反映します
         transaction.commit();
 
-        transaction.add(R.id.container, CardFragment.createInstance("hoge", Color.RED));
+//        transaction.add(R.id.container, CardFragment.createInstance("hoge", Color.RED));
+//        transaction.add(R.id.container, CardFragment.createInstance("fuga", Color.BLUE));
+
+
         transaction.add(R.id.container, CardFragment.createInstance("fuga", Color.BLUE));
 
 
         // タイトル設定
         setTitle("新しいテストを追加");
-        // NumberPickerの設定
 
-        // NumberPicker のインスタンスを取得
-        monthPicker = (NumberPicker) findViewById(R.id.monthPicker);
-        dayPicker = (NumberPicker) findViewById(R.id.dayPicker);
-        priority1 = (NumberPicker) findViewById(R.id.priority1);
-        priority2 = (NumberPicker) findViewById(R.id.priority2);
-        priority3 = (NumberPicker) findViewById(R.id.priority3);
-        priority4 = (NumberPicker) findViewById(R.id.priority4);
+        editText = (MaterialEditText) findViewById(R.id.TestEdit);
+/**
+ *NumberPicker等はMakeActivityに紐づくレイアウト(activity_make.xmlとその下にincludeされてるレイアウト)上にはありません！
+ *CardFragmentのに紐づくレイアウト（fragment_card.xml）上にあるので、そっちで操作します。
+ **/
 
-        // 最大値、最小値を設定
-        Calendar cal = Calendar.getInstance();
+//         NumberPickerの設定
+//        // NumberPicker のインスタンスを取得
+//        monthPicker = (NumberPicker) findViewById(R.id.monthPicker);
+//        dayPicker = (NumberPicker) findViewById(R.id.dayPicker);
+//        priority1 = (NumberPicker) findViewById(R.id.priority1);
+//        priority2 = (NumberPicker) findViewById(R.id.priority2);
+//        priority3 = (NumberPicker) findViewById(R.id.priority3);
+//        priority4 = (NumberPicker) findViewById(R.id.priority4);
+
+//        // 最大値、最小値を設定
+//        Calendar cal = Calendar.getInstance();
 
 //        monthPicker.setMinValue(1);
 //        monthPicker.setMaxValue(12);
@@ -149,65 +154,23 @@ public class MakeActivity extends NavigationActivity {
 //        priority2.setValue(1);
 //        priority3.setValue(1);
 //        priority4.setValue(1);
-
-
-        //EditTextの設定
-        editText = (MaterialEditText) findViewById(R.id.TestEdit);
-        subject1 = (MaterialEditText) findViewById(R.id.subject1);
-        subject2 = (MaterialEditText) findViewById(R.id.subject2);
-        subject3 = (MaterialEditText) findViewById(R.id.subject3);
-        subject4 = (MaterialEditText) findViewById(R.id.subject4);
+//        //EditTextの設定
+//        subject1 = (MaterialEditText) findViewById(R.id.subject1);
+//        subject2 = (MaterialEditText) findViewById(R.id.subject2);
+//        subject3 = (MaterialEditText) findViewById(R.id.subject3);
+//        subject4 = (MaterialEditText) findViewById(R.id.subject4);
 
 
     }
 
-    public void addTest(View v) {
-
-        //ここでカードビューからテスト詳細を取得
-
-        //TestClass
-        Test test = new Test();
-        test.setTestName(editText.getText().toString());
-
-        //日付の設定
-        Date day1 = new Date();
-//        day1.setMonth(monthPicker.getValue());
-//        day1.setDay(dayPicker.getValue());
-
-        List<Date> dateList = test.getDateList();
-//        dateList.add(day1);
-
-        //Subjectの設定
-        Subject subjectA = new Subject();
-        Subject subjectB = new Subject();
-        Subject subjectC = new Subject();
-        Subject subjectD = new Subject();
-
-//        subjectA.setSubjectName(subject1.getText().toString());
-//        subjectB.setSubjectName(subject2.getText().toString());
-//        subjectC.setSubjectName(subject3.getText().toString());
-//        subjectD.setSubjectName(subject4.getText().toString());
-
-//        subjectA.setPriority(priority1.getValue());
-//        subjectB.setPriority(priority2.getValue());
-//        subjectC.setPriority(priority3.getValue());
-//        subjectD.setPriority(priority4.getValue());
-
-        List<Subject> subjectList = day1.getSubjectList();
-//        subjectList.add(subjectA);
-//        subjectList.add(subjectB);
-//        subjectList.add(subjectC);
-//        subjectList.add(subjectD);
-
-        //TestClassへ追加
-        day1.setSubjectList(subjectList);
-        test.setDateList(dateList);
-
-        //Intentの生成
-        Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
-        intent.putExtra("test", test);
-        intent.setAction(Intent.ACTION_VIEW);
-        startActivity(intent);
-
-    }
+    View.OnClickListener addButtonCliclListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //ここでカードビューからテスト詳細を取得
+            Fragment cardFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+            if (cardFragment != null && cardFragment instanceof CardFragment) {
+                ((CardFragment) cardFragment).addData(editText.getText().toString()); //CardFragmentのaddDaraメソッドにここでしたい処理を丸投げ
+            }
+        }
+    };
 }
