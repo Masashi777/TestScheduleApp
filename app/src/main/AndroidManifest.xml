@@ -12,7 +12,7 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.MyApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,15 +22,15 @@
         <activity
             android:name=".MakeActivity"
             android:label="@string/title_activity_make"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.MyApp"/>
         <activity
             android:name=".ScheduleActivity"
             android:label="@string/title_activity_schedule"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.MyApp" />
         <activity
             android:name=".NavActivity"
             android:label="@string/title_activity_nav"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.MyApp" />
     </application>
 
 </manifest>

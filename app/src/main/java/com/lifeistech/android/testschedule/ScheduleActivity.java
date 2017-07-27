@@ -1,11 +1,13 @@
 package com.lifeistech.android.testschedule;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTabHost;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.SeekBar;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -42,7 +45,6 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.lifeistech.android.testschedule.TestClass.Test;
 
 import java.util.ArrayList;
 
@@ -68,6 +70,8 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
     private TextView tvX, tvY;
 
 //    Test test;
+
+    // Demo
 
 
     @Override
@@ -121,77 +125,79 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
 
         //オリジナル
 
-        Intent intent = getIntent();
-        String testName = intent.getStringExtra("test");
+//        Intent intent = getIntent();
+//        String testName = intent.getStringExtra("test");
+//
+//        TextView section_label = (TextView) findViewById(R.id.section_label);
+//        section_label.setText(testName);
+//
+//
+//
+//        tvX = (TextView) findViewById(R.id.tvXMax);
+//        tvY = (TextView) findViewById(R.id.tvYMax);
+//
+//        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+//        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+//        mSeekBarX.setProgress(4);
+//        mSeekBarY.setProgress(10);
+//
+//        mChart = (PieChart) findViewById(R.id.chart1);
+//        mChart.setUsePercentValues(true);
+//        mChart.getDescription().setEnabled(false);
+//        mChart.setExtraOffsets(5, 10, 5, 5);
+//
+//        mChart.setDragDecelerationFrictionCoef(0.95f);
+//
+//        mChart.setCenterTextTypeface(mTfLight);
+//        mChart.setCenterText(generateCenterSpannableText());
+//
+//        mChart.setDrawHoleEnabled(true);
+//        mChart.setHoleColor(Color.WHITE);
+//
+//        mChart.setTransparentCircleColor(Color.WHITE);
+//        mChart.setTransparentCircleAlpha(110);
+//
+//        mChart.setHoleRadius(58f);
+//        mChart.setTransparentCircleRadius(61f);
+//
+//        mChart.setDrawCenterText(true);
+//
+//        mChart.setRotationAngle(0);
+//        // enable rotation of the chart by touch
+//        mChart.setRotationEnabled(true);
+//        mChart.setHighlightPerTapEnabled(true);
+//
+//        // mChart.setUnit(" €");
+//        // mChart.setDrawUnitsInChart(true);
+//
+//        // add a selection listener
+//        mChart.setOnChartValueSelectedListener(this);
+//
+//        setData(4, 100);
+//
+//        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+//        // mChart.spin(2000, 0, 360);
+//
+//        mSeekBarX.setOnSeekBarChangeListener(this);
+//        mSeekBarY.setOnSeekBarChangeListener(this);
+//
+//        Legend l = mChart.getLegend();
+//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+//        l.setDrawInside(false);
+//        l.setXEntrySpace(7f);
+//        l.setYEntrySpace(0f);
+//        l.setYOffset(0f);
+//
+//        // entry label styling
+//        mChart.setEntryLabelColor(Color.WHITE);
+//        mChart.setEntryLabelTypeface(mTfRegular);
+//        mChart.setEntryLabelTextSize(12f);
 
-        TextView section_label = (TextView) findViewById(R.id.section_label);
-        section_label.setText(testName);
+        //Demo
 
-
-
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
-
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
-        mSeekBarX.setProgress(4);
-        mSeekBarY.setProgress(10);
-
-        mChart = (PieChart) findViewById(R.id.chart1);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 10, 5, 5);
-
-        mChart.setDragDecelerationFrictionCoef(0.95f);
-
-        mChart.setCenterTextTypeface(mTfLight);
-        mChart.setCenterText(generateCenterSpannableText());
-
-        mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
-
-        mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
-
-        mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
-
-        mChart.setDrawCenterText(true);
-
-        mChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
-
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
-
-        // add a selection listener
-        mChart.setOnChartValueSelectedListener(this);
-
-        setData(4, 100);
-
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        // mChart.spin(2000, 0, 360);
-
-        mSeekBarX.setOnSeekBarChangeListener(this);
-        mSeekBarY.setOnSeekBarChangeListener(this);
-
-        Legend l = mChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(0f);
-        l.setYOffset(0f);
-
-        // entry label styling
-        mChart.setEntryLabelColor(Color.WHITE);
-        mChart.setEntryLabelTypeface(mTfRegular);
-        mChart.setEntryLabelTextSize(12f);
-
-
+        setViews();
     }
 
 
@@ -223,7 +229,7 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
+            View rootView = inflater.inflate(R.layout.fragment1, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
@@ -450,5 +456,17 @@ public class ScheduleActivity extends NavigationActivity implements SeekBar.OnSe
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
 
+    }
+
+    //demo
+    private void setViews() {
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+        FragmentManager manager = getSupportFragmentManager();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        MainFragmentPagerAdapter adapter = new MainFragmentPagerAdapter(manager);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }

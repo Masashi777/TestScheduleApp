@@ -6,11 +6,11 @@ package com.lifeistech.android.testschedule;
 
 public class TestList {
 
-    public String date, name;
+    public String date, name, comment;
 
-    public TestList(String date, String name) {
+    public TestList(String date, String name, String comment) {
         this.date = date;
         this.name = name;
-
+        this.comment = comment;
     }
 }

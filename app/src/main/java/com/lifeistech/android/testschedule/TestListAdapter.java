@@ -52,18 +52,20 @@ public class TestListAdapter extends ArrayAdapter<TestList> {
             //set data
             viewHolder.dateText.setText(item.date);
             viewHolder.nameText.setText(item.name);
+            viewHolder.commentText.setText(item.comment);
         }
 
         return convertView;
     }
 
     private class ViewHolder {
-        TextView dateText, nameText;
+        TextView dateText, nameText, commentText;
 
         public ViewHolder(View view) {
             //get instance
             dateText = (TextView) view.findViewById(R.id.dateText);
             nameText = (TextView) view.findViewById(R.id.nameText);
+            commentText = (TextView) view.findViewById(R.id.commentText);
         }
     }
 

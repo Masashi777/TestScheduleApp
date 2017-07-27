@@ -55,8 +55,8 @@ public class HomeActivity extends NavigationActivity {
 
         // テストの要素
         mTestLists = new ArrayList<TestList>();
-        mTestLists.add(new TestList("●月✖日", "○○のテスト"));
-        mTestLists.add(new TestList("TestDate", "TestName"));
+        mTestLists.add(new TestList("●月✖日", "○○のテスト", "テスト頑張ろう！"));
+        mTestLists.add(new TestList("TestDate", "TestName", "test comment"));
 
         testListAdapter = new TestListAdapter(this, R.layout.test_list, mTestLists);
 
