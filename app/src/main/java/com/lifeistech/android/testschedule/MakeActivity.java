@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,7 +28,7 @@ public class MakeActivity extends NavigationActivity {
     TextView textView;
 //    MaterialEditText editText, subject1, subject2, subject3, subject4;
     ViewPager viewPager;
-    MaterialEditText editText;
+    EditText editText;
     Button addButton;
 
 //    private NumberPicker monthPicker, dayPicker, priority1, priority2, priority3, priority4;
@@ -115,7 +117,7 @@ public class MakeActivity extends NavigationActivity {
         // タイトル設定
         setTitle("新しいテストを追加");
 
-        editText = (MaterialEditText) findViewById(R.id.TestEdit);
+        editText = (EditText) findViewById(R.id.TestEdit);
 /**
  *NumberPicker等はMakeActivityに紐づくレイアウト(activity_make.xmlとその下にincludeされてるレイアウト)上にはありません！
  *CardFragmentのに紐づくレイアウト（fragment_card.xml）上にあるので、そっちで操作します。

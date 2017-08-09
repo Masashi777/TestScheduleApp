@@ -18,7 +18,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return MainFragment.newInstance(android.R.color.holo_blue_bright);
+                return ScheduleAll.newInstance(android.R.color.holo_blue_bright);
             case 1:
                 return MainFragment.newInstance(android.R.color.holo_green_light);
             case 2:
@@ -34,6 +34,16 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "ページ" + (position + 1);
+        switch (position) {
+            case 0:
+                return "All";
+            case 1:
+                return "ページ" + (position + 1);
+            case 2:
+                return "ページ" + (position + 1);
+        }
+        return null;
+
+//        return "ページ" + (position + 1);
     }
 }

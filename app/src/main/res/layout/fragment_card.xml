@@ -104,6 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
                         android:hint="教科1"
+                        android:singleLine="true"
                         app:met_floatingLabel="highlight" />
 
                     <NumberPicker
@@ -126,6 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
                         android:hint="教科2"
+                        android:singleLine="true"
                         app:met_floatingLabel="highlight" />
 
                     <NumberPicker
@@ -148,6 +150,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
                         android:hint="教科3"
+                        android:singleLine="true"
                         app:met_floatingLabel="highlight" />
 
                     <NumberPicker
@@ -170,6 +173,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
                         android:hint="教科4"
+                        android:singleLine="true"
                         app:met_floatingLabel="highlight" />
 
                     <NumberPicker
