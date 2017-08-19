@@ -15,23 +15,23 @@ import java.util.List;
  * Created by Masashi Hamaguchi on 2017/07/22.
  */
 
-public class TestListAdapter extends ArrayAdapter<TestList> {
-    List<TestList> mTestLists;
+public class TestListAdapter extends ArrayAdapter<Test> {
+    List<Test> testList;
 
-    public TestListAdapter(Context context, int layoutResourceId, List<TestList> objects) {
+    public TestListAdapter(Context context, int layoutResourceId, List<Test> objects) {
         super(context, layoutResourceId, objects);
 
-        mTestLists = objects;
+        testList = objects;
     }
 
     @Override
     public int getCount() {
-        return mTestLists.size();
+        return testList.size();
     }
 
     @Override
-    public TestList getItem(int position) {
-        return mTestLists.get(position);
+    public Test getItem(int position) {
+        return testList.get(position);
     }
 
     @Override
@@ -46,13 +46,17 @@ public class TestListAdapter extends ArrayAdapter<TestList> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        final TestList item = getItem(position);
+        final Test item = getItem(position);
 
         if (item != null) {
             //set data
-            viewHolder.dateText.setText(item.date);
-            viewHolder.nameText.setText(item.name);
-            viewHolder.commentText.setText(item.comment);
+//            viewHolder.dateText.setText(
+//                    item.getDateList().get(0).getMonth() + "月" +
+//                    item.getDateList().get(0).getDay() + "日 ~ " +
+//                    item.getDateList().get(item.getDateList().size()).getMonth() + "月" +
+//                    item.getDateList().get(item.getDateList().size()).getDay() + "日");
+            viewHolder.nameText.setText(item.getTestName());
+            viewHolder.commentText.setText(item.getComment());
         }
 
         return convertView;

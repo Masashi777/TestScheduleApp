@@ -1,24 +1,44 @@
 package com.lifeistech.android.testschedule;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.lifeistech.android.testschedule.MPAndroid.Example;
+import com.lifeistech.android.testschedule.TestClass.Test;
 
-public class HomeActivity extends NavigationActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public class HomeActivity extends BaseActivity {
+
+    SharedPreferences pref;
+
+    public List<Test> testList;
+
     ListView homeList;
     List<TestList> mTestLists;
     TestListAdapter testListAdapter;
+
+    Example example = new Example();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +66,23 @@ public class HomeActivity extends NavigationActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        // データを復活
+        try {
+            pref = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+            Gson gson = new Gson();
+            mTestLists = gson.fromJson(pref.getString("testGson", ""), new TypeToken<List<Test>>(){}.getType());
+
+        } catch (Exception e) {
+
+        }
+
+        //保存するとき
+        //GsonでUserをJSON文字列に変換して保存する
+//        Gson gson = new Gson();
+//        gson.toJson(testList);
+//        pref.edit().putString("testGson", gson.toJson(testList)).commit();
+
         // タイトルの設定
         setTitle("テスト一覧");
 
@@ -53,23 +90,44 @@ public class HomeActivity extends NavigationActivity {
 
         homeList = (ListView) findViewById(R.id.homeList);
 
-        // テストの要素
-        mTestLists = new ArrayList<TestList>();
-        mTestLists.add(new TestList("●月✖日", "○○のテスト", "テスト頑張ろう！"));
-        mTestLists.add(new TestList("TestDate", "TestName", "test comment"));
+        testList = Arrays.asList(example.getExam1(), example.getExam2());
 
-        testListAdapter = new TestListAdapter(this, R.layout.test_list, mTestLists);
+//        testList.add(example.getExam1());
+//        testList.add(example.getExam2());
 
+        Log.e("TAGGG", String.valueOf(testList.size()));
+
+
+        testListAdapter = new TestListAdapter(this, R.layout.test_list, testList);
         homeList.setAdapter(testListAdapter);
 
+
+        // リストへのボタンの配置
         homeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
+                intent.putExtra("test", testList.get(position));
+                startActivity(intent);
+                Log.e("TAGGG", String.valueOf(testList.size()));
+
                 Snackbar.make(view, "詳細画面へ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 
-    }
+        homeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+                testList.remove(position);
+
+                testListAdapter = new TestListAdapter(getApplicationContext(), R.layout.test_list, testList);
+                homeList.setAdapter(testListAdapter);
+
+                return false;
+            }
+        });
+    }
 
 }

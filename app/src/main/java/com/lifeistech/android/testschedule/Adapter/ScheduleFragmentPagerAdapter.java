@@ -1,16 +1,19 @@
-package com.lifeistech.android.testschedule;
+package com.lifeistech.android.testschedule.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.lifeistech.android.testschedule.MainFragment;
+import com.lifeistech.android.testschedule.ScheduleFragments.ScheduleAllFragment;
+
 /**
  * Created by Masashi Hamaguchi on 2017/07/27.
  */
 
-public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
+public class ScheduleFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    public MainFragmentPagerAdapter(FragmentManager fm) {
+    public ScheduleFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -18,7 +21,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return ScheduleAll.newInstance(android.R.color.holo_blue_bright);
+                return ScheduleAllFragment.newInstance(android.R.color.holo_blue_bright);
             case 1:
                 return MainFragment.newInstance(android.R.color.holo_green_light);
             case 2:
@@ -44,6 +47,5 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
         }
         return null;
 
-//        return "ページ" + (position + 1);
     }
 }

@@ -1,12 +1,13 @@
 package com.lifeistech.android.testschedule.TestClass;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/17.
  */
 
-public class Date {
+public class Date implements Serializable {
 
     public int month = 00;
     public int day = 00;

@@ -14,14 +14,12 @@ import android.widget.TextView;
 
 import com.lifeistech.android.testschedule.TestClass.Date;
 import com.lifeistech.android.testschedule.TestClass.Subject;
-import com.lifeistech.android.testschedule.TestClass.Test;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static android.R.attr.name;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/07.
@@ -37,8 +35,18 @@ public class CardFragment extends Fragment {
     private String mName = "";
     private @ColorInt int mBackgroundColor = Color.TRANSPARENT;
 
+    private Date date = new Date();
+
     private NumberPicker monthPicker, dayPicker, priority1, priority2, priority3, priority4;
-    MaterialEditText editText, subject1, subject2, subject3, subject4;
+    private NumberPicker[] priorityPickers = new NumberPicker[] {priority1, priority2, priority3, priority4};
+
+    private MaterialEditText subject1, subject2, subject3, subject4;
+    private MaterialEditText[] subjectEditTexts = new MaterialEditText[] {subject1, subject2, subject3, subject4};
+
+    private Subject subjectA, subjectB, subjectC, subjectD;
+    private Subject[] subjects = new Subject[] {subjectA, subjectB, subjectC, subjectD};
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,16 +79,15 @@ public class CardFragment extends Fragment {
         // NumberPicker のインスタンスを取得
         monthPicker = (NumberPicker) view.findViewById(R.id.monthPicker);
         dayPicker = (NumberPicker) view.findViewById(R.id.dayPicker);
-        priority1 = (NumberPicker) view.findViewById(R.id.priority1);
-        priority2 = (NumberPicker) view.findViewById(R.id.priority2);
-        priority3 = (NumberPicker) view.findViewById(R.id.priority3);
-        priority4 = (NumberPicker) view.findViewById(R.id.priority4);
+        priorityPickers[0] = (NumberPicker) view.findViewById(R.id.priority1);
+        priorityPickers[1] = (NumberPicker) view.findViewById(R.id.priority2);
+        priorityPickers[2] = (NumberPicker) view.findViewById(R.id.priority3);
+        priorityPickers[3] = (NumberPicker) view.findViewById(R.id.priority4);
 
-        editText = (MaterialEditText) view.findViewById(R.id.TestEdit);
-        subject1 = (MaterialEditText) view.findViewById(R.id.subject1);
-        subject2 = (MaterialEditText) view.findViewById(R.id.subject2);
-        subject3 = (MaterialEditText) view.findViewById(R.id.subject3);
-        subject4 = (MaterialEditText) view.findViewById(R.id.subject4);
+        subjectEditTexts[0] = (MaterialEditText) view.findViewById(R.id.subject1);
+        subjectEditTexts[1] = (MaterialEditText) view.findViewById(R.id.subject2);
+        subjectEditTexts[2] = (MaterialEditText) view.findViewById(R.id.subject3);
+        subjectEditTexts[3] = (MaterialEditText) view.findViewById(R.id.subject4);
 
         monthPicker.setMinValue(1);
         monthPicker.setMaxValue(12);
@@ -90,71 +97,16 @@ public class CardFragment extends Fragment {
         dayPicker.setMaxValue(31);
         dayPicker.setValue(cal.get(Calendar.DAY_OF_MONTH));
 
-        priority1.setMinValue(1);
-        priority1.setMaxValue(5);
-        priority2.setMinValue(1);
-        priority2.setMaxValue(5);
-        priority3.setMinValue(1);
-        priority3.setMaxValue(5);
-        priority4.setMinValue(1);
-        priority4.setMaxValue(5);
+        for (int i = 0; i > 4; i++) {
+            priorityPickers[i].setMinValue(1);
+            priorityPickers[i].setMaxValue(5);
+        }
 
-        priority1.setValue(1);
-        priority2.setValue(1);
-        priority3.setValue(1);
-        priority4.setValue(1);
+        for (int i = 0; i > 4; i++) {
+            priorityPickers[i].setValue(1);
+        }
+
         return view;
-    }
-
-    public void addData(String testName) {
-        //TestClass
-        Test test = new Test();
-        test.setTestName(testName);
-
-        //日付の設定
-        Date day1 = new Date();
-        day1.setMonth(monthPicker.getValue());
-        day1.setDay(dayPicker.getValue());
-
-        //Subjectの設定
-        Subject subjectA = new Subject();
-        Subject subjectB = new Subject();
-        Subject subjectC = new Subject();
-        Subject subjectD = new Subject();
-
-        subjectA.setSubjectName(subject1.getText().toString());
-        subjectB.setSubjectName(subject2.getText().toString());
-        subjectC.setSubjectName(subject3.getText().toString());
-        subjectD.setSubjectName(subject4.getText().toString());
-
-        subjectA.setPriority(priority1.getValue());
-        subjectB.setPriority(priority2.getValue());
-        subjectC.setPriority(priority3.getValue());
-        subjectD.setPriority(priority4.getValue());
-
-        List<Subject> subjectList = new ArrayList<Subject>();
-        subjectList.add(subjectA);
-        subjectList.add(subjectB);
-        subjectList.add(subjectC);
-        subjectList.add(subjectD);
-
-        List<Date> dateList = new ArrayList<Date>();
-        dateList.add(day1);
-
-        //TestClassへ追加
-        day1.setSubjectList(subjectList);
-        test.setDateList(dateList);
-
-        //Intentの生成
-        Intent intent = new Intent(getActivity(), ScheduleActivity.class);
-        /**
-         * testはオブジェクトなのでintentで渡すことはできません！プリミティブな変数しか渡せないよ！
-         * 今回はそのままsetした内容をgetして送りました。
-         * */
-        intent.putExtra("test", test.getTestName());
-        intent.setAction(Intent.ACTION_VIEW);
-        startActivity(intent);
-
     }
 
     @Override
@@ -163,12 +115,12 @@ public class CardFragment extends Fragment {
         // TextViewをひも付けます
         mTextView = (TextView) view.findViewById(R.id.textView);
         // Buttonのクリックした時の処理を書きます
-//        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mTextView.setText(mTextView.getText() + "!");
-//            }
-//        });
+        view.findViewById(R.id.addButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addData();
+            }
+        });
 
         // 背景色をセットする
         view.setBackgroundColor(mBackgroundColor);
@@ -191,4 +143,42 @@ public class CardFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    public void addData() {
+
+        //日付の設定
+        date.setMonth(monthPicker.getValue());
+        date.setDay(dayPicker.getValue());
+
+        //Subjectの設定
+        List<Subject> subjectList = new ArrayList<Subject>();
+
+        for (int i = 0; i < 4; i++) {
+
+            if (subjectEditTexts[i].getText().toString().matches("")) {
+
+                // no data
+
+            } else {
+                subjects[i].setSubjectName(subjectEditTexts[i].getText().toString());
+                subjects[i].setPriority(priorityPickers[i].getValue());
+
+                subjectList.add(subjects[i]);
+            }
+
+        }
+
+        date.setSubjectList(subjectList);
+
+        //Intentの生成
+        Intent intent = new Intent(getActivity(), MakeActivity.class);
+        /**
+         * testはオブジェクトなのでintentで渡すことはできません！プリミティブな変数しか渡せないよ！
+         * 今回はそのままsetした内容をgetして送りました。
+         * */
+        intent.putExtra("day", date);
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivity(intent);
+    }
+
 }

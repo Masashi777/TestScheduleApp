@@ -1,15 +1,20 @@
 package com.lifeistech.android.testschedule;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
+import android.support.constraint.solver.SolverVariable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/30.
  */
 
-public abstract class DemoBaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     protected String[] mMonths = new String[] {
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
@@ -22,8 +27,22 @@ public abstract class DemoBaseFragment extends Fragment {
             "Party Y", "Party Z"
     };
 
+    protected String[] popColor = new String[] {
+            "#de9610", "#c93a40", "#fff001", "#d06d8c", "#65ace4", "#a0c238", "#56a764", "#d16b16",
+            "#cc528b", "#9460a0", "#f2cf01", "#0074bf"
+    };
+
+    protected String[] casualColor = new String[] {
+            "#7b9ad0", "#f8e352", "#c8d627", "#d5848b", "#e5ab47", "#e1cea3", "#51a1a2", "#b1d7e4",
+            "#66b7ec", "#c08e47", "#ae8dbc", "#c3cfa9"
+    };
+
     protected Typeface mTfRegular;
     protected Typeface mTfLight;
+
+    protected Typeface KFhimaji;
+    protected Typeface YuGothM;
+    protected Typeface ikamodoki;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

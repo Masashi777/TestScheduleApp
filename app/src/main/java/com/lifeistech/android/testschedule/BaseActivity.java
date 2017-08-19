@@ -17,7 +17,10 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-public abstract class NavigationActivity extends AppCompatActivity
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+
+public abstract class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //MPAndroid
@@ -34,6 +37,10 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     protected Typeface mTfRegular;
     protected Typeface mTfLight;
+
+    protected Typeface KFhimaji;
+    protected Typeface YuGothM;
+    protected Typeface ikamodoki;
 
 
     @Override
@@ -65,6 +72,10 @@ public abstract class NavigationActivity extends AppCompatActivity
         //MPAndroid
         mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
+
+        KFhimaji = Typeface.createFromAsset(getAssets(), "KFhimaji.otf");
+        YuGothM = Typeface.createFromAsset(getAssets(), "YUGOTHM.TTC");
+//        ikamodoki = Typeface.createFromAsset(getAssets(), "ikamodoki.ttf");
     }
 
     @Override
@@ -101,8 +112,11 @@ public abstract class NavigationActivity extends AppCompatActivity
             return true;
         }
 
+        // MPAndroid
+
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

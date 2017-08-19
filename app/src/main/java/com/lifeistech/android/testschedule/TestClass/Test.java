@@ -10,6 +10,7 @@ import java.util.List;
 public class Test implements Serializable {
 
     public String testName = "noneName";
+    public String comment = "no Comment";
     public List<Date> dateList;
 
     public String getTestName() {
@@ -18,6 +19,14 @@ public class Test implements Serializable {
 
     public void setTestName(String testName) {
         this.testName = testName;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public List<Date> getDateList() {

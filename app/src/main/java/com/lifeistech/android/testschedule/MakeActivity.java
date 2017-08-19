@@ -1,10 +1,10 @@
 package com.lifeistech.android.testschedule;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -20,18 +20,23 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lifeistech.android.testschedule.CustomClass.MyFragmentStatePagerAdapter;
+import com.lifeistech.android.testschedule.Adapter.MakeFragmentPagerAdapter;
+import com.lifeistech.android.testschedule.TestClass.Date;
+import com.lifeistech.android.testschedule.TestClass.Test;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-public class MakeActivity extends NavigationActivity {
+import java.util.List;
+
+public class MakeActivity extends BaseActivity {
 
     TextView textView;
-//    MaterialEditText editText, subject1, subject2, subject3, subject4;
-    ViewPager viewPager;
-    EditText editText;
-    Button addButton;
 
-//    private NumberPicker monthPicker, dayPicker, priority1, priority2, priority3, priority4;
+    private MaterialEditText editText;
+    private ViewPager viewPager;
+    private Button addButton;
+
+    private Test test;
+    private List<Date> dateList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +64,17 @@ public class MakeActivity extends NavigationActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        addButton = (Button) findViewById(R.id.button);
+        addButton = (Button) findViewById(R.id.addButton);
         addButton.setOnClickListener(addButtonCliclListener);
 
         //ViewPagerを使用したfragment
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(
-                new MyFragmentStatePagerAdapter(
+                new MakeFragmentPagerAdapter(
                         getSupportFragmentManager()));
 //        viewPager2 = (ViewPager) findViewById(R.id.viewPager2);
 //        viewPager2.setAdapter(
-//                new MyFragmentStatePagerAdapter(
+//                new MakeFragmentPagerAdapter(
 //                        getSupportFragmentManager()));
 
         for(int i = 0; i< 15; i++) {
@@ -117,51 +122,11 @@ public class MakeActivity extends NavigationActivity {
         // タイトル設定
         setTitle("新しいテストを追加");
 
-        editText = (EditText) findViewById(R.id.TestEdit);
+        editText = (MaterialEditText) findViewById(R.id.TestEdit);
 /**
  *NumberPicker等はMakeActivityに紐づくレイアウト(activity_make.xmlとその下にincludeされてるレイアウト)上にはありません！
  *CardFragmentのに紐づくレイアウト（fragment_card.xml）上にあるので、そっちで操作します。
  **/
-
-//         NumberPickerの設定
-//        // NumberPicker のインスタンスを取得
-//        monthPicker = (NumberPicker) findViewById(R.id.monthPicker);
-//        dayPicker = (NumberPicker) findViewById(R.id.dayPicker);
-//        priority1 = (NumberPicker) findViewById(R.id.priority1);
-//        priority2 = (NumberPicker) findViewById(R.id.priority2);
-//        priority3 = (NumberPicker) findViewById(R.id.priority3);
-//        priority4 = (NumberPicker) findViewById(R.id.priority4);
-
-//        // 最大値、最小値を設定
-//        Calendar cal = Calendar.getInstance();
-
-//        monthPicker.setMinValue(1);
-//        monthPicker.setMaxValue(12);
-//        monthPicker.setValue(cal.get(Calendar.MONTH));
-//
-//        dayPicker.setMinValue(1);
-//        dayPicker.setMaxValue(31);
-//        dayPicker.setValue(cal.get(Calendar.DAY_OF_MONTH));
-//
-//        priority1.setMinValue(1);
-//        priority1.setMaxValue(5);
-//        priority2.setMinValue(1);
-//        priority2.setMaxValue(5);
-//        priority3.setMinValue(1);
-//        priority3.setMaxValue(5);
-//        priority4.setMinValue(1);
-//        priority4.setMaxValue(5);
-//
-//        priority1.setValue(1);
-//        priority2.setValue(1);
-//        priority3.setValue(1);
-//        priority4.setValue(1);
-//        //EditTextの設定
-//        subject1 = (MaterialEditText) findViewById(R.id.subject1);
-//        subject2 = (MaterialEditText) findViewById(R.id.subject2);
-//        subject3 = (MaterialEditText) findViewById(R.id.subject3);
-//        subject4 = (MaterialEditText) findViewById(R.id.subject4);
-
 
     }
 
@@ -171,8 +136,24 @@ public class MakeActivity extends NavigationActivity {
             //ここでカードビューからテスト詳細を取得
             Fragment cardFragment = getSupportFragmentManager().findFragmentById(R.id.container);
             if (cardFragment != null && cardFragment instanceof CardFragment) {
-                ((CardFragment) cardFragment).addData(editText.getText().toString()); //CardFragmentのaddDaraメソッドにここでしたい処理を丸投げ
+                ((CardFragment) cardFragment).addData(); //CardFragmentのaddDaraメソッドにここでしたい処理を丸投げ
             }
+
+            // TestNameを追加
+            test.setTestName(editText.getText().toString());
+
+            // Fragmentからのデータ取得
+            Intent intent = getIntent();
+            Date day1, day2, day3;
+            day1 = (Date) intent.getSerializableExtra("day");
+            dateList.set(1, day1);
+            test.setDateList(dateList);
+
+            // Activityをスタート
+            Intent intent2 = new Intent(getApplicationContext(), ScheduleActivity.class);
+            intent2.putExtra("Test", test);
+            startActivity(intent2);
+
         }
     };
 }
