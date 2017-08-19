@@ -115,12 +115,12 @@ public class CardFragment extends Fragment {
         // TextViewをひも付けます
         mTextView = (TextView) view.findViewById(R.id.textView);
         // Buttonのクリックした時の処理を書きます
-        view.findViewById(R.id.addButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addData();
-            }
-        });
+//        view.findViewById(R.id.addButton).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                addData();
+//            }
+//        });
 
         // 背景色をセットする
         view.setBackgroundColor(mBackgroundColor);

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.solver.SolverVariable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.ThemedSpinnerAdapter;
+import android.view.Menu;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/30.

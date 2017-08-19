@@ -1,6 +1,5 @@
 package com.lifeistech.android.testschedule.ScheduleFragments;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,11 +11,11 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -27,20 +26,19 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.lifeistech.android.testschedule.BaseFragment;
 import com.lifeistech.android.testschedule.MPAndroid.Example;
 import com.lifeistech.android.testschedule.R;
-import com.lifeistech.android.testschedule.TestClass.Date;
 import com.lifeistech.android.testschedule.TestClass.Subject;
 import com.lifeistech.android.testschedule.TestClass.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -53,8 +51,10 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
 
     private PieChart mChart;
 
-    private Test test = new Test();
+    private Test test;
     List<Subject> subjectList;
+
+    String testName;
 
     private final static String BACKGROUND_COLOR = "background_color";
 
@@ -195,11 +195,12 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
                 return null;
             }
         };
-//        Log.e("TAG", subjectList.get(0).getSubjectName());
+//        Log.e("TAG", test.getTestName());
 
 //        for (int n = 0; n < test.getDateList().size(); n++) {
 //            for (int m = 0; m < test.getDateList().get(n).getSubjectList().size(); m++) {
 //                subjectList.add(test.getDateList().get(n).getSubjectList().get(m));
+//                Log.e("name", test.getDateList().get(n).getSubjectList().get(m).getSubjectName());
 //            }
 //        }
 
@@ -224,6 +225,8 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
                 test2.getDateList().get(1).getSubjectList().get(0),
                 test2.getDateList().get(1).getSubjectList().get(1)
         );
+
+        testName = test1.getTestName();
 
     }
 
@@ -359,13 +362,13 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
 
     private SpannableString generateCenterSpannableText() {
 
-        SpannableString s = new SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda");
-        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
-        s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 15, 0);
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
+        SpannableString s = new SpannableString(testName + "\ndeveloped by Masashi Hamaguchi");
+        s.setSpan(new RelativeSizeSpan(1.7f), 0, 5, 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), 5, s.length() - 15, 0);
+        s.setSpan(new ForegroundColorSpan(Color.GRAY), 5, s.length() - 15, 0);
+        s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 20, 0);
+        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 19, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 19, s.length(), 0);
         return s;
     }
 
@@ -394,5 +397,77 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
 
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.actionToggleValues: {
+                for (IDataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                for (IDataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHole: {
+                if (mChart.isDrawHoleEnabled())
+                    mChart.setDrawHoleEnabled(false);
+                else
+                    mChart.setDrawHoleEnabled(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionDrawCenter: {
+                if (mChart.isDrawCenterTextEnabled())
+                    mChart.setDrawCenterText(false);
+                else
+                    mChart.setDrawCenterText(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleXVals: {
+
+                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionSave: {
+                // mChart.saveToGallery("title"+System.currentTimeMillis());
+                mChart.saveToPath("title" + System.currentTimeMillis(), "");
+                break;
+            }
+            case R.id.actionTogglePercent:
+                mChart.setUsePercentValues(!mChart.isUsePercentValuesEnabled());
+                mChart.invalidate();
+                break;
+            case R.id.animateX: {
+                mChart.animateX(1400);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(1400);
+                break;
+            }
+            case R.id.animateXY: {
+                mChart.animateXY(1400, 1400);
+                break;
+            }
+            case R.id.actionToggleSpin: {
+                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
+                        .EaseInCubic);
+                break;
+            }
+        }
+        return true;
     }
 }

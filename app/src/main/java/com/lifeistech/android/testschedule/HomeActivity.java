@@ -35,7 +35,6 @@ public class HomeActivity extends BaseActivity {
     public List<Test> testList;
 
     ListView homeList;
-    List<TestList> mTestLists;
     TestListAdapter testListAdapter;
 
     Example example = new Example();
@@ -68,14 +67,14 @@ public class HomeActivity extends BaseActivity {
 
 
         // データを復活
-        try {
-            pref = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-            Gson gson = new Gson();
-            mTestLists = gson.fromJson(pref.getString("testGson", ""), new TypeToken<List<Test>>(){}.getType());
-
-        } catch (Exception e) {
-
-        }
+//        try {
+//            pref = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+//            Gson gson = new Gson();
+//            testList = gson.fromJson(pref.getString("testGson", ""), new TypeToken<List<Test>>(){}.getType());
+//
+//        } catch (Exception e) {
+//
+//        }
 
         //保存するとき
         //GsonでUserをJSON文字列に変換して保存する

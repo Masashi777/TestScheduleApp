@@ -73,6 +73,8 @@ public class ScheduleActivity extends BaseActivity implements SeekBar.OnSeekBarC
 
     private Test test;
 
+    private FragmentManager fragmentManager = getSupportFragmentManager();
+
     // Demo
 
 
@@ -88,6 +90,9 @@ public class ScheduleActivity extends BaseActivity implements SeekBar.OnSeekBarC
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
+//                        .EaseInCubic);
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -142,15 +147,25 @@ public class ScheduleActivity extends BaseActivity implements SeekBar.OnSeekBarC
         fragment.setArguments(bundle);
 
         // FragmentManagerにセット
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction =  fragmentManager.beginTransaction();
-//        transaction.add(R.id.container, fragment);
+        transaction.add(R.id.viewPager, fragment);
         transaction.commit();
-
-
 
         setViews();
 
+    }
+
+    private void setViews() {
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        ScheduleFragmentPagerAdapter adapter = new ScheduleFragmentPagerAdapter(fragmentManager);
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+
+//        Log.d("TAG", "TAG2");
     }
 
 
@@ -405,19 +420,5 @@ public class ScheduleActivity extends BaseActivity implements SeekBar.OnSeekBarC
 
     }
 
-    //demo
-
-    private void setViews() {
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        FragmentManager manager = getSupportFragmentManager();
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ScheduleFragmentPagerAdapter adapter = new ScheduleFragmentPagerAdapter(manager);
-        viewPager.setAdapter(adapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-
-        Log.d("TAG", "TAG2");
-    }
 
 }
