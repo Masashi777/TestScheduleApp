@@ -72,9 +72,6 @@ public class ScheduleActivity extends BaseActivity {
 
 
 
-    // Demo
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +124,8 @@ public class ScheduleActivity extends BaseActivity {
         // タイトルの設定
         setTitle("スケジュール");
 
-        //オリジナル
+        // ひもづけ
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
         // データの取得
         Intent intent = getIntent();
@@ -135,33 +133,26 @@ public class ScheduleActivity extends BaseActivity {
         Log.e("ScheduleActivity", test.getComment());
         Log.e("ScheduleActivity", String.valueOf(test.getDateList().get(0).getMonth()));
 
-        // Bundle生成
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("test", test);
-
-        // Fragmentを生成してデータをセットする
-//        ScheduleAllFragment fragment = new ScheduleAllFragment();
-//        fragment.setArguments(bundle);
-
-        // FragmentManagerにセット
-//        FragmentTransaction transaction =  fragmentManager.beginTransaction();
-//        transaction.add(R.id.viewPager, fragment);
-//        transaction.commit();
 
         setViews();
-
     }
 
     private void setViews() {
 //        toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ScheduleFragmentPagerAdapter adapter = new ScheduleFragmentPagerAdapter(fragmentManager);
-        viewPager.setAdapter(adapter);
 
+        // データの処理
+        // PagerAdapterの作成
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ScheduleFragmentPagerAdapter adapter = new ScheduleFragmentPagerAdapter(fragmentManager);
+        adapter.addTest(test);
+
+        mViewPager.setAdapter(adapter);
+
+        // Tabレイアウトの設定
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(mViewPager);
+
 
 //        Log.d("TAG", "TAG2");
     }

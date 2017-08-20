@@ -30,6 +30,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.lifeistech.android.testschedule.BaseFragment;
+import com.lifeistech.android.testschedule.FragmentAdapter.SendTest;
 import com.lifeistech.android.testschedule.MPAndroid.Example;
 import com.lifeistech.android.testschedule.R;
 import com.lifeistech.android.testschedule.TestClass.Subject;
@@ -51,13 +52,9 @@ public class ScheduleAllFragment extends BaseFragment implements OnChartValueSel
     private PieChart mChart;
 
     private Test test;
-    List<Subject> subjectList;
+    private List<Subject> subjectList;
+    private String testName;
 
-    String testName;
-
-    private final static String BACKGROUND_COLOR = "background_color";
-
-    private Bundle bundle = new Bundle();
 
     public static Fragment newInstance() {
 
@@ -65,11 +62,75 @@ public class ScheduleAllFragment extends BaseFragment implements OnChartValueSel
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.frag_schedule_all, null);
 
-        bundle = getArguments();
+        // ひもづけ
+        mChart = (PieChart) view.findViewById(R.id.chart1);
+        mChart.setUsePercentValues(true);
+        mChart.getDescription().setEnabled(false);
+        mChart.setExtraOffsets(5, 10, 5, 5);
+
+        mChart.setDragDecelerationFrictionCoef(0.95f);
+
+        // センターテキスト
+        mChart.setCenterTextTypeface(mTfLight);
+        mChart.setCenterText(generateCenterSpannableText());
+
+        // 内側の円の設定
+        mChart.setDrawHoleEnabled(true);
+        mChart.setHoleColor(Color.WHITE);
+
+        // 内側の円周のライン
+        mChart.setTransparentCircleColor(Color.WHITE);
+        mChart.setTransparentCircleAlpha(110);
+
+        mChart.setHoleRadius(58f);
+        mChart.setTransparentCircleRadius(61f);
+
+        // センターテキストの有無
+        mChart.setDrawCenterText(true);
+
+        mChart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        mChart.setRotationEnabled(true);
+        mChart.setHighlightPerTapEnabled(true);
+
+        // mChart.setUnit(" €");
+        // mChart.setDrawUnitsInChart(true);
+
+        // add a selection listener
+        mChart.setOnChartValueSelectedListener(this);
+
+
+        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+//        mChart.spin(2000, 0, 360);
+
+
+        Legend l = mChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
+
+        // entry label styling
+        mChart.setEntryLabelColor(Color.WHITE);
+        mChart.setEntryLabelTypeface(YuGothM);
+        mChart.setEntryLabelTextSize(12f);
+
+
+
+        // データ処理
+        /** Serializableで受け取るところでエラー発生 */
+//        Bundle bundle = getArguments();
 //        test = (Test) bundle.getSerializable("test");
+
+        // Parcelable
+//        SendTest sendTest = (SendTest) bundle.getParcelable("test");
+//        test = sendTest.getTestObject();
 
         subjectList = new List<Subject>() {
             @Override
@@ -201,9 +262,6 @@ public class ScheduleAllFragment extends BaseFragment implements OnChartValueSel
 //            }
 //        }
 
-//        Log.e("n", String.valueOf(test.getDateList().size()));
-//        Log.e("m", String.valueOf(test.getDateList().get(test.getDateList().size()).getSubjectList().size()));
-//        Log.e("TAG2", String.valueOf(subjectList.get(0).getPriority()));
 
         // 臨時
         Example example = new Example();
@@ -225,68 +283,10 @@ public class ScheduleAllFragment extends BaseFragment implements OnChartValueSel
 
         testName = test1.getTestName();
 
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_schedule_all, null);
-
-        // ひもづけ
-        mChart = (PieChart) view.findViewById(R.id.chart1);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 10, 5, 5);
-
-        mChart.setDragDecelerationFrictionCoef(0.95f);
-
-        // センターテキスト
-        mChart.setCenterTextTypeface(mTfLight);
-        mChart.setCenterText(generateCenterSpannableText());
-
-        // 内側の円の設定
-        mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
-
-        // 内側の円周のライン
-        mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
-
-        mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
-
-        // センターテキストの有無
-        mChart.setDrawCenterText(true);
-
-        mChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
-
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
-
-        // add a selection listener
-        mChart.setOnChartValueSelectedListener(this);
-
+        // グラフにデータをセット
         setData();
 
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-//        mChart.spin(2000, 0, 360);
-
-
-        Legend l = mChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(0f);
-        l.setYOffset(0f);
-
-        // entry label styling
-        mChart.setEntryLabelColor(Color.WHITE);
-        mChart.setEntryLabelTypeface(YuGothM);
-        mChart.setEntryLabelTextSize(12f);
 
         return view;
     }
@@ -309,11 +309,6 @@ public class ScheduleAllFragment extends BaseFragment implements OnChartValueSel
 
         }
 
-
-//        entries.add(new PieEntry(40, "古典"));
-//        entries.add(new PieEntry(20, "数学"));
-//        entries.add(new PieEntry(15, "世界史"));
-//        entries.add(new PieEntry(25, "化学"));
 
         PieDataSet dataSet = new PieDataSet(entries, "教科一覧");
 
@@ -376,74 +371,4 @@ public class ScheduleAllFragment extends BaseFragment implements OnChartValueSel
         Log.i("PieChart", "nothing selected");
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
-                for (IDataSet<?> set : mChart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleIcons: {
-                for (IDataSet<?> set : mChart.getData().getDataSets())
-                    set.setDrawIcons(!set.isDrawIconsEnabled());
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleHole: {
-                if (mChart.isDrawHoleEnabled())
-                    mChart.setDrawHoleEnabled(false);
-                else
-                    mChart.setDrawHoleEnabled(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionDrawCenter: {
-                if (mChart.isDrawCenterTextEnabled())
-                    mChart.setDrawCenterText(false);
-                else
-                    mChart.setDrawCenterText(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleXVals: {
-
-                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionSave: {
-                // mChart.saveToGallery("title"+System.currentTimeMillis());
-                mChart.saveToPath("title" + System.currentTimeMillis(), "");
-                break;
-            }
-            case R.id.actionTogglePercent:
-                mChart.setUsePercentValues(!mChart.isUsePercentValuesEnabled());
-                mChart.invalidate();
-                break;
-            case R.id.animateX: {
-                mChart.animateX(1400);
-                break;
-            }
-            case R.id.animateY: {
-                mChart.animateY(1400);
-                break;
-            }
-            case R.id.animateXY: {
-                mChart.animateXY(1400, 1400);
-                break;
-            }
-            case R.id.actionToggleSpin: {
-                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
-                        .EaseInCubic);
-                break;
-            }
-        }
-        return true;
-    }
 }

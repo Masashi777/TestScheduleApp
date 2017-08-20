@@ -3,6 +3,7 @@ package com.lifeistech.android.testschedule.ScheduleFragments;
 import android.annotation.SuppressLint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +37,10 @@ import com.lifeistech.android.testschedule.TestClass.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/26.
@@ -50,37 +54,12 @@ public class SecondFragment extends BaseFragment implements SeekBar.OnSeekBarCha
 
     private Example example = new Example();
 
+    private Test test;
     private List<Subject> subjectList;
     private String testName;
 
     public static Fragment newInstance() {
-
         return new SecondFragment();
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Test test1, test2;
-        test1 = example.getExam1();
-        test2 = example.getExam2();
-
-        subjectList = Arrays.asList(
-                test1.getDateList().get(0).getSubjectList().get(0),
-                test1.getDateList().get(0).getSubjectList().get(1),
-                test1.getDateList().get(1).getSubjectList().get(0),
-                test1.getDateList().get(1).getSubjectList().get(1),
-
-                test2.getDateList().get(0).getSubjectList().get(0),
-                test2.getDateList().get(0).getSubjectList().get(1),
-                test2.getDateList().get(1).getSubjectList().get(0),
-                test2.getDateList().get(1).getSubjectList().get(1)
-        );
-
-        testName = test1.getTestName();
-
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -156,7 +135,6 @@ public class SecondFragment extends BaseFragment implements SeekBar.OnSeekBarCha
         mv.setChartView(barChart); // For bounds control
         barChart.setMarker(mv); // Set the marker to the chart
 
-        setData();
 
         // setting data
         mSeekBarY.setProgress(50);
@@ -166,6 +144,166 @@ public class SecondFragment extends BaseFragment implements SeekBar.OnSeekBarCha
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         // mChart.setDrawLegend(false);
+
+
+        // データ処理
+        /** Serializableで受け取るところでエラー発生 */
+//        Bundle bundle = getArguments();
+//        test = (Test) bundle.getSerializable("test");
+
+        subjectList = new List<Subject>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            public Iterator<Subject> iterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @NonNull
+            @Override
+            public <T> T[] toArray(@NonNull T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Subject subject) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(@NonNull Collection<? extends Subject> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, @NonNull Collection<? extends Subject> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Subject get(int index) {
+                return null;
+            }
+
+            @Override
+            public Subject set(int index, Subject element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Subject element) {
+
+            }
+
+            @Override
+            public Subject remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<Subject> listIterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<Subject> listIterator(int index) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public List<Subject> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
+//        Log.e("TAG", test.getTestName());
+//
+//        for (int n = 0; n < test.getDateList().size(); n++) {
+//            for (int m = 0; m < test.getDateList().get(n).getSubjectList().size(); m++) {
+//                subjectList.add(test.getDateList().get(n).getSubjectList().get(m));
+//                Log.e("name", test.getDateList().get(n).getSubjectList().get(m).getSubjectName());
+//            }
+//        }
+
+
+        // 臨時データ
+        Test test1, test2;
+        test1 = example.getExam1();
+        test2 = example.getExam2();
+
+        subjectList = Arrays.asList(
+                test1.getDateList().get(0).getSubjectList().get(0),
+                test1.getDateList().get(0).getSubjectList().get(1),
+                test1.getDateList().get(1).getSubjectList().get(0),
+                test1.getDateList().get(1).getSubjectList().get(1),
+
+                test2.getDateList().get(0).getSubjectList().get(0),
+                test2.getDateList().get(0).getSubjectList().get(1),
+                test2.getDateList().get(1).getSubjectList().get(0),
+                test2.getDateList().get(1).getSubjectList().get(1)
+        );
+
+        testName = test1.getTestName();
+
+        // データセット
+        setData();
+
 
         return view;
     }
