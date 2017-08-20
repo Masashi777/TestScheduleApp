@@ -71,7 +71,7 @@ public class CardFragment extends Fragment {
          * */
 
         //レイアウトをビューとして作成
-        View view = inflater.inflate(R.layout.fragment_card, container, false);
+        View view = inflater.inflate(R.layout.frag_card, container, false);
 
         // 最大値、最小値を設定
         Calendar cal = Calendar.getInstance();

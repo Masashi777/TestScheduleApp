@@ -39,7 +39,7 @@ public class TestListAdapter extends ArrayAdapter<Test> {
         final ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.test_list, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_test, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder); //ここでtagを設定しておかないと落ちる
         } else {

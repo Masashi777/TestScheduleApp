@@ -3,8 +3,8 @@ package com.lifeistech.android.testschedule.ScheduleFragments;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -47,7 +46,7 @@ import java.util.ListIterator;
  * Created by Masashi Hamaguchi on 2017/07/30.
  */
 
-public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekBarChangeListener, OnChartValueSelectedListener {
+public class ScheduleAllFragment extends BaseFragment implements OnChartValueSelectedListener {
 
     private PieChart mChart;
 
@@ -58,21 +57,19 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
 
     private final static String BACKGROUND_COLOR = "background_color";
 
-    public static ScheduleAllFragment newInstance(@ColorRes int IdRes) {
+    private Bundle bundle = new Bundle();
 
-        ScheduleAllFragment frag = new ScheduleAllFragment();
-        Bundle b = new Bundle();
-        b.putInt(BACKGROUND_COLOR, IdRes);
-        frag.setArguments(b);
-        return frag;
+    public static Fragment newInstance() {
+
+        return new ScheduleAllFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle bundle = getArguments();
-        test = (Test) bundle.getSerializable("test");
+        bundle = getArguments();
+//        test = (Test) bundle.getSerializable("test");
 
         subjectList = new List<Subject>() {
             @Override
@@ -231,11 +228,8 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.schedule_all, null);
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.sample_fragment);
-//        linearLayout.setBackgroundResource(getArguments().getInt(BACKGROUND_COLOR));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.frag_schedule_all, null);
 
         // ひもづけ
         mChart = (PieChart) view.findViewById(R.id.chart1);
@@ -295,11 +289,6 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
         mChart.setEntryLabelTextSize(12f);
 
         return view;
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
     }
 
     private void setData() {
@@ -386,19 +375,6 @@ public class ScheduleAllFragment extends BaseFragment implements SeekBar.OnSeekB
     public void onNothingSelected() {
         Log.i("PieChart", "nothing selected");
     }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
 
 
     @Override

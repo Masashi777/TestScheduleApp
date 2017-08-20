@@ -1,4 +1,4 @@
-package com.lifeistech.android.testschedule.Adapter;
+package com.lifeistech.android.testschedule.FragmentAdapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

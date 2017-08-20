@@ -16,11 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lifeistech.android.testschedule.Adapter.MakeFragmentPagerAdapter;
+import com.lifeistech.android.testschedule.FragmentAdapter.MakeFragmentPagerAdapter;
 import com.lifeistech.android.testschedule.TestClass.Date;
 import com.lifeistech.android.testschedule.TestClass.Test;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -79,7 +78,7 @@ public class MakeActivity extends BaseActivity {
 
         for(int i = 0; i< 15; i++) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.make_card, null);
+                LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.frag_makecard, null);
                 CardView cardView = (CardView) linearLayout.findViewById(R.id.cardView);
                 TextView textBox = (TextView) linearLayout.findViewById(R.id.textBox);
                 textBox.setText("CardView" + i);

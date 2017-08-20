@@ -1,10 +1,8 @@
 package com.lifeistech.android.testschedule;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -16,17 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.lifeistech.android.testschedule.MPAndroid.Example;
 import com.lifeistech.android.testschedule.TestClass.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class HomeActivity extends BaseActivity {
 
@@ -97,7 +89,7 @@ public class HomeActivity extends BaseActivity {
         Log.e("TAGGG", String.valueOf(testList.size()));
 
 
-        testListAdapter = new TestListAdapter(this, R.layout.test_list, testList);
+        testListAdapter = new TestListAdapter(this, R.layout.list_test, testList);
         homeList.setAdapter(testListAdapter);
 
 
@@ -121,7 +113,7 @@ public class HomeActivity extends BaseActivity {
 
                 testList.remove(position);
 
-                testListAdapter = new TestListAdapter(getApplicationContext(), R.layout.test_list, testList);
+                testListAdapter = new TestListAdapter(getApplicationContext(), R.layout.list_test, testList);
                 homeList.setAdapter(testListAdapter);
 
                 return false;
