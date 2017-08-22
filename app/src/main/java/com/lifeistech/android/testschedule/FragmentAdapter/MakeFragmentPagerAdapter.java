@@ -3,6 +3,7 @@ package com.lifeistech.android.testschedule.FragmentAdapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 
 import com.lifeistech.android.testschedule.CardFragment;
 
@@ -18,6 +19,10 @@ public class MakeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
+//        CardFragment cardFragment = new CardFragment();
+//        FragmentTransaction transaction = cardFragment.getFragmentManager().beginTransaction();
+//        transaction.add(cardFragment, String.valueOf(i));
+//        transaction.commit();
         return new CardFragment();
     }
 
@@ -30,4 +35,5 @@ public class MakeFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return String.valueOf(position);
     }
+
 }

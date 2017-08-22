@@ -1,8 +1,11 @@
 package com.lifeistech.android.testschedule;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -19,6 +22,9 @@ import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+
+import static android.R.color.holo_orange_dark;
+import static android.R.color.holo_orange_light;
 
 public abstract class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -124,18 +130,23 @@ public abstract class BaseActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_make) {
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_Activity) {
+            Intent intent = new Intent(this, NavActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_orange) {
+            Toolbar toolbar = new Toolbar(getApplicationContext());
+            toolbar.setBackgroundColor(holo_orange_dark);
+            setSupportActionBar(toolbar);
+        } else if (id == R.id.nav_yellow) {
+            Toolbar toolbar = new Toolbar(getApplicationContext());
+            toolbar.setBackgroundColor(holo_orange_light);
+            setSupportActionBar(toolbar);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

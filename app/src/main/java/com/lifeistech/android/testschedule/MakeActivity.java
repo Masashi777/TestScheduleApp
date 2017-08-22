@@ -1,32 +1,43 @@
 package com.lifeistech.android.testschedule;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lifeistech.android.testschedule.FragmentAdapter.MakeFragmentPagerAdapter;
+import com.lifeistech.android.testschedule.MPAndroid.Example;
 import com.lifeistech.android.testschedule.TestClass.Date;
 import com.lifeistech.android.testschedule.TestClass.Test;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
-public class MakeActivity extends BaseActivity {
+public class MakeActivity extends BaseActivity implements CardFragment.SendListener {
 
     TextView textView;
 
@@ -34,8 +45,11 @@ public class MakeActivity extends BaseActivity {
     private ViewPager viewPager;
     private Button addButton;
 
-    private Test test;
-    private List<Date> dateList;
+    private Test test = new Test();
+    private List<Date> dateList = new ArrayList<Date>();
+    private List<Test> testList = new ArrayList<Test>();
+
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,65 +77,25 @@ public class MakeActivity extends BaseActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        addButton = (Button) findViewById(R.id.addButton);
-        addButton.setOnClickListener(addButtonCliclListener);
-
-        //ViewPagerを使用したfragment
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(
-                new MakeFragmentPagerAdapter(
-                        getSupportFragmentManager()));
-//        viewPager2 = (ViewPager) findViewById(R.id.viewPager2);
-//        viewPager2.setAdapter(
-//                new MakeFragmentPagerAdapter(
-//                        getSupportFragmentManager()));
-
-        for(int i = 0; i< 15; i++) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.frag_makecard, null);
-                CardView cardView = (CardView) linearLayout.findViewById(R.id.cardView);
-                TextView textBox = (TextView) linearLayout.findViewById(R.id.textBox);
-                textBox.setText("CardView" + i);
-                cardView.setTag(i);
-                cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Snackbar.make(v, String.valueOf(v.getTag()) + "番目のCardViewがクリックされました", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-//                    Toast.makeText(MakeActivity.this, String.valueOf(v.getTag()) + "番目のCardViewがクリックされました", Toast.LENGTH_SHORT).show();
-                }
-            });
-//            cardLinear.addView(linearLayout,i);
-
-//            LayoutInflater fragment_inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//                Fragment fragment = (Fragment) inflater.inflate(R.id.fragment, null);
-
-//            textView = (TextView) findViewById(R.id.textView);
-//            final Typeface kf = Typeface.createFromAsset(getAssets(), "KFhimaji.otf");
-//            textView.setTypeface(kf);
-        }
-
-        // Fragmentを作成します
-        CardFragment fragment = new CardFragment();
-        // Fragmentの追加や削除といった変更を行う際は、Transactionを利用します
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // 新しく追加を行うのでaddを使用します
-        // 他にも、メソッドにはreplace removeがあります
-        // メソッドの1つ目の引数は対象のViewGroupのID、2つ目の引数は追加するfragment
-        transaction.add(R.id.container, fragment);
-        // 最後にcommitを使用することで変更を反映します
-        transaction.commit();
-
-//        transaction.add(R.id.container, CardFragment.createInstance("hoge", Color.RED));
-//        transaction.add(R.id.container, CardFragment.createInstance("fuga", Color.BLUE));
-
-
-        transaction.add(R.id.container, CardFragment.createInstance("fuga", Color.BLUE));
-
-
         // タイトル設定
         setTitle("新しいテストを追加");
 
+        // ひもづけ
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         editText = (MaterialEditText) findViewById(R.id.TestEdit);
+
+        // ボタンの設定
+        addButton = (Button) findViewById(R.id.addButton);
+        addButton.setOnClickListener(addButtonClickListener);
+
+        // PagerAdapterの作成
+        String[] datas = new String[4];
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        MakeFragmentPagerAdapter adapter = new MakeFragmentPagerAdapter(fragmentManager);
+
+        viewPager.setAdapter(adapter);
+
+
 /**
  *NumberPicker等はMakeActivityに紐づくレイアウト(activity_make.xmlとその下にincludeされてるレイアウト)上にはありません！
  *CardFragmentのに紐づくレイアウト（fragment_card.xml）上にあるので、そっちで操作します。
@@ -129,30 +103,84 @@ public class MakeActivity extends BaseActivity {
 
     }
 
-    View.OnClickListener addButtonCliclListener = new View.OnClickListener() {
+    View.OnClickListener addButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             //ここでカードビューからテスト詳細を取得
-            Fragment cardFragment = getSupportFragmentManager().findFragmentById(R.id.container);
-            if (cardFragment != null && cardFragment instanceof CardFragment) {
-                ((CardFragment) cardFragment).addData(); //CardFragmentのaddDaraメソッドにここでしたい処理を丸投げ
+            for (int i = 0; i < 3; i++) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.container, new CardFragment(), String.valueOf(i));
+
+                Fragment cardFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+                if (cardFragment != null && cardFragment instanceof CardFragment) {
+                    ((CardFragment) cardFragment).addDate();
+                }
             }
 
-            // TestNameを追加
-            test.setTestName(editText.getText().toString());
+            Log.e("ButtonOnClickListener", "Tapped");
 
-            // Fragmentからのデータ取得
-            Intent intent = getIntent();
-            Date day1, day2, day3;
-            day1 = (Date) intent.getSerializableExtra("day");
-            dateList.set(1, day1);
-            test.setDateList(dateList);
+            /**
+             * Fragment上のaddDateを実行
+             * データをActivityに送信
+             * 終了したら、インターフェイスを呼び出しActivityのpicDateを実行↓
+             * ScheduleActivityへTestClassを渡す。
+             */
 
-            // Activityをスタート
-            Intent intent2 = new Intent(getApplicationContext(), ScheduleActivity.class);
-            intent2.putExtra("Test", test);
-            startActivity(intent2);
+
+            /**
+             * testはオブジェクトなのでintentで渡すことはできません！プリミティブな変数しか渡せないよ！
+             * 今回はそのままsetした内容をgetして送りました。
+             * */
+
+            // データを復活
+            try {
+                pref = getSharedPreferences("SaveTestList", getApplicationContext().MODE_PRIVATE);
+                Gson gson = new Gson();
+                testList = gson.fromJson(pref.getString("testGson", ""), new TypeToken<List<Test>>(){}.getType());
+
+            } catch (Exception e) {
+
+            }
+
+            Example example = new Example();
+            Test exam = new Test();
+            exam = example.getExam1();
+            testList.add(testList.size() + 1, exam);
+
+            // 保存するとき
+            // GsonでUserをJSON文字列に変換して保存する
+
+            Gson gson = new Gson();
+            gson.toJson(testList);
+            pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
 
         }
     };
+
+    // interface内のメソッドを実装します。
+    @Override
+    public void picDate(int tag, Date date) {
+
+        // Fragmentからのデータ取得
+        dateList.set(tag, date);
+
+        nextActivity();
+
+        Log.e("picDate", String.valueOf(tag));
+    }
+
+    public void nextActivity() {
+
+        // TestNameを追加
+        test.setTestName(editText.getText().toString());
+
+        test.setDateList(dateList);
+
+        // Activityをスタート
+        Intent intent2 = new Intent(getApplicationContext(), ScheduleActivity.class);
+        intent2.putExtra("Test", test);
+        startActivity(intent2);
+
+    }
 }

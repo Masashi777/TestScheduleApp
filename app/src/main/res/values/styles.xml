@@ -21,6 +21,19 @@
         <item name="colorPrimaryDark">@color/cyanDarkPrimary</item>
     </style>
 
+    <style name="MyTheme.Blue" parent="AppTheme.MyApp">
+        <item name="colorPrimary">@color/lightbluePrimary</item>
+        <item name="colorPrimaryDark">@color/lightblueDarkPrimary</item>
+    </style>
+
+    <style name="MyTheme.Orange" parent="AppTheme.MyApp">
+        <item name="colorPrimary">@color/deeporangePrimary</item>
+        <item name="colorPrimaryDark">@color/deeporangeDarkPrimary</item>
+    </style>
+
+
+    <!-- /Original Style -->
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

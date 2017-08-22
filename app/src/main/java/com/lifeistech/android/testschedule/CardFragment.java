@@ -1,11 +1,13 @@
 package com.lifeistech.android.testschedule;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +37,6 @@ public class CardFragment extends Fragment {
     private String mName = "";
     private @ColorInt int mBackgroundColor = Color.TRANSPARENT;
 
-    private Date date = new Date();
-
     private NumberPicker monthPicker, dayPicker, priority1, priority2, priority3, priority4;
     private NumberPicker[] priorityPickers = new NumberPicker[] {priority1, priority2, priority3, priority4};
 
@@ -45,6 +45,13 @@ public class CardFragment extends Fragment {
 
     private Subject subjectA, subjectB, subjectC, subjectD;
     private Subject[] subjects = new Subject[] {subjectA, subjectB, subjectC, subjectD};
+
+
+    public interface SendListener {
+
+        // Activity上のpicDateを実行
+        public void picDate(int tag, Date date);
+    }
 
 
     @Override
@@ -97,54 +104,59 @@ public class CardFragment extends Fragment {
         dayPicker.setMaxValue(31);
         dayPicker.setValue(cal.get(Calendar.DAY_OF_MONTH));
 
-        for (int i = 0; i > 4; i++) {
+        for (int i = 0; i < 4; i++) {
             priorityPickers[i].setMinValue(1);
             priorityPickers[i].setMaxValue(5);
-        }
-
-        for (int i = 0; i > 4; i++) {
             priorityPickers[i].setValue(1);
         }
+
 
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // TextViewをひも付けます
-        mTextView = (TextView) view.findViewById(R.id.textView);
-        // Buttonのクリックした時の処理を書きます
-//        view.findViewById(R.id.addButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                addData();
-//            }
-//        });
+    // 変数を用意する
+    private SendListener sendListener;
 
-        // 背景色をセットする
-        view.setBackgroundColor(mBackgroundColor);
-        // onCreateで受け取った値をセットする
-//        mTextView.setText(mName);
+    // FragmentがActivityに追加されたら呼ばれるメソッド
+    @Override
+    public void onAttach(Context context) {
+        // APILevel23からは引数がActivity->Contextになっているので注意する
+        super.onAttach(context);
+        // contextクラスがMyListenerを実装しているかをチェックする
+        if (context instanceof SendListener) {
+            // リスナーをここでセットするようにします
+            sendListener = (SendListener) context;
+        }
+    }
+
+    // FragmentがActivityから離れたら呼ばれるメソッド
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        // 画面からFragmentが離れたあとに処理が呼ばれることを避けるためにNullで初期化しておく
+        sendListener = null;
     }
 
     // このメソッドからFragmentを作成することを強制する
-    @CheckResult
-    public static CardFragment createInstance(String name, @ColorInt int color) {
-        // Fragmentを作成して返すメソッド
-        // createInstanceメソッドを使用することで、そのクラスを作成する際にどのような値が必要になるか制約を設けることができる
-        CardFragment fragment = new CardFragment();
-        // Fragmentに渡す値はBundleという型でやり取りする
-        Bundle args = new Bundle();
-        // Key/Pairの形で値をセットする
-        args.putString(KEY_NAME, name);
-        args.putInt(KEY_BACKGROUND, color);
-        // Fragmentに値をセットする
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    @CheckResult
+//    public static CardFragment createInstance(String name, @ColorInt int color) {
+//        // Fragmentを作成して返すメソッド
+//        // createInstanceメソッドを使用することで、そのクラスを作成する際にどのような値が必要になるか制約を設けることができる
+//        CardFragment fragment = new CardFragment();
+//        // Fragmentに渡す値はBundleという型でやり取りする
+//        Bundle args = new Bundle();
+//        // Key/Pairの形で値をセットする
+//        args.putString(KEY_NAME, name);
+//        args.putInt(KEY_BACKGROUND, color);
+//        // Fragmentに値をセットする
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
-    public void addData() {
+    public void addDate() {
+
+        // Data型を編成してActivityへ送る
+        Date date = new Date();
 
         //日付の設定
         date.setMonth(monthPicker.getValue());
@@ -170,15 +182,26 @@ public class CardFragment extends Fragment {
 
         date.setSubjectList(subjectList);
 
-        //Intentの生成
-        Intent intent = new Intent(getActivity(), MakeActivity.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("date", date);
+//
+//        MakeActivity makeActivity = new MakeActivity();
+//        makeActivity.setActionBar();
+//
+//        CardFragment cardFragment = new CardFragment();
+//        cardFragment.setArguments();
+
+
+
+        sendListener.picDate(Integer.parseInt(getTag()), date);
+
+        Log.e("addDate", "addDate");
+
         /**
          * testはオブジェクトなのでintentで渡すことはできません！プリミティブな変数しか渡せないよ！
          * 今回はそのままsetした内容をgetして送りました。
          * */
-        intent.putExtra("day", date);
-        intent.setAction(Intent.ACTION_VIEW);
-        startActivity(intent);
+
     }
 
 }

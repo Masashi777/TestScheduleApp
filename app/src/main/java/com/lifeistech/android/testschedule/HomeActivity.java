@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.media.RatingCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lifeistech.android.testschedule.MPAndroid.Example;
 import com.lifeistech.android.testschedule.TestClass.Test;
 
@@ -31,6 +34,8 @@ public class HomeActivity extends BaseActivity {
 
     Example example = new Example();
 
+    private boolean color = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,10 @@ public class HomeActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Gson gson = new Gson();
+                gson.toJson(testList);
+                pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
+
                 Intent intent = new Intent(getApplicationContext(), MakeActivity.class);
                 startActivity(intent);
             }
@@ -58,21 +67,18 @@ public class HomeActivity extends BaseActivity {
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        // データを復活
-//        try {
-//            pref = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-//            Gson gson = new Gson();
-//            testList = gson.fromJson(pref.getString("testGson", ""), new TypeToken<List<Test>>(){}.getType());
-//
-//        } catch (Exception e) {
-//
-//        }
 
-        //保存するとき
-        //GsonでUserをJSON文字列に変換して保存する
-//        Gson gson = new Gson();
-//        gson.toJson(testList);
-//        pref.edit().putString("testGson", gson.toJson(testList)).commit();
+        // データを復活
+        try {
+            pref = getSharedPreferences("SaveTestList", this.MODE_PRIVATE);
+            Gson gson = new Gson();
+            testList = gson.fromJson(pref.getString("testGson", ""), new TypeToken<List<Test>>(){}.getType());
+
+            testList = Arrays.asList(example.getExam1(), example.getExam2());
+
+        } catch (Exception e) {
+            testList = Arrays.asList(example.getExam1(), example.getExam2());
+        }
 
         // タイトルの設定
         setTitle("テスト一覧");
@@ -81,12 +87,8 @@ public class HomeActivity extends BaseActivity {
 
         homeList = (ListView) findViewById(R.id.homeList);
 
-        testList = Arrays.asList(example.getExam1(), example.getExam2());
 
-//        testList.add(example.getExam1());
-//        testList.add(example.getExam2());
-
-        Log.e("TAGGG", String.valueOf(testList.size()));
+//        Log.e("TAGGG", String.valueOf(testList.size()));
 
 
         testListAdapter = new TestListAdapter(this, R.layout.list_test, testList);
@@ -111,14 +113,22 @@ public class HomeActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                testList.remove(position);
-
-                testListAdapter = new TestListAdapter(getApplicationContext(), R.layout.list_test, testList);
-                homeList.setAdapter(testListAdapter);
+//                testList.remove(position);
+//
+//                testListAdapter.remove(testListAdapter.getItem(position));
+//                testListAdapter.notifyDataSetChanged();
 
                 return false;
             }
         });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        Gson gson = new Gson();
+        gson.toJson(testList);
+        pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
     }
 
 }

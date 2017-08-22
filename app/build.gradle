@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -36,14 +38,13 @@ dependencies {
     //Gson
     compile 'com.google.code.gson:gson:2.3.1'
 
+    //MaterialDesignLibrary
+//    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     //MPAndroidAdapter
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     //MaterialEditText
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     //ArrayPagerAdapter
     compile 'com.nakama.arraypageradapter:arraypageradapter:0.1.2'
-
-    //MaterialDesignLibrary
-//    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
 
 }
