@@ -87,8 +87,6 @@ public class EditActivity extends BaseActivity {
         }
         categorySpinner.setAdapter(adapter);
 
-        categorySpinner.set
-
         // ボタンの設定
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
