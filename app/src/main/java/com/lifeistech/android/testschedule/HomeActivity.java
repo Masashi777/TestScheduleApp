@@ -1,6 +1,7 @@
 package com.lifeistech.android.testschedule;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,12 +12,30 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
-import com.lifeistech.android.testschedule.FragmentAdapter.HomeFragmentPagerAdapter;
+import com.lifeistech.android.testschedule.Adapter_Fragment.HomeFragmentPagerAdapter;
+import com.lifeistech.android.testschedule.ItemClass.Item;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends BaseActivity {
 
+    //定数
+    private final static int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private final static int REQUEST_EDIT = 0;
+    private final static int MENU_ITEM0 = 0;
+
+    // Layout
     private ViewPager viewPager;
+
+    // UI
+    private ArrayList<Item> itemList;//要素群
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +53,7 @@ public class HomeActivity extends BaseActivity {
 //                gson.toJson(testList);
 //                pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
 
-                Intent intent = new Intent(getApplicationContext(), MakeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), EditActivity.class);
                 startActivity(intent);
             }
         });
@@ -50,10 +69,14 @@ public class HomeActivity extends BaseActivity {
 
 
         // タイトルの設定
-        setTitle("タスク！");
+        setTitle("タスク一覧！");
 
         // ひもづけ
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+
+        //要素群の読み込み
+        itemList = new ArrayList<Item>();
+        loadItems();
 
         setViews();
     }
@@ -61,8 +84,19 @@ public class HomeActivity extends BaseActivity {
     private void setViews() {
 
         // PagerAdapterの作成
+        // データの処理
         FragmentManager fragmentManager = getSupportFragmentManager();
         HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(fragmentManager);
+        try {
+            // 新規作成で受け取った場合
+            // from EditActivity (New Item)
+            Intent intent = getIntent();
+            adapter.putItem((Item) intent.getSerializableExtra("item"));
+
+        } catch (Exception e) {
+            // 受け取れなかった⇒編集
+        }
+
 
         viewPager.setAdapter(adapter);
 
@@ -72,11 +106,74 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    //アクティビティ停止時に呼ばれる
     @Override
-    protected void onDestroy() {
-//        Gson gson = new Gson();
-//        gson.toJson(testList);
-//        pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
+    public void onStop() {
+        super.onStop();
+
+        //要素群の書き込み
+        saveItems();
+    }
+
+    //要素群の書き込み
+    private void saveItems() {
+        //ArrayListをJSONに変換
+        String json = list2json(itemList);
+
+        //プリファレンスへの書き込み
+        SharedPreferences pref = getSharedPreferences(
+                "ToDoApp", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("itemList", json);
+        editor.commit();
+    }
+
+    //要素群の読み込み
+    private void loadItems() {
+        //プリファレンスからの読み込み
+        SharedPreferences pref = getSharedPreferences(
+                "ToDoApp", MODE_PRIVATE);
+        String json = pref.getString("itemList","");
+
+        //JSONをArrayListに変換
+        itemList = items2list(json);
+    }
+
+    //ArrayListをJSONに変換(5)
+    private String list2json(ArrayList<Item> items) {
+        try {
+            JSONArray array = new JSONArray();
+            for (Item item : items) {
+                JSONObject obj = new JSONObject();
+                obj.put("title", item.itemName);
+                obj.put("category", item.category);
+                obj.put("checked", item.checked);
+                array.put(obj);
+            }
+            return array.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    //JSONをArrayListに変換(6)
+    private ArrayList<Item> items2list(String json) {
+        ArrayList<Item> items = new ArrayList<Item>();
+        try {
+            JSONArray array = new JSONArray(json);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                Item item = new Item();
+                item.itemName = obj.getString("title");
+                item.category = obj.getInt("category");
+                item.checked = obj.getBoolean("checked");
+                items.add(item);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 
 }

@@ -22,11 +22,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MakeActivity"
+            android:name=".EditActivity"
             android:label="@string/title_activity_make"
             android:theme="@style/AppTheme.MyApp"/>
         <activity
-            android:name=".ScheduleActivity"
+            android:name=".DetailActivity"
             android:label="@string/title_activity_schedule"
             android:theme="@style/AppTheme.MyApp" />
         <activity

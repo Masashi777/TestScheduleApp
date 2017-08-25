@@ -1,0 +1,37 @@
+package com.lifeistech.android.testschedule.Fragments_Detail;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.lifeistech.android.testschedule.R;
+
+/**
+ * Created by Masashi Hamaguchi on 2017/07/26.
+ */
+
+public class ThirdFragment extends Fragment {
+
+    private TextView textView;
+    private String title;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+        title = bundle.getString("categoryName", "");
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.frag_3, container, false);
+
+        textView = (TextView) view.findViewById(R.id.textView);
+        textView.setText(title);
+
+        return view;
+    }
+}
