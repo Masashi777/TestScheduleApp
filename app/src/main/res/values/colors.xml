@@ -7,7 +7,7 @@
     <color name="black_overlay">#66000000</color>
 
     <!-- Original -->
-    <color name="cyanPrimary">#00BCD4</color>
+    <color name="cyanPrimary">#00bcd4</color>
     <color name="cyanDarkPrimary">#0097A7</color>
 
     <color name="lightbluePrimary">#03A9F4</color>

@@ -1,40 +1,22 @@
 package com.lifeistech.android.testschedule;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.media.RatingCompat;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.lifeistech.android.testschedule.MPAndroid.Example;
-import com.lifeistech.android.testschedule.TestClass.Test;
-
-import java.util.Arrays;
-import java.util.List;
+import com.lifeistech.android.testschedule.FragmentAdapter.HomeFragmentPagerAdapter;
 
 public class HomeActivity extends BaseActivity {
 
-    SharedPreferences pref;
-
-    public List<Test> testList;
-
-    ListView homeList;
-    TestListAdapter testListAdapter;
-
-    Example example = new Example();
-
-    private boolean color = true;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +30,9 @@ public class HomeActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Gson gson = new Gson();
-                gson.toJson(testList);
-                pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
+//                Gson gson = new Gson();
+//                gson.toJson(testList);
+//                pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
 
                 Intent intent = new Intent(getApplicationContext(), MakeActivity.class);
                 startActivity(intent);
@@ -67,68 +49,34 @@ public class HomeActivity extends BaseActivity {
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
-        // データを復活
-        try {
-            pref = getSharedPreferences("SaveTestList", this.MODE_PRIVATE);
-            Gson gson = new Gson();
-            testList = gson.fromJson(pref.getString("testGson", ""), new TypeToken<List<Test>>(){}.getType());
-
-            testList = Arrays.asList(example.getExam1(), example.getExam2());
-
-        } catch (Exception e) {
-            testList = Arrays.asList(example.getExam1(), example.getExam2());
-        }
-
         // タイトルの設定
-        setTitle("テスト一覧");
+        setTitle("タスク！");
 
-        //オリジナル
+        // ひもづけ
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
 
-        homeList = (ListView) findViewById(R.id.homeList);
-
-
-//        Log.e("TAGGG", String.valueOf(testList.size()));
-
-
-        testListAdapter = new TestListAdapter(this, R.layout.list_test, testList);
-        homeList.setAdapter(testListAdapter);
-
-
-        // リストへのボタンの配置
-        homeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
-                intent.putExtra("test", testList.get(position));
-                startActivity(intent);
-                Log.e("TAGGG", String.valueOf(testList.size()));
-
-                Snackbar.make(view, "詳細画面へ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
-
-        homeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-//                testList.remove(position);
-//
-//                testListAdapter.remove(testListAdapter.getItem(position));
-//                testListAdapter.notifyDataSetChanged();
-
-                return false;
-            }
-        });
+        setViews();
     }
 
+    private void setViews() {
+
+        // PagerAdapterの作成
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(fragmentManager);
+
+        viewPager.setAdapter(adapter);
+
+        // Tabレイアウトの設定
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+
+    }
 
     @Override
     protected void onDestroy() {
-        Gson gson = new Gson();
-        gson.toJson(testList);
-        pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
+//        Gson gson = new Gson();
+//        gson.toJson(testList);
+//        pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
     }
 
 }
