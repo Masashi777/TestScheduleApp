@@ -1,8 +1,10 @@
 package com.lifeistech.android.testschedule.Adapter_ListView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
+
+import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/22.
@@ -60,11 +64,18 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
             //set data
             viewHolder.iconImage.setImageResource(R.drawable.ic_android_black_24dp);
             viewHolder.itemText.setText(item.getItemName());
+            viewHolder.categoryText.setText(item.getCategory());
             viewHolder.checkBox.setChecked(item.isChecked());
-        }
 
-        // カテゴリ別に色分け
-//        viewHolder.cardView.setBackgroundColor(categoryList.get(item.getCategory()).getColor);
+            // カテゴリ別に色分け
+            categoryList = loadCategories(getContext());
+            for (int i = 0; i < categoryList.size(); i++) {
+                if (item.getCategory() == categoryList.get(i).getCategoryName()) {
+                    viewHolder.cardView.setCardBackgroundColor(categoryList.get(i).getColor());
+                }
+            }
+
+        }
 
         return convertView;
     }
@@ -72,6 +83,7 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
     private class ViewHolder {
         ImageView iconImage;
         TextView itemText;
+        TextView categoryText;
         CheckBox checkBox;
 
         CardView cardView;
@@ -80,6 +92,7 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
             //get instance
             iconImage = (ImageView) view.findViewById(R.id.iconImage);
             itemText = (TextView) view.findViewById(R.id.itemText);
+            categoryText = (TextView) view.findViewById(R.id.categoryText);
             checkBox = (CheckBox) view.findViewById(R.id.checkBox);
 
             cardView = (CardView) view.findViewById(R.id.cardView);

@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Item implements Serializable {
 
     public String itemName;
-    public int category;
+    public String category;
     public boolean checked;
 
     public String getItemName() {
@@ -20,11 +20,11 @@ public class Item implements Serializable {
         this.itemName = itemName;
     }
 
-    public int getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

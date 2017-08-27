@@ -66,6 +66,7 @@ public class DetailActivity extends BaseActivity {
 
 
         setViews();
+
     }
 
     private void setViews() {
@@ -73,9 +74,9 @@ public class DetailActivity extends BaseActivity {
         // データの処理
         String[] categories = {"遊び", "勉強", "マンガを読む", "部活", "趣味", "テスト勉強"};
         boolean[] checkList = {false, true, false, true, false, true};
-        for (int i = 0; i < categories.length; i++) {
-            categoryList.add(Category.addCategory(categories[i], checkList[i], "0"));
-        }
+//        for (int i = 0; i < categories.length; i++) {
+//            categoryList.add(Category.addCategory(categories[i], checkList[i], "0"));
+//        }
         // PagerAdapterの作成
         FragmentManager fragmentManager = getSupportFragmentManager();
         DetailFragmentPagerAdapter adapter = new DetailFragmentPagerAdapter(fragmentManager);

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package yanzm.products.customview;
+package com.lifeistech.android.testschedule.Layout;
 
 import android.content.Context;
 import android.util.AttributeSet;

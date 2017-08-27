@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lifeistech.android.testschedule.R;
@@ -17,6 +18,7 @@ public class ThirdFragment extends Fragment {
 
     private TextView textView;
     private String title;
+    private ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,10 +29,15 @@ public class ThirdFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_3, container, false);
+        View view = inflater.inflate(R.layout.frag_detail_3, container, false);
 
         textView = (TextView) view.findViewById(R.id.textView);
+        listView = (ListView) view.findViewById(R.id.detailListView);
+
         textView.setText(title);
+
+//        ArrayList<Item> categoryItemList = new ArrayList<Item>();
+//        for (int i = 0; i < )
 
         return view;
     }

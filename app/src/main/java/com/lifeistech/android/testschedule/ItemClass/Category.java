@@ -12,17 +12,17 @@ import java.io.Serializable;
 public class Category implements Serializable {
     public String categoryName;
     public boolean task;
-    public String icon;
+    public String icon = "";
     public int color = Color.WHITE;
 
-    public static Category addCategory(String categoryName, boolean task, String icon) {
-        Category category = new Category();
-        category.setCategoryName(categoryName);
-        category.setTask(task);
-        category.setIcon(icon);
-
-        return category;
-    }
+//    public static Category addCategory(String categoryName, boolean task, String icon) {
+//        Category category = new Category();
+//        category.setCategoryName(categoryName);
+//        category.setTask(task);
+//        category.setIcon(icon);
+//
+//        return category;
+//    }
 
     public String getCategoryName() {
         return categoryName;

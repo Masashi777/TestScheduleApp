@@ -12,8 +12,9 @@
 
     <!-- Activity Title -->
     <string name="title_activity_home">HomeActivity</string>
-    <string name="title_activity_make">MakeActivity</string>
-    <string name="title_activity_schedule">ScheduleActivity</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_categoryedit">CategoryEditActivity</string>
+    <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_nav">NavActivity</string>
 
     <!-- abstract -->
