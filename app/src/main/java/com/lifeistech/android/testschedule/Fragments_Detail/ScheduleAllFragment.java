@@ -26,6 +26,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.lifeistech.android.testschedule.BaseFragment;
+import com.lifeistech.android.testschedule.GsonConverter;
 import com.lifeistech.android.testschedule.ItemClass.Category;
 import com.lifeistech.android.testschedule.R;
 
@@ -128,44 +129,6 @@ public class ScheduleAllFragment extends BaseFragment {
 
         // データ処理
         /** Serializableで受け取るところでエラー発生 */
-//        Bundle bundle = getArguments();
-//        test = (Test) bundle.getSerializable("test");
-
-        // Parcelable
-//        SendTest sendTest = (SendTest) bundle.getParcelable("test");
-//        test = sendTest.getTestObject();
-
-//        subjectList = new ArrayList<Subject>();
-//        Log.e("TAG", test.getTestName());
-
-//        for (int n = 0; n < test.getDateList().size(); n++) {
-//            for (int m = 0; m < test.getDateList().get(n).getSubjectList().size(); m++) {
-//                subjectList.add(test.getDateList().get(n).getSubjectList().get(m));
-//                Log.e("name", test.getDateList().get(n).getSubjectList().get(m).getSubjectName());
-//            }
-//        }
-
-
-        // 臨時
-//        Example example = new Example();
-//        Test test1, test2;
-//        test1 = example.getExam1();
-//        test2 = example.getExam2();
-//
-//        subjectList = Arrays.asList(
-//                test1.getDateList().get(0).getSubjectList().get(0),
-//                test1.getDateList().get(0).getSubjectList().get(1),
-//                test1.getDateList().get(1).getSubjectList().get(0),
-//                test1.getDateList().get(1).getSubjectList().get(1),
-//
-//                test2.getDateList().get(0).getSubjectList().get(0),
-//                test2.getDateList().get(0).getSubjectList().get(1),
-//                test2.getDateList().get(1).getSubjectList().get(0),
-//                test2.getDateList().get(1).getSubjectList().get(1)
-//        );
-
-//        testName = test1.getTestName();
-
 
         // グラフにデータをセット
         setData();
@@ -176,10 +139,14 @@ public class ScheduleAllFragment extends BaseFragment {
 
     private void setData() {
 
-        Log.d("TAG", "TAG3");
+        // データ処理
+        ArrayList<Category> categoryList = new ArrayList<Category>();
+        categoryList = GsonConverter.loadCategories(getContext());
 
-//        Bundle bundle = getArguments();
-//        date = (Date) bundle.getSerializable("data");
+//        for (int i = 0; i < categoryList.size(); i++) {
+//            Category categoryList.get
+//        }
+
 
         // PieEntryを使ってentriesにデータをセット
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
@@ -193,42 +160,42 @@ public class ScheduleAllFragment extends BaseFragment {
 //        }
 
 
-//        PieDataSet dataSet = new PieDataSet(entries, "教科一覧");
+        PieDataSet dataSet = new PieDataSet(entries, "教科一覧");
 
         //アイコンの有無
-//        dataSet.setDrawIcons(false);
+        dataSet.setDrawIcons(false);
 
-//        dataSet.setSliceSpace(3f);
-//        dataSet.setIconsOffset(new MPPointF(0, 40));
-//        dataSet.setSelectionShift(5f);
+        dataSet.setSliceSpace(3f);
+        dataSet.setIconsOffset(new MPPointF(0, 40));
+        dataSet.setSelectionShift(5f);
 
         // add a lot of colors (カラーの設定)
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-//        for (String c : popColor)
-//            colors.add(Color.parseColor(c));
-//
-//        colors.add(ColorTemplate.getHoloBlue());
-//
-//        dataSet.setColors(colors);
-//        //dataSet.setSelectionShift(0f);
-//
-//        PieData data = new PieData(dataSet);
-//        data.setValueFormatter(new PercentFormatter());
-//        data.setValueTextSize(11f);
-//        data.setValueTextColor(Color.WHITE);
-//        data.setValueTypeface(YuGothM);
-//        mChart.setData(data);
-//
-//        // undo all highlights
-//        mChart.highlightValues(null);
-//
-//        mChart.invalidate();
+        for (String c : popColor)
+            colors.add(Color.parseColor(c));
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+        //dataSet.setSelectionShift(0f);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTypeface(YuGothM);
+        mChart.setData(data);
+
+        // undo all highlights
+        mChart.highlightValues(null);
+
+        mChart.invalidate();
     }
 
 //    private SpannableString generateCenterSpannableText() {
-//
+
 //        SpannableString s = new SpannableString(testName + "\ndeveloped by Masashi Hamaguchi");
 //        s.setSpan(new RelativeSizeSpan(1.7f), 0, 5, 0);
 //        s.setSpan(new StyleSpan(Typeface.NORMAL), 5, s.length() - 15, 0);

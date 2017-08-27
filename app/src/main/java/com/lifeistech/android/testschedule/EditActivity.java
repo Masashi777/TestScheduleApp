@@ -1,33 +1,28 @@
 package com.lifeistech.android.testschedule;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.lifeistech.android.testschedule.ItemClass.Category;
 import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
+import static com.lifeistech.android.testschedule.GsonConverter.loadItems;
+import static com.lifeistech.android.testschedule.GsonConverter.saveItems;
 
 public class EditActivity extends BaseActivity {
 
@@ -36,9 +31,10 @@ public class EditActivity extends BaseActivity {
     private CheckBox checkBox;
     private Button okBtn, cancelBtn;
 
-    private Item item;
+    private int position;
+    private Boolean edit;
 
-    private String[] categoryList = {"遊び", "勉強", "マンガを読む", "部活", "趣味", "テスト勉強"};
+    private ArrayList<Category> categoryList = new ArrayList<Category>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +75,14 @@ public class EditActivity extends BaseActivity {
         // 新規作成ではなくItemの編集の時
         picItem();
 
+        // LoadCategory
+        categoryList = loadCategories(getApplicationContext());
+
         // スピナーの設定
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < categoryList.length; i++) {
-            adapter.add(categoryList[i]);
+        for (int i = 0; i < categoryList.size(); i++) {
+            adapter.add(categoryList.get(i).getCategoryName());
         }
         categorySpinner.setAdapter(adapter);
 
@@ -94,11 +93,19 @@ public class EditActivity extends BaseActivity {
             public void onClick(View v) {
                 Item item = new Item();
                 item.setItemName(editText.getText().toString());
-                item.setCategory(categorySpinner.getSelectedItemPosition());
-//                item.setChecked(checkBox.isChecked());
+                item.setCategory(categorySpinner.getSelectedItem().toString());
+                item.setChecked(checkBox.isChecked());
+
+                ArrayList<Item> itemList = new ArrayList<Item>();
+                itemList = loadItems(getApplicationContext());
+                if (edit) {
+                    itemList.add(position, item);
+                } else {
+                    itemList.add(item);
+                }
+                saveItems(getApplicationContext(), itemList);
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra("item", item);
                 startActivity(intent);
             }
         });
@@ -120,46 +127,24 @@ public class EditActivity extends BaseActivity {
 
     private void picItem() {
 
+        // 編集の場合
         try {
             // データの編集
+            Item item = new Item();
             Intent intent = getIntent();
             item = (Item) intent.getSerializableExtra("item");
+            position = intent.getIntExtra("position", 0);
 
             editText.setText(item.getItemName());
-            categorySpinner.setSelection(item.getCategory());
+//            categorySpinner.setSelection(item.getCategory().);
             checkBox.setChecked(item.isChecked());
+
+            edit = true;
         } catch (Exception e) {
             // データを取得できなかったら新規作成
+            edit = false;
         }
 
     }
-
-
-    // interface内のメソッドを実装します。
-//    @Override
-//    public void picDate(int tag, Date date) {
-//
-//        // Fragmentからのデータ取得
-//        dateList.set(tag, date);
-//
-//        nextActivity();
-//
-//        Log.e("picDate", String.valueOf(tag));
-//    }
-
-//    public void nextActivity() {
-//
-//        // TestNameを追加
-//        test.setTestName(editText.getText().toString());
-//
-//        test.setDateList(dateList);
-//
-//        // Activityをスタート
-//        Intent intent2 = new Intent(getApplicationContext(), DetailActivity.class);
-//        intent2.putExtra("Test", test);
-//        startActivity(intent2);
-//
-//    }
-
 
 }

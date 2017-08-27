@@ -63,11 +63,11 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "全体";
+                return "グラフ";
             case 1:
-                return "タスク一覧";
+                return "タスク";
             case 2:
-                return "カテゴリー一覧";
+                return "カテゴリ";
         }
         return null;
 

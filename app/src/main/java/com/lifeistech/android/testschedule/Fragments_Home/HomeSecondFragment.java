@@ -1,9 +1,10 @@
 package com.lifeistech.android.testschedule.Fragments_Home;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,11 @@ import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.lifeistech.android.testschedule.Adapter_ListView.ItemListAdapter;
 import com.lifeistech.android.testschedule.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-import static android.content.Context.MODE_PRIVATE;
+import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
+import static com.lifeistech.android.testschedule.GsonConverter.loadItems;
+import static com.lifeistech.android.testschedule.GsonConverter.saveItems;
 
 public class HomeSecondFragment extends BaseFragment {
 
@@ -40,48 +39,33 @@ public class HomeSecondFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.frag_home_second, container, false);
 
-        listView = (ListView) view.findViewById(R.id.listView);
+        listView = (ListView) view.findViewById(R.id.itemListView);
         newBtn = (Button) view.findViewById(R.id.newBtn);
 
         // データの取得
-        loadItems();
-
-        try {
-            Item item;
-
-            Bundle bundle = getArguments();
-            item = (Item) bundle.getSerializable("item");
-
-            itemList.add(item);
-        } catch (Exception e){
-
-        }
-
+        itemList = loadItems(getActivity());
 
         /**
          * ArrayListはシリアライズに対応していない
          */
 
-        itemListAdapter = new ItemListAdapter(getActivity().getApplicationContext(), R.layout.list_item, itemList);
-        listView.setAdapter(itemListAdapter);
 
         // リストへのボタンの配置
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Snackbar.make(view, "You tapped " + listView.getSelectedItem() + "on the ListView.", Snackbar.LENGTH_SHORT)
-                        .setAction("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(getActivity().getApplicationContext(), "Are You Ready?", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();
+                saveItems(getActivity(), itemList);
+                Intent intent = new Intent(getActivity().getApplicationContext(), EditActivity.class);
+                intent.putExtra("item", itemList.get(position));
+                intent.putExtra("position", position);
+                startActivity(intent);
+
+                Log.e("itemList", "selected");
             }
         });
 
@@ -101,12 +85,22 @@ public class HomeSecondFragment extends BaseFragment {
             }
         });
 
+        // Adapter
+        itemListAdapter = new ItemListAdapter(getActivity().getApplicationContext(), R.layout.list_item, itemList);
+        listView.setAdapter(itemListAdapter);
+
         // newBtnへのセット
         newBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), EditActivity.class);
-                startActivity(intent);
+
+                if (loadCategories(getContext()).size() == 0) {
+                    // NO CATEGORIES
+                    Snackbar.make(v, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getContext(), EditActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -119,69 +113,9 @@ public class HomeSecondFragment extends BaseFragment {
         super.onDestroyView();
 
         //要素群の書き込み
-        saveItems();
+        saveItems(getActivity(), itemList);
 
     }
 
-    //要素群の書き込み
-    private void saveItems() {
-        //ArrayListをJSONに変換
-        String json = list2json(itemList);
-
-        //プリファレンスへの書き込み
-        SharedPreferences pref = getActivity().getSharedPreferences(
-                "ToDoApp", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("itemList", json);
-        editor.commit();
-    }
-
-    //要素群の読み込み
-    private void loadItems() {
-        //プリファレンスからの読み込み
-        SharedPreferences pref = getActivity().getSharedPreferences(
-                "ToDoApp", MODE_PRIVATE);
-        String json = pref.getString("itemList","");
-
-        //JSONをArrayListに変換
-        itemList = items2list(json);
-    }
-
-    //ArrayListをJSONに変換(5)
-    private String list2json(ArrayList<Item> items) {
-        try {
-            JSONArray array = new JSONArray();
-            for (Item item : items) {
-                JSONObject obj = new JSONObject();
-                obj.put("title", item.itemName);
-                obj.put("category", item.category);
-                obj.put("checked", item.checked);
-                array.put(obj);
-            }
-            return array.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    //JSONをArrayListに変換(6)
-    private ArrayList<Item> items2list(String json) {
-        ArrayList<Item> items = new ArrayList<Item>();
-        try {
-            JSONArray array = new JSONArray(json);
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                Item item = new Item();
-                item.itemName = obj.getString("title");
-                item.category = obj.getInt("category");
-                item.checked = obj.getBoolean("checked");
-                items.add(item);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return items;
-    }
 
 }

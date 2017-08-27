@@ -1,6 +1,7 @@
 package com.lifeistech.android.testschedule.Adapter_ListView;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class CategoryListAdapter extends ArrayAdapter<Category> {
             //set data
             viewHolder.iconImage.setImageResource(R.drawable.ic_android_black_24dp);
             viewHolder.categoryText.setText(category.getCategoryName());
+            viewHolder.cardView.setCardBackgroundColor(category.getColor());
         }
 
         return convertView;
@@ -64,11 +66,13 @@ public class CategoryListAdapter extends ArrayAdapter<Category> {
     private class ViewHolder {
         ImageView iconImage;
         TextView categoryText;
+        CardView cardView;
 
         public ViewHolder(View view) {
             //get instance
             iconImage = (ImageView) view.findViewById(R.id.iconImage);
             categoryText = (TextView) view.findViewById(R.id.categoryText);
+            cardView = (CardView) view.findViewById(R.id.cardView);
         }
     }
 

@@ -22,6 +22,11 @@
         <item name="colorControlActivated">@color/cyanPrimary</item>
     </style>
 
+    <style name="Nav.MyApp" parent="AppTheme.MyApp">
+        <item name="colorPrimary">@color/cyanLightPrimary</item>
+        <item name="colorPrimaryDark">@color/cyanLightPrimary</item>
+    </style>
+
     <style name="MyTheme.Blue" parent="AppTheme.MyApp">
         <item name="colorPrimary">@color/lightbluePrimary</item>
         <item name="colorPrimaryDark">@color/lightblueDarkPrimary</item>

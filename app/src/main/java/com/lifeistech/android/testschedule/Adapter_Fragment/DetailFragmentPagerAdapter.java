@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
+import com.lifeistech.android.testschedule.Fragments_Detail.SecondFragment;
 import com.lifeistech.android.testschedule.Fragments_Detail.ThirdFragment;
 import com.lifeistech.android.testschedule.Fragments_Detail.ScheduleAllFragment;
 import com.lifeistech.android.testschedule.ItemClass.Category;
@@ -33,10 +34,12 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
 //            bundle.putSerializable("categoryList", categoryList);
 //            frag.setArguments(bundle);
             return frag.newInstance();
+        } else if (position == 1) {
+            return new SecondFragment();
         } else {
             ThirdFragment frag = new ThirdFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("categoryName", categoryList.get(position - 1).getCategoryName());
+            bundle.putString("categoryName", categoryList.get(position - 2).getCategoryName());
             frag.setArguments(bundle);
             return frag;
 //            return new ThirdFragment();
@@ -59,7 +62,7 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return categoryList.size() + 1;
+        return categoryList.size() + 2;
     }
 
     @Override
@@ -67,8 +70,10 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
 
         if (position == 0) {
             return "All";
+        } else if (position == 1) {
+            return "chart";
         } else {
-            return categoryList.get(position - 1).categoryName;
+                return categoryList.get(position - 1).categoryName;
         }
 
 //        switch (position) {

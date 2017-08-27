@@ -3,8 +3,10 @@ package com.lifeistech.android.testschedule;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -12,8 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 import com.lifeistech.android.testschedule.Adapter_Fragment.HomeFragmentPagerAdapter;
 import com.lifeistech.android.testschedule.ItemClass.Item;
@@ -24,13 +24,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
+
 public class HomeActivity extends BaseActivity {
-
-    //定数
-    private final static int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
-    private final static int REQUEST_EDIT = 0;
-    private final static int MENU_ITEM0 = 0;
-
     // Layout
     private ViewPager viewPager;
 
@@ -53,8 +49,13 @@ public class HomeActivity extends BaseActivity {
 //                gson.toJson(testList);
 //                pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
 
-                Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-                startActivity(intent);
+                if (loadCategories(getApplicationContext()).size() == 0) {
+                    // NO CATEGORIES
+                    Snackbar.make(view, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -166,7 +167,7 @@ public class HomeActivity extends BaseActivity {
                 JSONObject obj = array.getJSONObject(i);
                 Item item = new Item();
                 item.itemName = obj.getString("title");
-                item.category = obj.getInt("category");
+//                item.category = obj.getInt("category");
                 item.checked = obj.getBoolean("checked");
                 items.add(item);
             }

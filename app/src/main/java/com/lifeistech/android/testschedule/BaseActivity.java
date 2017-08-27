@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.ColorInt;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import static android.R.color.holo_orange_dark;
 import static android.R.color.holo_orange_light;
+import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
 
 public abstract class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -56,14 +58,14 @@ public abstract class BaseActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -132,21 +134,26 @@ public abstract class BaseActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_make) {
+            if (loadCategories(getApplicationContext()).size() == 0) {
+                // NO CATEGORIES
+                ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+                Snackbar.make(constraintLayout, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+                startActivity(intent);
+            }
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_detail) {
+            Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_Activity) {
+        } else if (id == R.id.nav_info) {
             Intent intent = new Intent(this, NavActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_orange) {
-            Toolbar toolbar = new Toolbar(getApplicationContext());
-            toolbar.setBackgroundColor(holo_orange_dark);
-            setSupportActionBar(toolbar);
-        } else if (id == R.id.nav_yellow) {
-            Toolbar toolbar = new Toolbar(getApplicationContext());
-            toolbar.setBackgroundColor(holo_orange_light);
-            setSupportActionBar(toolbar);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

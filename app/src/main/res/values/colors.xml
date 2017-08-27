@@ -9,11 +9,24 @@
     <!-- Original -->
     <color name="cyanPrimary">#00bcd4</color>
     <color name="cyanDarkPrimary">#0097A7</color>
+    <color name="cyanLightPrimary">#b2ebf2</color>
 
     <color name="lightbluePrimary">#03A9F4</color>
     <color name="lightblueDarkPrimary">#0288D1</color>
 
     <color name="deeporangePrimary">#E64A19</color>
     <color name="deeporangeDarkPrimary">#FF5722</color>
+
+
+    <!-- Category Color -->
+    <color name="red">#F44336</color>
+    <color name="pink">#FF4081</color>
+    <color name="indigo">#303F9F</color>
+    <color name="blue">#448AFF</color>
+    <color name="teal">#00796B</color>
+    <color name="green">#4CAF50</color>
+    <color name="deeporange">#E64A19</color>
+    <color name="brown">#795548</color>
+    <color name="bluegrey">#607d8b</color>
 
 </resources>
