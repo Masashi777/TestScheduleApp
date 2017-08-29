@@ -38,19 +38,12 @@ public class HomeFrag_Third extends BaseFragment {
     private CategoryListAdapter categoryListAdapter;
     private ArrayList<Category> categoryList = new ArrayList<Category>();
 
-    private String[] categories = {"遊び", "勉強", "マンガを読む", "部活", "趣味", "テスト勉強"};
-    private boolean[] checkList = {false, true, false, true, false, true};
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /**
-         * 臨時データ
-         */
-//        for (int i = 0; i < categories.length; i++) {
-//            categoryList.add(Category.addCategory(categories[i], checkList[i], "0"));
-//        }
+        // データの取得
+        categoryList = GsonConverter.loadCategories(getContext());
 
     }
 
@@ -61,9 +54,6 @@ public class HomeFrag_Third extends BaseFragment {
 
         listView = (ListView) view.findViewById(R.id.categoryListView);
         newCatBtn = (Button) view.findViewById(R.id.newCatBtn);
-
-        // データの取得
-        categoryList = GsonConverter.loadCategories(getContext());
 
 
         // Adapter

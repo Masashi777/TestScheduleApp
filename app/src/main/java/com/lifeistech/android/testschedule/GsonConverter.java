@@ -54,8 +54,8 @@ public class GsonConverter {
         try {
             JSONArray array = new JSONArray();
             // java.util.ArrayList.iterator()' on a null object reference
-            for (int i = 0; i < items.size(); i++) {
-                Item item = items.get(i);
+            for (Item item : items) { // int i = 0; i < items.size(); i++) {
+//                Item item = items.get(i);
                 JSONObject obj = new JSONObject();
                 obj.put("title", item.itemName);
                 obj.put("checked", item.checked);
@@ -105,8 +105,7 @@ public class GsonConverter {
     //要素群の読み込み
     public static ArrayList<Category> loadCategories(Context context) {
         //プリファレンスからの読み込み
-        SharedPreferences pref = context.getSharedPreferences(
-                "categoryList", MODE_PRIVATE);
+        SharedPreferences pref = context.getSharedPreferences("categoryList", MODE_PRIVATE);
         String json = pref.getString("categoryList","");
 
         //JSONをArrayListに変換
@@ -127,9 +126,12 @@ public class GsonConverter {
                 obj.put("color", category.color);
 
                 ArrayList<Item> items = categories.get(i).getItemList();
-                String itemString = item2json(items);
-                obj.put("item", itemString);
 
+                if (items != null){
+                    String itemString = item2json(items);
+                    obj.put("item", itemString);
+
+                }
                 array.put(obj);
             }
             return array.toString();
