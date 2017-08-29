@@ -53,10 +53,11 @@ public class GsonConverter {
     private static String item2json(ArrayList<Item> items) {
         try {
             JSONArray array = new JSONArray();
-            for (Item item : items) {
+            // java.util.ArrayList.iterator()' on a null object reference
+            for (int i = 0; i < items.size(); i++) {
+                Item item = items.get(i);
                 JSONObject obj = new JSONObject();
                 obj.put("title", item.itemName);
-                obj.put("category", item.category);
                 obj.put("checked", item.checked);
                 array.put(obj);
             }
@@ -76,7 +77,6 @@ public class GsonConverter {
                 JSONObject obj = array.getJSONObject(i);
                 Item item = new Item();
                 item.itemName = obj.getString("title");
-                item.category = obj.getString("category");
                 item.checked = obj.getBoolean("checked");
                 items.add(item);
             }
@@ -119,15 +119,21 @@ public class GsonConverter {
     private static String category2json(ArrayList<Category> categories) {
         try {
             JSONArray array = new JSONArray();
-            for (Category category : categories) {
+            for (int i = 0; i < categories.size(); i++) {
                 JSONObject obj = new JSONObject();
+                Category category = new Category();
                 obj.put("title", category.categoryName);
                 obj.put("task", category.task);
-//                obj.put("icon", category.icon);
                 obj.put("color", category.color);
+
+                ArrayList<Item> items = categories.get(i).getItemList();
+                String itemString = item2json(items);
+                obj.put("item", itemString);
+
                 array.put(obj);
             }
             return array.toString();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -139,13 +145,19 @@ public class GsonConverter {
         ArrayList<Category> categories = new ArrayList<Category>();
         try {
             JSONArray array = new JSONArray(json);
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
+            for (int n = 0; n < array.length(); n++) {
+                JSONObject obj = array.getJSONObject(n);
                 Category category = new Category();
                 category.categoryName = obj.getString("title");
                 category.task = obj.getBoolean("task");
-//                category.icon = obj.getString("icon");
                 category.color = obj.getInt("color");
+
+                ArrayList<Item> items = new ArrayList<Item>();
+                String itemString = obj.getString("item");
+                items = json2item(itemString);
+
+                category.itemList = items;
+
                 categories.add(category);
             }
         } catch (JSONException e) {

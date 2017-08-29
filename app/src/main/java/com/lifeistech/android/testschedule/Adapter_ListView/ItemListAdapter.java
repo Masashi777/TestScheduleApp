@@ -64,14 +64,24 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
             //set data
             viewHolder.iconImage.setImageResource(R.drawable.ic_android_black_24dp);
             viewHolder.itemText.setText(item.getItemName());
-            viewHolder.categoryText.setText(item.getCategory());
             viewHolder.checkBox.setChecked(item.isChecked());
 
-            // カテゴリ別に色分け
             categoryList = loadCategories(getContext());
-            for (int i = 0; i < categoryList.size(); i++) {
-                if (item.getCategory() == categoryList.get(i).getCategoryName()) {
-                    viewHolder.cardView.setCardBackgroundColor(categoryList.get(i).getColor());
+            String catName;
+            // カテゴリ検索
+            for (int n = 0; n < categoryList.size(); n++) {
+                catName = categoryList.get(n).getCategoryName();
+
+                // カテゴリ別色分け
+                viewHolder.cardView.setCardBackgroundColor(categoryList.get(n).getColor());
+
+                for (int m = 0; m < categoryList.get(n).getItemList().size(); m++) {
+                    String name = categoryList.get(n).getItemList().get(m).getItemName();
+                    if (item.getItemName() == name) {
+                        viewHolder.categoryText.setText(catName);
+
+                        break;
+                    }
                 }
             }
 

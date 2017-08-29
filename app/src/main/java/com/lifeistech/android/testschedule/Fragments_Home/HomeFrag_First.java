@@ -20,17 +20,23 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.lifeistech.android.testschedule.BaseFragment;
 import com.lifeistech.android.testschedule.DetailActivity;
+import com.lifeistech.android.testschedule.GsonConverter;
+import com.lifeistech.android.testschedule.ItemClass.Category;
 import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.lifeistech.android.testschedule.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class HomeFirstFragment extends BaseFragment {
+public class HomeFrag_First extends BaseFragment {
 
     private PieChart pieChart;
     private Button detailBtn;
 
-    private  ArrayList<Item> itemList;
+    private ArrayList<Category> categoryList;
+    private ArrayList<Item> itemList;
+    private String chartLabel[] = {"終わったタスク", "残ってるタスク"};
+    private int chartAmount[] = new int[2];
     private int a, b;
 
     @Override
@@ -53,6 +59,23 @@ public class HomeFirstFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
+
+        // データの取得
+        categoryList = GsonConverter.loadCategories(getContext());
+
+        int finish = 0;
+        int all = 0;
+        for (int n = 0; n < categoryList.size(); n++) {
+            for (int m = 0; m < categoryList.get(n).getItemList().size(); m++) {
+                all++;
+                if (categoryList.get(n).getItemList().get(m).isChecked()) {
+                    finish++;
+                }
+            }
+        }
+        chartAmount[0] = finish;
+        chartAmount[1] = all - finish;
+
 
 
         // Chartの設定
@@ -120,19 +143,20 @@ public class HomeFirstFragment extends BaseFragment {
         a = 5;
         b = 11;
 
-        setData(a, b);
+        setData();
 
         return view;
 
     }
 
-    private void setData(int a, int b) {
+    private void setData() {
 
         // PieEntryを使ってentriesにデータをセット
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-        entries.add(new PieEntry(a, "終わったタスク"));
-        entries.add(new PieEntry(b, "残っているタスク"));
+        for (int i = 0; i < chartLabel.length; i++) {
+            entries.add(new PieEntry(chartAmount[i], chartLabel[i]));
+        }
 
         PieDataSet dataSet = new PieDataSet(entries, "");
 

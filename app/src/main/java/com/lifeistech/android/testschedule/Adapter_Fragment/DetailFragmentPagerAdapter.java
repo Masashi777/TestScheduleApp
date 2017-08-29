@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
-import com.lifeistech.android.testschedule.Fragments_Detail.SecondFragment;
-import com.lifeistech.android.testschedule.Fragments_Detail.ThirdFragment;
-import com.lifeistech.android.testschedule.Fragments_Detail.ScheduleAllFragment;
+import com.lifeistech.android.testschedule.Fragments_Detail.DetailFrag_All;
+import com.lifeistech.android.testschedule.Fragments_Detail.DetailFrag_Second;
+import com.lifeistech.android.testschedule.Fragments_Detail.DetailFrag_Categry;
 import com.lifeistech.android.testschedule.ItemClass.Category;
 
 import java.util.ArrayList;
@@ -29,33 +29,33 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         if (position == 0) {
-            ScheduleAllFragment frag = new ScheduleAllFragment();
+            DetailFrag_All frag = new DetailFrag_All();
 //            Bundle bundle = new Bundle();
 //            bundle.putSerializable("categoryList", categoryList);
 //            frag.setArguments(bundle);
             return frag.newInstance();
         } else if (position == 1) {
-            return new SecondFragment();
+            return new DetailFrag_Second();
         } else {
-            ThirdFragment frag = new ThirdFragment();
+            DetailFrag_Categry frag = new DetailFrag_Categry();
             Bundle bundle = new Bundle();
             bundle.putString("categoryName", categoryList.get(position - 2).getCategoryName());
             frag.setArguments(bundle);
             return frag;
-//            return new ThirdFragment();
+//            return new DetailFrag_Categry();
         }
 
 //        switch (position) {
 //            case 0:
-//                ScheduleAllFragment frag0 = new ScheduleAllFragment();
+//                DetailFrag_All frag0 = new DetailFrag_All();
 //                frag0.setArguments(bundle);
 //                return frag0.newInstance();
 //            case 1:
-//                SecondFragment frag1 = new SecondFragment();
+//                DetailFrag_Second frag1 = new DetailFrag_Second();
 //                frag1.setArguments(bundle);
 //                return frag1.newInstance();
 //            case 2:
-//                return new ThirdFragment();
+//                return new DetailFrag_Categry();
 //        }
 //        return null;
     }

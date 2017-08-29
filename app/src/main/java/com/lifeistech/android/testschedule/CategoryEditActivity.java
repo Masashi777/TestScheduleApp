@@ -75,7 +75,7 @@ public class CategoryEditActivity extends BaseActivity {
         navigationView.setNavigationItemSelectedListener(this);
 
         // タイトル設定
-        setTitle("カテゴル");
+        setTitle("カテゴリ");
 
         // ひもづけ
         editText = (MaterialEditText) findViewById(R.id.itemName);
@@ -104,51 +104,54 @@ public class CategoryEditActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (redBtn.isChecked() || pinkBtn.isChecked() || indigoBtn.isChecked() ||
-                        blueBtn.isChecked() || tealBtn.isChecked() || greenBtn.isChecked() ||
-                        deeporangeBtn.isChecked() || brownBtn.isChecked() || bluegreyBtn.isChecked()) {
+                if (editText.getText().toString().matches("")) {
+                    // Error
+                    Snackbar.make(v, "カテゴリを入力してください", Snackbar.LENGTH_SHORT).show();
 
-                    Category category = new Category();
-                    category.setCategoryName(editText.getText().toString());
-                    category.setTask(checkBox.isChecked());
+                } else if (redBtn.isChecked() || pinkBtn.isChecked() || indigoBtn.isChecked() ||
+                            blueBtn.isChecked() || tealBtn.isChecked() || greenBtn.isChecked() ||
+                            deeporangeBtn.isChecked() || brownBtn.isChecked() || bluegreyBtn.isChecked()) {
 
-                    int id = tableRadioGroup.getCheckedRadioButtonId();
-                    if (id == R.id.red) {
-                        category.setColor(red);
-                    } else if (id == R.id.pink) {
-                        category.setColor(pink);
-                    } else if (id == R.id.indigo) {
-                        category.setColor(indigo);
-                    } else if (id == R.id.blue) {
-                        category.setColor(blue);
-                    } else if (id == R.id.teal) {
-                        category.setColor(teal);
-                    } else if (id == R.id.green) {
-                        category.setColor(green);
-                    } else if (id == R.id.deeprange) {
-                        category.setColor(deeporange);
-                    } else if (id == R.id.brown) {
-                        category.setColor(brown);
-                    } else if (id == R.id.bluegrey) {
-                        category.setColor(bluegrey);
-                    }
+                        Category category = new Category();
+                        category.setCategoryName(editText.getText().toString());
+                        category.setTask(checkBox.isChecked());
 
-                    ArrayList<Category> categoryList = new ArrayList<Category>();
-                    categoryList = loadCategories(getApplicationContext());
-                    if (edit) {
-                        categoryList.add(position, category);
-                    } else {
-                        categoryList.add(category);
-                    }
-                    saveCategories(getApplicationContext(), categoryList);
+                        int id = tableRadioGroup.getCheckedRadioButtonId();
+                        if (id == R.id.red) {
+                            category.setColor(red);
+                        } else if (id == R.id.pink) {
+                            category.setColor(pink);
+                        } else if (id == R.id.indigo) {
+                            category.setColor(indigo);
+                        } else if (id == R.id.blue) {
+                            category.setColor(blue);
+                        } else if (id == R.id.teal) {
+                            category.setColor(teal);
+                        } else if (id == R.id.green) {
+                            category.setColor(green);
+                        } else if (id == R.id.deeprange) {
+                            category.setColor(deeporange);
+                        } else if (id == R.id.brown) {
+                            category.setColor(brown);
+                        } else if (id == R.id.bluegrey) {
+                            category.setColor(bluegrey);
+                        }
 
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivity(intent);
+                        ArrayList<Category> categoryList = new ArrayList<Category>();
+                        categoryList = loadCategories(getApplicationContext());
+                        if (edit) {
+                            categoryList.set(position, category);
+                        } else {
+                            categoryList.add(category);
+                        }
+                        saveCategories(getApplicationContext(), categoryList);
+
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(intent);
 
                 } else {
-
-                    ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
-                    Snackbar.make(constraintLayout, "色を選択してください", Snackbar.LENGTH_SHORT).show();
+                        // Error
+                        Snackbar.make(v, "色を選択してください", Snackbar.LENGTH_SHORT).show();
                 }
 
             }

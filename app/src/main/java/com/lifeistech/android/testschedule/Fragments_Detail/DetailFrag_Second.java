@@ -3,7 +3,6 @@ package com.lifeistech.android.testschedule.Fragments_Detail;
 import android.annotation.SuppressLint;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,34 +19,28 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.lifeistech.android.testschedule.BaseFragment;
-import com.lifeistech.android.testschedule.MPAndroid.DayAxisValueFormatter;
-import com.lifeistech.android.testschedule.MPAndroid.MyAxisValueFormatter;
-import com.lifeistech.android.testschedule.MPAndroid.XYMarkerView;
+import com.lifeistech.android.testschedule.GsonConverter;
+import com.lifeistech.android.testschedule.ItemClass.Category;
 import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/26.
  */
 
-public class SecondFragment extends BaseFragment implements OnChartValueSelectedListener {
+public class DetailFrag_Second extends BaseFragment implements OnChartValueSelectedListener {
 
     private HorizontalBarChart horizontalBarChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
+
+    private ArrayList<Category> categoryList = new ArrayList<Category>();
 
 //    private Example example = new Example();
 
@@ -57,17 +49,26 @@ public class SecondFragment extends BaseFragment implements OnChartValueSelected
     private String testName;
 
     public static Fragment newInstance() {
-        return new SecondFragment();
+        return new DetailFrag_Second();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        categoryList = GsonConverter.loadCategories(getContext());
+        String catList[] = new String[categoryList.size()];
+        int amountList[] = new int[categoryList.size()];
+
+        for (int i = 0; i < categoryList.size(); i++) {
+            catList[i] = categoryList.get(i).getCategoryName();
+            amountList[i] = categoryList.get(i).getItemList().size();
+        }
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_detail_bar_chart, container, false);
+        View view = inflater.inflate(R.layout.frag_detail_second, container, false);
 
 //        tvX = (TextView) view.findViewById(R.id.tvXMax);
 //        tvY = (TextView) view.findViewById(R.id.tvYMax);

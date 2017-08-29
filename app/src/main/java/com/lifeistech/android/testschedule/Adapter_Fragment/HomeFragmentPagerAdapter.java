@@ -6,13 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
-import com.lifeistech.android.testschedule.Fragments_Detail.ScheduleAllFragment;
-import com.lifeistech.android.testschedule.Fragments_Home.HomeFirstFragment;
-import com.lifeistech.android.testschedule.Fragments_Home.HomeSecondFragment;
-import com.lifeistech.android.testschedule.Fragments_Home.HomeThirdFragment;
+import com.lifeistech.android.testschedule.Fragments_Home.HomeFrag_First;
+import com.lifeistech.android.testschedule.Fragments_Home.HomeFrag_Second;
+import com.lifeistech.android.testschedule.Fragments_Home.HomeFrag_Third;
 import com.lifeistech.android.testschedule.ItemClass.Item;
-
-import java.util.ArrayList;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/27.
@@ -43,13 +40,13 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return new HomeFirstFragment();
+                return new HomeFrag_First();
             case 1:
-                HomeSecondFragment frag1 = new HomeSecondFragment();
+                HomeFrag_Second frag1 = new HomeFrag_Second();
                 frag1.setArguments(bundle);
                 return frag1;
             case 2:
-                return new HomeThirdFragment();
+                return new HomeFrag_Third();
         }
         return null;
     }
@@ -74,7 +71,7 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     public void putItem(Item item) {
-        // for FirstFragment and SecondFragment
+        // for FirstFragment and DetailFrag_Second
         this.item = item;
 
         Log.e("HomeAdapter", "putItem()");

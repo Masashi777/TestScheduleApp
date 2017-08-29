@@ -31,7 +31,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class HomeThirdFragment extends BaseFragment {
+public class HomeFrag_Third extends BaseFragment {
 
     private ListView listView;
     private Button newCatBtn;

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.lifeistech.android.testschedule.BaseFragment;
 import com.lifeistech.android.testschedule.EditActivity;
+import com.lifeistech.android.testschedule.ItemClass.Category;
 import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.lifeistech.android.testschedule.Adapter_ListView.ItemListAdapter;
 import com.lifeistech.android.testschedule.R;
@@ -25,10 +26,11 @@ import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
 import static com.lifeistech.android.testschedule.GsonConverter.loadItems;
 import static com.lifeistech.android.testschedule.GsonConverter.saveItems;
 
-public class HomeSecondFragment extends BaseFragment {
+public class HomeFrag_Second extends BaseFragment {
 
     private ListView listView;
     private Button newBtn;
+    private ArrayList<Category> categoryList = new ArrayList<Category>();
     private ArrayList<Item> itemList = new ArrayList<Item>();
 
     private ItemListAdapter itemListAdapter;
@@ -47,7 +49,12 @@ public class HomeSecondFragment extends BaseFragment {
         newBtn = (Button) view.findViewById(R.id.newBtn);
 
         // データの取得
-        itemList = loadItems(getActivity());
+        categoryList = loadCategories(getContext());
+        for (int n = 0; n < categoryList.size(); n++) {
+            for (int m = 0; m < categoryList.get(n).getItemList().size(); m++) {
+                itemList.add(categoryList.get(n).getItemList().get(m));
+            }
+        }
 
         /**
          * ArrayListはシリアライズに対応していない

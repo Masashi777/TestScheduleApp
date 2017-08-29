@@ -21,8 +21,6 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import java.util.ArrayList;
 
 import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
-import static com.lifeistech.android.testschedule.GsonConverter.loadItems;
-import static com.lifeistech.android.testschedule.GsonConverter.saveItems;
 
 public class EditActivity extends BaseActivity {
 
@@ -33,6 +31,9 @@ public class EditActivity extends BaseActivity {
 
     private int position;
     private Boolean edit;
+    private String catName;
+    private int catPosition;
+    private int itemPosition;
 
     private ArrayList<Category> categoryList = new ArrayList<Category>();
 
@@ -72,11 +73,13 @@ public class EditActivity extends BaseActivity {
         okBtn = (Button) findViewById(R.id.okBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
 
+        // LoadCategory
+        categoryList = loadCategories(getApplicationContext());
+
         // 新規作成ではなくItemの編集の時
         picItem();
 
-        // LoadCategory
-        categoryList = loadCategories(getApplicationContext());
+
 
         // スピナーの設定
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
@@ -84,29 +87,74 @@ public class EditActivity extends BaseActivity {
         for (int i = 0; i < categoryList.size(); i++) {
             adapter.add(categoryList.get(i).getCategoryName());
         }
+
         categorySpinner.setAdapter(adapter);
+
+        if (edit) {
+            categorySpinner.setSelection(catPosition);
+        }
 
 
         // ボタンの設定
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Item item = new Item();
-                item.setItemName(editText.getText().toString());
-                item.setCategory(categorySpinner.getSelectedItem().toString());
-                item.setChecked(checkBox.isChecked());
 
-                ArrayList<Item> itemList = new ArrayList<Item>();
-                itemList = loadItems(getApplicationContext());
-                if (edit) {
-                    itemList.add(position, item);
+                if (editText.getText().toString().matches("")) {
+                    // 未入力 Error
+                    Snackbar.make(v, "タスクを入力してください", Snackbar.LENGTH_SHORT).show();
+
                 } else {
-                    itemList.add(item);
-                }
-                saveItems(getApplicationContext(), itemList);
+                    Item item = new Item();
+                    item.setItemName(editText.getText().toString());
+                    item.setChecked(checkBox.isChecked());
 
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
+                    int spinnerPosition = categorySpinner.getSelectedItemPosition();
+
+                    // switch
+                    ArrayList<Item> itemList = new ArrayList<Item>();
+                    Category category = new Category();
+
+                    if (edit) {
+                        // edit task
+                        if (catPosition == spinnerPosition) {
+                            // same category -case 1
+                            category = categoryList.get(catPosition);
+                            itemList = category.getItemList();
+                            itemList.set(itemPosition, item);
+                            category.setItemList(itemList);
+                            categoryList.set(catPosition, category);
+
+                        } else {
+                            // different category -case 2
+
+                            // Delete Item
+                            categoryList.get(catPosition).getItemList().remove(itemPosition);
+
+                            // Add Item
+                            category = categoryList.get(spinnerPosition);
+                            itemList = category.getItemList();
+                            itemList.add(item);
+                            category.setItemList(itemList);
+                            categoryList.set(spinnerPosition, category);
+
+                        }
+
+                    } else {
+                        // new task -case 3
+                        category = categoryList.get(spinnerPosition);
+                        itemList = category.getItemList();
+                        itemList.add(item);
+                        category.setItemList(itemList);
+                        categoryList.set(spinnerPosition, category);
+
+                    }
+
+
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -133,11 +181,24 @@ public class EditActivity extends BaseActivity {
             Item item = new Item();
             Intent intent = getIntent();
             item = (Item) intent.getSerializableExtra("item");
-            position = intent.getIntExtra("position", 0);
+//            position = intent.getIntExtra("position", 0);
 
             editText.setText(item.getItemName());
-//            categorySpinner.setSelection(item.getCategory().);
             checkBox.setChecked(item.isChecked());
+
+            // カテゴリ検索
+            for (int n = 0; n < categoryList.size(); n++) {
+                for (int m = 0; m < categoryList.get(n).getItemList().size(); m++) {
+                    String name = categoryList.get(n).getItemList().get(m).getItemName();
+                    if (item.getItemName() == name) {
+                        catName = categoryList.get(n).getCategoryName();
+                        catPosition = n;
+                        itemPosition = m;
+
+                        break;
+                    }
+                }
+            }
 
             edit = true;
         } catch (Exception e) {

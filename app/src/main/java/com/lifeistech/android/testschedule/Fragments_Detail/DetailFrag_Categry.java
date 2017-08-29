@@ -14,7 +14,7 @@ import com.lifeistech.android.testschedule.R;
  * Created by Masashi Hamaguchi on 2017/07/26.
  */
 
-public class ThirdFragment extends Fragment {
+public class DetailFrag_Categry extends Fragment {
 
     private TextView textView;
     private String title;
@@ -29,7 +29,7 @@ public class ThirdFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_detail_3, container, false);
+        View view = inflater.inflate(R.layout.frag_detail_category, container, false);
 
         textView = (TextView) view.findViewById(R.id.textView);
         listView = (ListView) view.findViewById(R.id.detailListView);

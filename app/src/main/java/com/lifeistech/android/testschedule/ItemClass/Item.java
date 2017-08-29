@@ -9,7 +9,6 @@ import java.io.Serializable;
 public class Item implements Serializable {
 
     public String itemName;
-    public String category;
     public boolean checked;
 
     public String getItemName() {
@@ -18,14 +17,6 @@ public class Item implements Serializable {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public boolean isChecked() {

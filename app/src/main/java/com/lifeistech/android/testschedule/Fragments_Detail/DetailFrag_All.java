@@ -1,14 +1,8 @@
 package com.lifeistech.android.testschedule.Fragments_Detail;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +10,10 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.lifeistech.android.testschedule.BaseFragment;
 import com.lifeistech.android.testschedule.GsonConverter;
@@ -31,37 +21,37 @@ import com.lifeistech.android.testschedule.ItemClass.Category;
 import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/30.
  */
 
-public class ScheduleAllFragment extends BaseFragment {
+public class DetailFrag_All extends BaseFragment {
 
-//    OnChartValueSelectedListener
-
-    private PieChart mChart;
-
-//    private Test test;
-//    private List<Subject> subjectList;
-//    private String testName;
+    private PieChart pieChart;
 
     private ArrayList<Category> categoryList = new ArrayList<Category>();
+    private String catList[] = new String[categoryList.size()];
+    private int amountList[] = new int[categoryList.size()];
+    private int colorList[] = new int[categoryList.size()];
 
 
     public static Fragment newInstance() {
 
-        return new ScheduleAllFragment();
+        return new DetailFrag_All();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Bundle bundle = getArguments();
-//        categoryList = (ArrayList<Category>) bundle.getSerializable("categoryList");
+        categoryList = GsonConverter.loadCategories(getContext());
+
+        for (int i = 0; i < categoryList.size(); i++) {
+            catList[i] = categoryList.get(i).getCategoryName();
+            amountList[i] = categoryList.get(i).getItemList().size();
+            colorList[i] = categoryList.get(i).getColor();
+        }
 
     }
 
@@ -70,48 +60,48 @@ public class ScheduleAllFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.frag_detail_all, null);
 
         // ひもづけ
-        mChart = (PieChart) view.findViewById(R.id.chart1);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 10, 5, 5);
+        pieChart = (PieChart) view.findViewById(R.id.chart1);
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5, 10, 5, 5);
 
-        mChart.setDragDecelerationFrictionCoef(0.95f);
+        pieChart.setDragDecelerationFrictionCoef(0.95f);
 
         // センターテキスト
-        mChart.setCenterTextTypeface(mTfLight);
-//        mChart.setCenterText(generateCenterSpannableText());
+        pieChart.setCenterTextTypeface(mTfLight);
+//        pieChart.setCenterText(generateCenterSpannableText());
 
         // 内側の円の設定
-        mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(Color.WHITE);
 
         // 内側の円周のライン
-        mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
+        pieChart.setTransparentCircleColor(Color.WHITE);
+        pieChart.setTransparentCircleAlpha(110);
 
-        mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
+        pieChart.setHoleRadius(58f);
+        pieChart.setTransparentCircleRadius(61f);
 
         // センターテキストの有無
-        mChart.setDrawCenterText(true);
+        pieChart.setDrawCenterText(true);
 
-        mChart.setRotationAngle(0);
+        pieChart.setRotationAngle(0);
         // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
+        pieChart.setRotationEnabled(true);
+        pieChart.setHighlightPerTapEnabled(true);
 
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
+        // pieChart.setUnit(" €");
+        // pieChart.setDrawUnitsInChart(true);
 
         // add a selection listener
-//        mChart.setOnChartValueSelectedListener(this);
+//        pieChart.setOnChartValueSelectedListener(this);
 
 
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-//        mChart.spin(2000, 0, 360);
+        pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+//        pieChart.spin(2000, 0, 360);
 
 
-        Legend l = mChart.getLegend();
+        Legend l = pieChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -121,9 +111,9 @@ public class ScheduleAllFragment extends BaseFragment {
         l.setYOffset(0f);
 
         // entry label styling
-        mChart.setEntryLabelColor(Color.WHITE);
-        mChart.setEntryLabelTypeface(YuGothM);
-        mChart.setEntryLabelTextSize(12f);
+        pieChart.setEntryLabelColor(Color.WHITE);
+        pieChart.setEntryLabelTypeface(YuGothM);
+        pieChart.setEntryLabelTextSize(12f);
 
 
 
@@ -139,28 +129,14 @@ public class ScheduleAllFragment extends BaseFragment {
 
     private void setData() {
 
-        // データ処理
-        ArrayList<Category> categoryList = new ArrayList<Category>();
-        categoryList = GsonConverter.loadCategories(getContext());
-
-//        for (int i = 0; i < categoryList.size(); i++) {
-//            Category categoryList.get
-//        }
-
-
         // PieEntryを使ってentriesにデータをセット
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-//        try {
-//            for (int i = 0; i < subjectList.size(); i++) {
-//                entries.add(new PieEntry(subjectList.get(i).getPriority(), subjectList.get(i).getSubjectName()));
-//            }
-//        } catch (Exception e) {
-//
-//        }
+        for (int i = 0; i < catList.length; i++) {
+            entries.add(new PieEntry(amountList[i], catList[i]));
+        }
 
-
-        PieDataSet dataSet = new PieDataSet(entries, "教科一覧");
+        PieDataSet dataSet = new PieDataSet(entries, "カテゴリ一覧");
 
         //アイコンの有無
         dataSet.setDrawIcons(false);
@@ -173,10 +149,15 @@ public class ScheduleAllFragment extends BaseFragment {
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        for (String c : popColor)
-            colors.add(Color.parseColor(c));
+        // colorListから追加
+        for (int i = 0; i < colorList.length; i++) {
+            colors.add(colorList[i]);
+        }
 
-        colors.add(ColorTemplate.getHoloBlue());
+//        for (String c : popColor)
+//            colors.add(Color.parseColor(c));
+//
+//        colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(colors);
         //dataSet.setSelectionShift(0f);
@@ -186,12 +167,12 @@ public class ScheduleAllFragment extends BaseFragment {
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
         data.setValueTypeface(YuGothM);
-        mChart.setData(data);
+        pieChart.setData(data);
 
         // undo all highlights
-        mChart.highlightValues(null);
+        pieChart.highlightValues(null);
 
-        mChart.invalidate();
+        pieChart.invalidate();
     }
 
 //    private SpannableString generateCenterSpannableText() {

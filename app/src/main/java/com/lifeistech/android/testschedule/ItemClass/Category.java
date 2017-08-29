@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.support.annotation.ColorInt;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Masashi Hamaguchi on 2017/08/25.
@@ -12,8 +14,8 @@ import java.io.Serializable;
 public class Category implements Serializable {
     public String categoryName;
     public boolean task;
-    public String icon = "";
-    public int color = Color.WHITE;
+    public int color = Color.YELLOW;
+    public ArrayList<Item> itemList;
 
 //    public static Category addCategory(String categoryName, boolean task, String icon) {
 //        Category category = new Category();
@@ -40,19 +42,19 @@ public class Category implements Serializable {
         this.task = task;
     }
 
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
     public int getColor() {
         return color;
     }
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public ArrayList<Item> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(ArrayList<Item> itemList) {
+        this.itemList = itemList;
     }
 }
