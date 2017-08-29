@@ -95,8 +95,7 @@ public class GsonConverter {
         String json = category2json(categoryList);
 
         //プリファレンスへの書き込み
-        SharedPreferences pref = context.getSharedPreferences(
-                "categoryList", MODE_PRIVATE);
+        SharedPreferences pref = context.getSharedPreferences("categoryList", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("categoryList", json);
         editor.commit();
