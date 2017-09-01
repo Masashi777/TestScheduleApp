@@ -1,10 +1,7 @@
 package com.lifeistech.android.testschedule.Fragments_Home;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,27 +10,17 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.lifeistech.android.testschedule.Adapter_ListView.CategoryListAdapter;
-import com.lifeistech.android.testschedule.Adapter_ListView.ItemListAdapter;
 import com.lifeistech.android.testschedule.BaseFragment;
 import com.lifeistech.android.testschedule.CategoryEditActivity;
 import com.lifeistech.android.testschedule.GsonConverter;
 import com.lifeistech.android.testschedule.ItemClass.Category;
-import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.lifeistech.android.testschedule.R;
-import com.lifeistech.android.testschedule.DetailActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class HomeThirdFragment extends BaseFragment {
 
-    private ListView listView;
+    private ListView catListView;
     private Button newCatBtn;
     private CategoryListAdapter categoryListAdapter;
     private ArrayList<Category> categoryList = new ArrayList<Category>();
@@ -59,7 +46,7 @@ public class HomeThirdFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.frag_home_third, container, false);
 
-        listView = (ListView) view.findViewById(R.id.categoryListView);
+        catListView = (ListView) view.findViewById(R.id.categoryListView);
         newCatBtn = (Button) view.findViewById(R.id.newCatBtn);
 
         // データの取得
@@ -68,7 +55,7 @@ public class HomeThirdFragment extends BaseFragment {
 
         // Adapter
         categoryListAdapter = new CategoryListAdapter(getContext(), R.layout.list_category, categoryList);
-        listView.setAdapter(categoryListAdapter);
+        catListView.setAdapter(categoryListAdapter);
 
         newCatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +66,7 @@ public class HomeThirdFragment extends BaseFragment {
         });
 
         // リストへのボタンの配置
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        catListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -90,14 +77,12 @@ public class HomeThirdFragment extends BaseFragment {
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        catListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-//                categoryList.remove(position);
-
-//                itemListAdapter.remove(itemListAdapter.getItem(position));
-//                itemListAdapter.notifyDataSetChanged();
+                categoryList.remove(position);
+                categoryListAdapter.notifyDataSetChanged();
 
                 return false;
             }

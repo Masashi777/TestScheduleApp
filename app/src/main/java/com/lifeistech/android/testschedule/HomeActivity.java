@@ -45,17 +45,21 @@ public class HomeActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Gson gson = new Gson();
-//                gson.toJson(testList);
-//                pref.edit().putString("SaveTestList", gson.toJson(testList)).commit();
 
-                if (loadCategories(getApplicationContext()).size() == 0) {
-                    // NO CATEGORIES
-                    Snackbar.make(view, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-                    startActivity(intent);
-                }
+//                SharedPreferences.Editor catEditor = getApplicationContext().getSharedPreferences("categoryList", 0).edit();
+//                catEditor.clear().commit();
+//                SharedPreferences.Editor itemEditor = getSharedPreferences("itemList", 0).edit();
+//                itemEditor.clear().commit();
+
+                Snackbar.make(view, "All Clear SharedPreferences", Snackbar.LENGTH_SHORT).show();
+
+//                if (loadCategories(getApplicationContext()).size() == 0) {
+//                    // NO CATEGORIES
+//                    Snackbar.make(view, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();
+//                } else {
+//                    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+//                    startActivity(intent);
+//                }
             }
         });
 

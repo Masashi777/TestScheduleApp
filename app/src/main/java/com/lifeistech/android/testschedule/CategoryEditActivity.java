@@ -56,14 +56,14 @@ public class CategoryEditActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,7 +75,7 @@ public class CategoryEditActivity extends BaseActivity {
         navigationView.setNavigationItemSelectedListener(this);
 
         // タイトル設定
-        setTitle("カテゴル");
+        setTitle("カテゴリ");
 
         // ひもづけ
         editText = (MaterialEditText) findViewById(R.id.itemName);
@@ -114,7 +114,7 @@ public class CategoryEditActivity extends BaseActivity {
 
                     int id = tableRadioGroup.getCheckedRadioButtonId();
                     if (id == R.id.red) {
-                        category.setColor(red);
+                        category.setColor(R.color.red);
                     } else if (id == R.id.pink) {
                         category.setColor(pink);
                     } else if (id == R.id.indigo) {
@@ -136,7 +136,7 @@ public class CategoryEditActivity extends BaseActivity {
                     ArrayList<Category> categoryList = new ArrayList<Category>();
                     categoryList = loadCategories(getApplicationContext());
                     if (edit) {
-                        categoryList.add(position, category);
+                        categoryList.set(position, category);
                     } else {
                         categoryList.add(category);
                     }

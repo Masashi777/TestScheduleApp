@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -28,10 +29,20 @@ import java.util.ArrayList;
 public class HomeFirstFragment extends BaseFragment {
 
     private PieChart pieChart;
+    private TextView commentText;
     private Button detailBtn;
 
     private  ArrayList<Item> itemList;
     private int a, b;
+
+    private String[] comments = {
+            "グラフで優先してやるタスクを見つけよう！",
+        "今日も元気に頑張ろう",
+        "タスクはこまめに確認！",
+        "気になったらとりあえずタスクしよう！",
+        "やらなきゃいけないことは早めに！",
+        "グラフで優先してやるタスクを見つけよう！"
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,7 @@ public class HomeFirstFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.frag_home_first, container, false);
 
         pieChart = (PieChart) view.findViewById(R.id.pieChart);
+        commentText = (TextView) view.findViewById(R.id.commentText);
         detailBtn = (Button) view.findViewById(R.id.detailBtn);
 
         detailBtn.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +66,7 @@ public class HomeFirstFragment extends BaseFragment {
             }
         });
 
+        commentText.setText(comments[(int) Math.random()*5]);
 
         // Chartの設定
         pieChart.setUsePercentValues(true);
@@ -69,6 +82,7 @@ public class HomeFirstFragment extends BaseFragment {
         // 内側の円の設定
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(Color.WHITE);
+        pieChart.setHoleRadius(30f);
 
         // 内側の円周のライン
         pieChart.setTransparentCircleColor(Color.WHITE);
@@ -120,19 +134,19 @@ public class HomeFirstFragment extends BaseFragment {
         a = 5;
         b = 11;
 
-        setData(a, b);
+        setData();
 
         return view;
 
     }
 
-    private void setData(int a, int b) {
+    private void setData() {
 
         // PieEntryを使ってentriesにデータをセット
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-        entries.add(new PieEntry(a, "終わったタスク"));
-        entries.add(new PieEntry(b, "残っているタスク"));
+        entries.add(new PieEntry(14, "終わったタスク"));
+        entries.add(new PieEntry(11, "残っているタスク"));
 
         PieDataSet dataSet = new PieDataSet(entries, "");
 

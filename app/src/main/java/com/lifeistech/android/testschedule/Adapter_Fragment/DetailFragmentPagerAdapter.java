@@ -69,9 +69,9 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
 
         if (position == 0) {
-            return "All";
+            return "タスクの割合";
         } else if (position == 1) {
-            return "chart";
+            return "カテゴリ別表示";
         } else {
                 return categoryList.get(position - 1).categoryName;
         }

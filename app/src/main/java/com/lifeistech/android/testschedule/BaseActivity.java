@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import static android.R.color.holo_orange_dark;
 import static android.R.color.holo_orange_light;

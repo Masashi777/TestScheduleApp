@@ -40,16 +40,9 @@ import java.util.List;
 
 public class ScheduleAllFragment extends BaseFragment {
 
-//    OnChartValueSelectedListener
-
     private PieChart mChart;
 
-//    private Test test;
-//    private List<Subject> subjectList;
-//    private String testName;
-
     private ArrayList<Category> categoryList = new ArrayList<Category>();
-
 
     public static Fragment newInstance() {
 
@@ -79,11 +72,13 @@ public class ScheduleAllFragment extends BaseFragment {
 
         // センターテキスト
         mChart.setCenterTextTypeface(mTfLight);
-//        mChart.setCenterText(generateCenterSpannableText());
+        mChart.setCenterText("カテゴリ別表示");
+        // generateCenterSpannableText()
 
         // 内側の円の設定
         mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
+        mChart.setHoleColor(R.color.cyanLightPrimary);
+        mChart.setCenterTextColor(Color.WHITE);
 
         // 内側の円周のライン
         mChart.setTransparentCircleColor(Color.WHITE);
@@ -140,8 +135,8 @@ public class ScheduleAllFragment extends BaseFragment {
     private void setData() {
 
         // データ処理
-        ArrayList<Category> categoryList = new ArrayList<Category>();
-        categoryList = GsonConverter.loadCategories(getContext());
+//        ArrayList<Category> categoryList = new ArrayList<Category>();
+//        categoryList = GsonConverter.loadCategories(getContext());
 
 //        for (int i = 0; i < categoryList.size(); i++) {
 //            Category categoryList.get
@@ -150,6 +145,12 @@ public class ScheduleAllFragment extends BaseFragment {
 
         // PieEntryを使ってentriesにデータをセット
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+
+        entries.add(new PieEntry(5, "勉強"));
+        entries.add(new PieEntry(7, "文化祭準備"));
+        entries.add(new PieEntry(3, "遊び"));
+        entries.add(new PieEntry(8, "買い物"));
+        entries.add(new PieEntry(2, "家でやること"));
 
 //        try {
 //            for (int i = 0; i < subjectList.size(); i++) {
@@ -160,7 +161,7 @@ public class ScheduleAllFragment extends BaseFragment {
 //        }
 
 
-        PieDataSet dataSet = new PieDataSet(entries, "教科一覧");
+        PieDataSet dataSet = new PieDataSet(entries, "");
 
         //アイコンの有無
         dataSet.setDrawIcons(false);
@@ -195,8 +196,8 @@ public class ScheduleAllFragment extends BaseFragment {
     }
 
 //    private SpannableString generateCenterSpannableText() {
-
-//        SpannableString s = new SpannableString(testName + "\ndeveloped by Masashi Hamaguchi");
+//
+//        SpannableString s = new SpannableString();
 //        s.setSpan(new RelativeSizeSpan(1.7f), 0, 5, 0);
 //        s.setSpan(new StyleSpan(Typeface.NORMAL), 5, s.length() - 15, 0);
 //        s.setSpan(new ForegroundColorSpan(Color.GRAY), 5, s.length() - 15, 0);
