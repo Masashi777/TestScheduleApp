@@ -45,14 +45,14 @@ public class EditActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -99,11 +99,23 @@ public class EditActivity extends BaseActivity {
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//<<<<<<< HEAD
 
                 if (editText.getText().toString().matches("")) {
                     // 未入力 Error
                     Snackbar.make(v, "タスクを入力してください", Snackbar.LENGTH_SHORT).show();
 
+//=======
+//                Item item = new Item();
+//                item.setItemName(editText.getText().toString());
+//                item.setCategory(categorySpinner.getSelectedItem().toString());
+//                item.setChecked(checkBox.isChecked());
+//
+//                ArrayList<Item> itemList = new ArrayList<Item>();
+//                itemList = loadItems(getApplicationContext());
+//                if (edit) {
+//                    itemList.set(position, item);
+//>>>>>>> dev2
                 } else {
                     Item item = new Item();
                     item.setItemName(editText.getText().toString());

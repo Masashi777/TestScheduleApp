@@ -16,12 +16,18 @@ import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
 
+import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
+
 /**
  * Created by Masashi Hamaguchi on 2017/07/22.
  */
 
 public class CategoryListAdapter extends ArrayAdapter<Category> {
     private ArrayList<Category> categories = new ArrayList<Category>();
+
+    public final int[] MATERIAL_COLORS = {
+            rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db"), rgb("#79b5e2")
+    };
 
     public CategoryListAdapter(Context context, int layoutResourceId, ArrayList<Category> objects) {
         super(context, layoutResourceId, objects);
@@ -57,7 +63,37 @@ public class CategoryListAdapter extends ArrayAdapter<Category> {
             //set data
             viewHolder.iconImage.setImageResource(R.drawable.ic_android_black_24dp);
             viewHolder.categoryText.setText(category.getCategoryName());
-            viewHolder.cardView.setCardBackgroundColor(category.getColor());
+
+            switch (position) {
+                case 0:
+                    viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[0]);
+                    break;
+                case 1:
+                    viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[1]);
+                    break;
+                case 2:
+                    viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[2]);
+                    break;
+                case 3:
+                    viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[3]);
+                    break;
+                case 4:
+                    viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[4]);
+                    break;
+            }
+
+//            if (category.getCategoryName() == "勉強") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[0]);
+//            } else if (category.getCategoryName() == "文化祭準備") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[1]);
+//            } else if (category.getCategoryName() == "遊び") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[2]);
+//            } else if (category.getCategoryName() == "買い物") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[3]);
+//            } else if (category.getCategoryName() == "家でやること") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[4]);
+//            }
+
         }
 
         return convertView;

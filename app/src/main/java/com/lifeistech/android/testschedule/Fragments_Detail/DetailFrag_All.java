@@ -28,13 +28,16 @@ import java.util.ArrayList;
 
 public class DetailFrag_All extends BaseFragment {
 
+//<<<<<<< HEAD:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Detail/DetailFrag_All.java
     private PieChart pieChart;
+//=======
+//    private PieChart mChart;
+//>>>>>>> dev2:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Detail/ScheduleAllFragment.java
 
     private ArrayList<Category> categoryList = new ArrayList<Category>();
     private String catList[] = new String[categoryList.size()];
     private int amountList[] = new int[categoryList.size()];
     private int colorList[] = new int[categoryList.size()];
-
 
     public static Fragment newInstance() {
 
@@ -68,12 +71,23 @@ public class DetailFrag_All extends BaseFragment {
         pieChart.setDragDecelerationFrictionCoef(0.95f);
 
         // センターテキスト
+//<<<<<<< HEAD:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Detail/DetailFrag_All.java
         pieChart.setCenterTextTypeface(mTfLight);
 //        pieChart.setCenterText(generateCenterSpannableText());
 
         // 内側の円の設定
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(Color.WHITE);
+//=======
+//        mChart.setCenterTextTypeface(mTfLight);
+//        mChart.setCenterText("カテゴリ別表示");
+//        // generateCenterSpannableText()
+//
+//        // 内側の円の設定
+//        mChart.setDrawHoleEnabled(true);
+//        mChart.setHoleColor(R.color.cyanLightPrimary);
+//        mChart.setCenterTextColor(Color.WHITE);
+//>>>>>>> dev2:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Detail/ScheduleAllFragment.java
 
         // 内側の円周のライン
         pieChart.setTransparentCircleColor(Color.WHITE);
@@ -129,6 +143,7 @@ public class DetailFrag_All extends BaseFragment {
 
     private void setData() {
 
+//<<<<<<< HEAD:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Detail/DetailFrag_All.java
         // PieEntryを使ってentriesにデータをセット
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
@@ -137,6 +152,36 @@ public class DetailFrag_All extends BaseFragment {
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "カテゴリ一覧");
+//=======
+//        // データ処理
+////        ArrayList<Category> categoryList = new ArrayList<Category>();
+////        categoryList = GsonConverter.loadCategories(getContext());
+//
+////        for (int i = 0; i < categoryList.size(); i++) {
+////            Category categoryList.get
+////        }
+//
+//
+//        // PieEntryを使ってentriesにデータをセット
+//        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+//
+//        entries.add(new PieEntry(5, "勉強"));
+//        entries.add(new PieEntry(7, "文化祭準備"));
+//        entries.add(new PieEntry(3, "遊び"));
+//        entries.add(new PieEntry(8, "買い物"));
+//        entries.add(new PieEntry(2, "家でやること"));
+//
+////        try {
+////            for (int i = 0; i < subjectList.size(); i++) {
+////                entries.add(new PieEntry(subjectList.get(i).getPriority(), subjectList.get(i).getSubjectName()));
+////            }
+////        } catch (Exception e) {
+////
+////        }
+//
+//
+//        PieDataSet dataSet = new PieDataSet(entries, "");
+//>>>>>>> dev2:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Detail/ScheduleAllFragment.java
 
         //アイコンの有無
         dataSet.setDrawIcons(false);
@@ -176,8 +221,8 @@ public class DetailFrag_All extends BaseFragment {
     }
 
 //    private SpannableString generateCenterSpannableText() {
-
-//        SpannableString s = new SpannableString(testName + "\ndeveloped by Masashi Hamaguchi");
+//
+//        SpannableString s = new SpannableString();
 //        s.setSpan(new RelativeSizeSpan(1.7f), 0, 5, 0);
 //        s.setSpan(new StyleSpan(Typeface.NORMAL), 5, s.length() - 15, 0);
 //        s.setSpan(new ForegroundColorSpan(Color.GRAY), 5, s.length() - 15, 0);

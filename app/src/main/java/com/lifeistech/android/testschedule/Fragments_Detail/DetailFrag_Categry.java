@@ -31,7 +31,7 @@ public class DetailFrag_Categry extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_detail_category, container, false);
 
-        textView = (TextView) view.findViewById(R.id.textView);
+        textView = (TextView) view.findViewById(R.id.commentText);
         listView = (ListView) view.findViewById(R.id.detailListView);
 
         textView.setText(title);

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cyanLightPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.lifeistech.android.testschedule.DetailActivity" >
+    tools:context="com.lifeistech.android.testschedule.DetailActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -23,17 +23,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/section_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="テスト名" />
-
-        <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="今週の勉強時間" />
+            android:layout_marginTop="16dp"
+            android:text="どのカテゴリーが多いか確認しよう！"
+            android:textColor="@color/deeporange" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/chart1"

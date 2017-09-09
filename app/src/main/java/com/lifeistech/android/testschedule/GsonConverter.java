@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_MULTI_PROCESS;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -95,7 +96,12 @@ public class GsonConverter {
         String json = category2json(categoryList);
 
         //プリファレンスへの書き込み
+//<<<<<<< HEAD
         SharedPreferences pref = context.getSharedPreferences("categoryList", MODE_PRIVATE);
+//=======
+//        SharedPreferences pref = context.getSharedPreferences(
+//                "categoryList", MODE_MULTI_PROCESS);
+//>>>>>>> dev2
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("categoryList", json);
         editor.commit();
@@ -104,7 +110,12 @@ public class GsonConverter {
     //要素群の読み込み
     public static ArrayList<Category> loadCategories(Context context) {
         //プリファレンスからの読み込み
+//<<<<<<< HEAD
         SharedPreferences pref = context.getSharedPreferences("categoryList", MODE_PRIVATE);
+//=======
+//        SharedPreferences pref = context.getSharedPreferences(
+//                "categoryList", MODE_MULTI_PROCESS);
+//>>>>>>> dev2
         String json = pref.getString("categoryList","");
 
         //JSONをArrayListに変換

@@ -19,6 +19,7 @@ import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
 
+import static com.github.mikephil.charting.utils.ColorTemplate.MATERIAL_COLORS;
 import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
 
 /**
@@ -66,6 +67,7 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
             viewHolder.itemText.setText(item.getItemName());
             viewHolder.checkBox.setChecked(item.isChecked());
 
+//<<<<<<< HEAD
             categoryList = loadCategories(getContext());
             String catName;
             // カテゴリ検索
@@ -83,7 +85,28 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
                         break;
                     }
                 }
+//=======
+            // カテゴリ別に色分け
+//            if (item.getCategory() == "勉強") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[0]);
+//            } else if (item.getCategory() == "文化祭準備") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[1]);
+//            } else if (item.getCategory() == "遊び") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[2]);
+//            } else if (item.getCategory() == "買い物") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[3]);
+//            } else if (item.getCategory() == "家でやること") {
+//                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[4]);
+//>>>>>>> dev2
             }
+
+
+//            categoryList = loadCategories(getContext());
+//            for (int i = 0; i < categoryList.size(); i++) {
+//                if (item.getCategory() == categoryList.get(i).getCategoryName()) {
+//                    viewHolder.cardView.setCardBackgroundColor(categoryList.get(i).getColor());
+//                }
+//            }
 
         }
 
@@ -105,7 +128,7 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
             categoryText = (TextView) view.findViewById(R.id.categoryText);
             checkBox = (CheckBox) view.findViewById(R.id.checkBox);
 
-            cardView = (CardView) view.findViewById(R.id.cardView);
+            cardView = (CardView) view.findViewById(R.id.itemCardView);
         }
     }
 

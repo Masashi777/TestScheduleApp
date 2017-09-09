@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 public class HomeFrag_First extends BaseFragment {
 
     private PieChart pieChart;
+    private TextView commentText;
     private Button detailBtn;
 
     private ArrayList<Category> categoryList;
@@ -38,6 +40,15 @@ public class HomeFrag_First extends BaseFragment {
     private String chartLabel[] = {"終わったタスク", "残ってるタスク"};
     private int chartAmount[] = new int[2];
     private int a, b;
+
+    private String[] comments = {
+            "グラフで優先してやるタスクを見つけよう！",
+        "今日も元気に頑張ろう",
+        "タスクはこまめに確認！",
+        "気になったらとりあえずタスクしよう！",
+        "やらなきゃいけないことは早めに！",
+        "グラフで優先してやるタスクを見つけよう！"
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,7 @@ public class HomeFrag_First extends BaseFragment {
         View view = inflater.inflate(R.layout.frag_home_first, container, false);
 
         pieChart = (PieChart) view.findViewById(R.id.pieChart);
+        commentText = (TextView) view.findViewById(R.id.commentText);
         detailBtn = (Button) view.findViewById(R.id.detailBtn);
 
         detailBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +72,7 @@ public class HomeFrag_First extends BaseFragment {
             }
         });
 
+//<<<<<<< HEAD:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Home/HomeFrag_First.java
         // データの取得
         categoryList = GsonConverter.loadCategories(getContext());
 
@@ -77,6 +90,9 @@ public class HomeFrag_First extends BaseFragment {
         chartAmount[1] = all - finish;
 
 
+//=======
+//        commentText.setText(comments[(int) Math.random()*5]);
+//>>>>>>> dev2:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Home/HomeFirstFragment.java
 
         // Chartの設定
         pieChart.setUsePercentValues(true);
@@ -92,6 +108,7 @@ public class HomeFrag_First extends BaseFragment {
         // 内側の円の設定
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(Color.WHITE);
+        pieChart.setHoleRadius(30f);
 
         // 内側の円周のライン
         pieChart.setTransparentCircleColor(Color.WHITE);
@@ -154,9 +171,14 @@ public class HomeFrag_First extends BaseFragment {
         // PieEntryを使ってentriesにデータをセット
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
+//<<<<<<< HEAD:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Home/HomeFrag_First.java
         for (int i = 0; i < chartLabel.length; i++) {
             entries.add(new PieEntry(chartAmount[i], chartLabel[i]));
         }
+//=======
+//        entries.add(new PieEntry(14, "終わったタスク"));
+//        entries.add(new PieEntry(11, "残っているタスク"));
+//>>>>>>> dev2:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Home/HomeFirstFragment.java
 
         PieDataSet dataSet = new PieDataSet(entries, "");
 

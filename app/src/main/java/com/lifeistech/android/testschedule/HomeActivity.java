@@ -46,6 +46,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
+//<<<<<<< HEAD
                 SharedPreferences.Editor catEditor = getApplicationContext().getSharedPreferences("categoryList", 0).edit();
                 catEditor.clear().commit();
                 SharedPreferences.Editor itemEditor = getSharedPreferences("itemList", 0).edit();
@@ -54,6 +55,15 @@ public class HomeActivity extends BaseActivity {
                 Snackbar.make(view, "All Clear SharedPreferences", Snackbar.LENGTH_SHORT).show();
 
 
+//=======
+//                SharedPreferences.Editor catEditor = getApplicationContext().getSharedPreferences("categoryList", 0).edit();
+//                catEditor.clear().commit();
+//                SharedPreferences.Editor itemEditor = getSharedPreferences("itemList", 0).edit();
+//                itemEditor.clear().commit();
+//
+//                Snackbar.make(view, "All Clear SharedPreferences", Snackbar.LENGTH_SHORT).show();
+//
+//>>>>>>> dev2
 //                if (loadCategories(getApplicationContext()).size() == 0) {
 //                    // NO CATEGORIES
 //                    Snackbar.make(view, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();

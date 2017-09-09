@@ -2,7 +2,6 @@ package com.lifeistech.android.testschedule.Fragments_Home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +27,7 @@ import static com.lifeistech.android.testschedule.GsonConverter.saveItems;
 
 public class HomeFrag_Second extends BaseFragment {
 
-    private ListView listView;
+    private ListView itemListView;
     private Button newBtn;
     private ArrayList<Category> categoryList = new ArrayList<Category>();
     private ArrayList<Item> itemList = new ArrayList<Item>();
@@ -45,7 +44,7 @@ public class HomeFrag_Second extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.frag_home_second, container, false);
 
-        listView = (ListView) view.findViewById(R.id.itemListView);
+        itemListView = (ListView) view.findViewById(R.id.itemListView);
         newBtn = (Button) view.findViewById(R.id.newBtn);
 
         // データの取得
@@ -56,45 +55,6 @@ public class HomeFrag_Second extends BaseFragment {
             }
         }
 
-        /**
-         * ArrayListはシリアライズに対応していない
-         */
-
-
-        // リストへのボタンの配置
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                saveItems(getActivity(), itemList);
-                Intent intent = new Intent(getActivity().getApplicationContext(), EditActivity.class);
-                intent.putExtra("item", itemList.get(position));
-                intent.putExtra("position", position);
-                startActivity(intent);
-
-                Log.e("itemList", "selected");
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    Snackbar.make(view, "You tapped LONG " + listView.getSelectedItem() + "on the ListView.", Snackbar.LENGTH_SHORT)
-                            .setAction("OK", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "YEAH~~!!!", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .show();
-                return false;
-            }
-        });
-
-        // Adapter
-        itemListAdapter = new ItemListAdapter(getActivity().getApplicationContext(), R.layout.list_item, itemList);
-        listView.setAdapter(itemListAdapter);
 
         // newBtnへのセット
         newBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +70,57 @@ public class HomeFrag_Second extends BaseFragment {
                 }
             }
         });
+
+        // リストへのボタンの配置
+        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (view.getId() == R.id.checkBox) {
+                    Item item = itemList.get(position);
+                    if (item.isChecked()) {
+                        item.setChecked(false);
+                    } else {
+                        item.setChecked(true);
+                    }
+                    itemList.set(position, item);
+                    itemListAdapter.notifyDataSetChanged();
+
+                } else {
+                    saveItems(getContext(), itemList);
+                    Intent intent = new Intent(getContext(), EditActivity.class);
+                    intent.putExtra("item", itemList.get(position));
+                    intent.putExtra("position", position);
+                    startActivity(intent);
+
+                    Log.e("itemList", "selected");
+                }
+
+            }
+        });
+
+        itemListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                itemList.remove(position);
+                itemListAdapter.notifyDataSetChanged();
+
+                Snackbar.make(view, "You tapped LONG " + itemListView.getSelectedItem() + "on the ListView.", Snackbar.LENGTH_SHORT)
+                        .setAction("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(getActivity().getApplicationContext(), "YEAH~~!!!", Toast.LENGTH_SHORT).show();
+                                }
+                        })
+                        .show();
+                return false;
+            }
+        });
+
+        // Adapter
+        itemListAdapter = new ItemListAdapter(getContext(), R.layout.list_item, itemList);
+        itemListView.setAdapter(itemListAdapter);
+
 
         return view;
 

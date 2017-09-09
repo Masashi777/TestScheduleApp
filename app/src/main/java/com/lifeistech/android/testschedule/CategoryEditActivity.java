@@ -56,14 +56,14 @@ public class CategoryEditActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -104,6 +104,7 @@ public class CategoryEditActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+//<<<<<<< HEAD
                 if (editText.getText().toString().matches("")) {
                     // Error
                     Snackbar.make(v, "カテゴリを入力してください", Snackbar.LENGTH_SHORT).show();
@@ -148,6 +149,48 @@ public class CategoryEditActivity extends BaseActivity {
 
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);
+//=======
+//                if (redBtn.isChecked() || pinkBtn.isChecked() || indigoBtn.isChecked() ||
+//                        blueBtn.isChecked() || tealBtn.isChecked() || greenBtn.isChecked() ||
+//                        deeporangeBtn.isChecked() || brownBtn.isChecked() || bluegreyBtn.isChecked()) {
+//
+//                    Category category = new Category();
+//                    category.setCategoryName(editText.getText().toString());
+//                    category.setTask(checkBox.isChecked());
+//
+//                    int id = tableRadioGroup.getCheckedRadioButtonId();
+//                    if (id == R.id.red) {
+//                        category.setColor(R.color.red);
+//                    } else if (id == R.id.pink) {
+//                        category.setColor(pink);
+//                    } else if (id == R.id.indigo) {
+//                        category.setColor(indigo);
+//                    } else if (id == R.id.blue) {
+//                        category.setColor(blue);
+//                    } else if (id == R.id.teal) {
+//                        category.setColor(teal);
+//                    } else if (id == R.id.green) {
+//                        category.setColor(green);
+//                    } else if (id == R.id.deeprange) {
+//                        category.setColor(deeporange);
+//                    } else if (id == R.id.brown) {
+//                        category.setColor(brown);
+//                    } else if (id == R.id.bluegrey) {
+//                        category.setColor(bluegrey);
+//                    }
+//
+//                    ArrayList<Category> categoryList = new ArrayList<Category>();
+//                    categoryList = loadCategories(getApplicationContext());
+//                    if (edit) {
+//                        categoryList.set(position, category);
+//                    } else {
+//                        categoryList.add(category);
+//                    }
+//                    saveCategories(getApplicationContext(), categoryList);
+//
+//                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//                    startActivity(intent);
+//>>>>>>> dev2
 
                 } else {
                         // Error
