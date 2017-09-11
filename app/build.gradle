@@ -19,6 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    apply plugin: 'com.android.application'
+    // androidの後である必要がある
+    apply plugin: 'realm-android'
 }
 
 dependencies {

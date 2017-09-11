@@ -29,6 +29,12 @@ import com.lifeistech.android.testschedule.R;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import io.realm.DynamicRealm;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmMigration;
+import io.realm.RealmObjectSchema;
+
 public class HomeFrag_First extends BaseFragment {
 
     private PieChart pieChart;
@@ -53,6 +59,24 @@ public class HomeFrag_First extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
+    }
+
+    private RealmConfiguration buildRealmConfiguration() {
+        return new RealmConfiguration.Builder(this)
+                .schemaVersion(1L)
+                .migration(new RealmMigration() {
+                    @Override
+                    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+                        if (oldVersion == 0L) {
+                            final RealmObjectSchema tweetSchema = realm.getSchema().get("Tweet");
+                            tweetSchema.addField("favorited", boolean.class);
+                            //noinspection UnusedAssignment
+                            oldVersion++;
+                        }
+                    }
+                })
+                .build();
     }
 
     @Override

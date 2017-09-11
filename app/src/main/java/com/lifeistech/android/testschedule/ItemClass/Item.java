@@ -2,11 +2,13 @@ package com.lifeistech.android.testschedule.ItemClass;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Masashi Hamaguchi on 2017/08/25.
  */
 
-public class Item implements Serializable {
+public class Item extends RealmObject implements Serializable {
 
     public String itemName;
     public boolean checked;

@@ -12,6 +12,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 import static android.content.Context.MODE_MULTI_PROCESS;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -176,6 +179,22 @@ public class GsonConverter {
             e.printStackTrace();
         }
         return categories;
+    }
+
+    public loadRealm(Context context) {
+        // アプリケーションの"files"ディレクトリにRealmファイルを作成するRealmConfigurationを作成
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(realmConfig);
+        // このスレッドのためのRealmインスタンスを取得
+        Realm realm = Realm.getDefaultInstance();
+    }
+    public saveRealm(Realm realm) {
+        // トランザクションの中でデータを永続化します
+        realm.beginTransaction();
+        final Item managedItem = realm.copyToRealm(item); // unmanagedなオブジェクトを永続化
+        Category category = realm.createObject(Category.class); // managedなオブジェクトを直接作成
+        category.getItemList().add(managedItem);
+        realm.commitTransaction();
     }
 
 }

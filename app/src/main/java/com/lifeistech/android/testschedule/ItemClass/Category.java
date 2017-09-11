@@ -7,15 +7,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+import io.realm.RealmObject;
+
 /**
  * Created by Masashi Hamaguchi on 2017/08/25.
  */
 
-public class Category implements Serializable {
+public class Category extends RealmObject implements Serializable {
     public String categoryName;
     public boolean task;
     public int color = Color.YELLOW;
-    public ArrayList<Item> itemList;
+    public RealmList<Item> itemList;
 
 //    public static Category addCategory(String categoryName, boolean task, String icon) {
 //        Category category = new Category();
