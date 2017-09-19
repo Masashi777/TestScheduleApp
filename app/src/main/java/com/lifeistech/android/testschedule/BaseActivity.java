@@ -2,14 +2,7 @@ package com.lifeistech.android.testschedule;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.support.annotation.ColorInt;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,14 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
-import com.github.mikephil.charting.animation.Easing;
-
-import static android.R.color.holo_orange_dark;
-import static android.R.color.holo_orange_light;
-import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
 
 public abstract class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -137,18 +122,18 @@ public abstract class BaseActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_make) {
-            if (loadCategories(getApplicationContext()).size() == 0) {
-                // NO CATEGORIES
-                ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
-                Snackbar.make(constraintLayout, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-                startActivity(intent);
-            }
+//            if (loadCategories(getApplicationContext()).size() == 0) {
+//                // NO CATEGORIES
+//                ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+//                Snackbar.make(constraintLayout, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();
+//            } else {
+//                Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+//                startActivity(intent);
+//            }
 
         } else if (id == R.id.nav_detail) {
-            Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+//            startActivity(intent);
 
         } else if (id == R.id.nav_info) {
             Intent intent = new Intent(this, NavActivity.class);

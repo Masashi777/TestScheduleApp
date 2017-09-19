@@ -28,10 +28,6 @@
             android:label="@string/title_activity_categoryedit"
             android:theme="@style/AppTheme.MyApp" />
         <activity
-            android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"
-            android:theme="@style/AppTheme.MyApp" />
-        <activity
             android:name=".NavActivity"
             android:label="@string/title_activity_nav"
             android:theme="@style/Nav.MyApp" />

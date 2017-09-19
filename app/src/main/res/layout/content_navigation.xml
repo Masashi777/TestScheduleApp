@@ -30,32 +30,16 @@
         android:id="@+id/mrchildren"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="-24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/info"
-        app:srcCompat="@drawable/mr_children" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryDark"
-        android:elevation="0dp"
-        android:shadowColor="?attr/colorPrimary"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="0"
-        android:text="BACK"
-        android:textColor="@color/cyanDarkPrimary"
-        android:textSize="16sp"
+        app:srcCompat="@drawable/mr_children"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginBottom="24dp" />
+
 </android.support.constraint.ConstraintLayout>

@@ -1,10 +1,7 @@
 package com.lifeistech.android.testschedule.Adapter_ListView;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +10,10 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lifeistech.android.testschedule.ItemClass.Category;
 import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
-
-import static com.github.mikephil.charting.utils.ColorTemplate.MATERIAL_COLORS;
-import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/22.
@@ -29,7 +22,7 @@ import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
 public class ItemListAdapter extends ArrayAdapter<Item> {
 
     private ArrayList<Item> itemList = new ArrayList<Item>();
-    private ArrayList<Category> categoryList = new ArrayList<Category>();
+    private ArrayList<String> categoryList = new ArrayList<String>();
 
     public ItemListAdapter(Context context, int layoutResourceId, ArrayList<Item> objects) {
         super(context, layoutResourceId, objects);
@@ -67,24 +60,22 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
             viewHolder.itemText.setText(item.getItemName());
             viewHolder.checkBox.setChecked(item.isChecked());
 
-//<<<<<<< HEAD
-            categoryList = loadCategories(getContext());
             String catName;
             // カテゴリ検索
-            for (int n = 0; n < categoryList.size(); n++) {
-                catName = categoryList.get(n).getCategoryName();
-
-                // カテゴリ別色分け
-                viewHolder.cardView.setCardBackgroundColor(categoryList.get(n).getColor());
-
-                for (int m = 0; m < categoryList.get(n).getItemList().size(); m++) {
-                    String name = categoryList.get(n).getItemList().get(m).getItemName();
-                    if (item.getItemName() == name) {
-                        viewHolder.categoryText.setText(catName);
-
-                        break;
-                    }
-                }
+//            for (int n = 0; n < categoryList.size(); n++) {
+//                catName = categoryList.get(n).getCategoryName();
+//
+//                // カテゴリ別色分け
+//                viewHolder.cardView.setCardBackgroundColor(categoryList.get(n).getColor());
+//
+//                for (int m = 0; m < categoryList.get(n).getItemList().size(); m++) {
+//                    String name = categoryList.get(n).getItemList().get(m).getItemName();
+//                    if (item.getItemName() == name) {
+//                        viewHolder.categoryText.setText(catName);
+//
+//                        break;
+//                    }
+//                }
 //=======
             // カテゴリ別に色分け
 //            if (item.getCategory() == "勉強") {
@@ -98,7 +89,7 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
 //            } else if (item.getCategory() == "家でやること") {
 //                viewHolder.cardView.setCardBackgroundColor(MATERIAL_COLORS[4]);
 //>>>>>>> dev2
-            }
+//            }
 
 
 //            categoryList = loadCategories(getContext());

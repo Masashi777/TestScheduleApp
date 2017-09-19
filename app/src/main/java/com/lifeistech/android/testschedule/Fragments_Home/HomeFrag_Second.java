@@ -3,7 +3,6 @@ package com.lifeistech.android.testschedule.Fragments_Home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,26 +12,28 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.lifeistech.android.testschedule.BaseFragment;
-import com.lifeistech.android.testschedule.EditActivity;
-import com.lifeistech.android.testschedule.ItemClass.Category;
+import com.lifeistech.android.testschedule.CategoryEditActivity;
 import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.lifeistech.android.testschedule.Adapter_ListView.ItemListAdapter;
 import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
 
-import static com.lifeistech.android.testschedule.GsonConverter.loadCategories;
-import static com.lifeistech.android.testschedule.GsonConverter.loadItems;
-import static com.lifeistech.android.testschedule.GsonConverter.saveItems;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class HomeFrag_Second extends BaseFragment {
 
     private ListView itemListView;
     private Button newBtn;
-    private ArrayList<Category> categoryList = new ArrayList<Category>();
+    private ArrayList<String> categoryList = new ArrayList<String>();
     private ArrayList<Item> itemList = new ArrayList<Item>();
 
     private ItemListAdapter itemListAdapter;
+
+    // Realm
+    Realm realm;
+    RealmResults<Item> result;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,52 +49,24 @@ public class HomeFrag_Second extends BaseFragment {
         newBtn = (Button) view.findViewById(R.id.newBtn);
 
         // データの取得
-        categoryList = loadCategories(getContext());
-        for (int n = 0; n < categoryList.size(); n++) {
-            for (int m = 0; m < categoryList.get(n).getItemList().size(); m++) {
-                itemList.add(categoryList.get(n).getItemList().get(m));
+        realm = Realm.getInstance(Realm.getDefaultConfiguration());
+        realm.beginTransaction();
+        result = realm.where(Item.class).findAll();
+
+        for (int i = 0; i < result.size(); i++) {
+            if (categoryList.lastIndexOf(result.get(i)) == 0) {
+                categoryList.add(result.get(i).getCategory());
             }
         }
-
-
-        // newBtnへのセット
-        newBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (loadCategories(getContext()).size() == 0) {
-                    // NO CATEGORIES
-                    Snackbar.make(v, "カテゴリを作成してください", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(getContext(), EditActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
 
         // リストへのボタンの配置
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (view.getId() == R.id.checkBox) {
-                    Item item = itemList.get(position);
-                    if (item.isChecked()) {
-                        item.setChecked(false);
-                    } else {
-                        item.setChecked(true);
-                    }
-                    itemList.set(position, item);
-                    itemListAdapter.notifyDataSetChanged();
 
-                } else {
-                    saveItems(getContext(), itemList);
-                    Intent intent = new Intent(getContext(), EditActivity.class);
-                    intent.putExtra("item", itemList.get(position));
-                    intent.putExtra("position", position);
-                    startActivity(intent);
-
-                    Log.e("itemList", "selected");
-                }
+                Intent intent = new Intent(getContext(), CategoryEditActivity.class);
+                intent.putExtra("category", categoryList.get(position));
+                startActivity(intent);
 
             }
         });
@@ -121,17 +94,12 @@ public class HomeFrag_Second extends BaseFragment {
         itemListAdapter = new ItemListAdapter(getContext(), R.layout.list_item, itemList);
         itemListView.setAdapter(itemListAdapter);
 
-
         return view;
-
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        //要素群の書き込み
-        saveItems(getActivity(), itemList);
 
     }
 

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,33 +19,33 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.lifeistech.android.testschedule.Adapter_ListView.ItemListAdapter;
 import com.lifeistech.android.testschedule.BaseFragment;
-import com.lifeistech.android.testschedule.DetailActivity;
-import com.lifeistech.android.testschedule.GsonConverter;
-import com.lifeistech.android.testschedule.ItemClass.Category;
+import com.lifeistech.android.testschedule.EditActivity;
 import com.lifeistech.android.testschedule.ItemClass.Item;
 import com.lifeistech.android.testschedule.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import io.realm.DynamicRealm;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmMigration;
-import io.realm.RealmObjectSchema;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 public class HomeFrag_First extends BaseFragment {
 
     private PieChart pieChart;
     private TextView commentText;
     private Button detailBtn;
+    private ListView itemListView;
 
-    private ArrayList<Category> categoryList;
-    private ArrayList<Item> itemList;
+    private ItemListAdapter itemListAdapter;
+    private ArrayList<Item> itemList = new ArrayList<Item>();
     private String chartLabel[] = {"終わったタスク", "残ってるタスク"};
     private int chartAmount[] = new int[2];
     private int a, b;
+
+    private Realm realm;
+    private RealmChangeListener realmListener;
 
     private String[] comments = {
             "グラフで優先してやるタスクを見つけよう！",
@@ -59,24 +59,23 @@ public class HomeFrag_First extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).build());
-    }
 
-    private RealmConfiguration buildRealmConfiguration() {
-        return new RealmConfiguration.Builder(this)
-                .schemaVersion(1L)
-                .migration(new RealmMigration() {
-                    @Override
-                    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
-                        if (oldVersion == 0L) {
-                            final RealmObjectSchema tweetSchema = realm.getSchema().get("Tweet");
-                            tweetSchema.addField("favorited", boolean.class);
-                            //noinspection UnusedAssignment
-                            oldVersion++;
-                        }
-                    }
-                })
-                .build();
+        Realm.init(getContext());
+        realm = Realm.getDefaultInstance();
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+
+                RealmResults<Item> result = realm.where(Item.class).findAll();
+
+                for (int i = 0; i < result.size(); i++) {
+                    itemList.add(result.get(i));
+                }
+                itemListAdapter.notifyDataSetChanged();
+
+            }
+        });
+
     }
 
     @Override
@@ -87,47 +86,74 @@ public class HomeFrag_First extends BaseFragment {
         pieChart = (PieChart) view.findViewById(R.id.pieChart);
         commentText = (TextView) view.findViewById(R.id.commentText);
         detailBtn = (Button) view.findViewById(R.id.detailBtn);
+        itemListView = (ListView) view.findViewById(R.id.itemList);
 
+        // Detail Btn
         detailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DetailActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity().getApplicationContext(), DetailActivity.class);
+//                startActivity(intent);
             }
         });
 
-//<<<<<<< HEAD:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Home/HomeFrag_First.java
-        // データの取得
-        categoryList = GsonConverter.loadCategories(getContext());
+        // リストへのボタンの配置
+        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        int finish = 0;
-        int all = 0;
-        for (int n = 0; n < categoryList.size(); n++) {
-            for (int m = 0; m < categoryList.get(n).getItemList().size(); m++) {
-                all++;
-                if (categoryList.get(n).getItemList().get(m).isChecked()) {
-                    finish++;
-                }
+                Intent intent = new Intent(getContext(), EditActivity.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+
+//                if (view.getId() == R.id.checkBox) {
+//                    Item item = itemList.get(position);
+//                    if (item.isChecked()) {
+//                        item.setChecked(false);
+//                    } else {
+//                        item.setChecked(true);
+//                    }
+//                    itemList.set(position, item);
+//                    itemListAdapter.notifyDataSetChanged();
+//
+//                } else {
+////                    saveItems(getContext(), itemList);
+//                    Intent intent = new Intent(getContext(), EditActivity.class);
+//                    intent.putExtra("item", itemList.get(position));
+//                    intent.putExtra("position", position);
+//                    startActivity(intent);
+//
+//                    Log.e("itemList", "selected");
+//                }
+
             }
+        });
+
+
+        // ListViewへの表示
+        RealmResults<Item> result = realm.where(Item.class).findAll();
+
+        for (int i = 0; i < result.size(); i++) {
+            itemList.add(result.get(i));
         }
-        chartAmount[0] = finish;
-        chartAmount[1] = all - finish;
+
+        itemListAdapter = new ItemListAdapter(getContext(), R.layout.list_item, itemList);
+        itemListView.setAdapter(itemListAdapter);
+
+        realm.close();
 
 
-//=======
-//        commentText.setText(comments[(int) Math.random()*5]);
-//>>>>>>> dev2:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Home/HomeFirstFragment.java
 
         // Chartの設定
-        pieChart.setUsePercentValues(true);
+        pieChart.setUsePercentValues(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
 
         pieChart.setDragDecelerationFrictionCoef(0.95f);
 
         // センターテキスト
-        pieChart.setCenterTextTypeface(mTfLight);
-        pieChart.setCenterText("残りのタスク");
+//        pieChart.setCenterTextTypeface(mTfLight);
+//        pieChart.setCenterText("残りのタスク");
 
         // 内側の円の設定
         pieChart.setDrawHoleEnabled(true);
@@ -142,7 +168,7 @@ public class HomeFrag_First extends BaseFragment {
         pieChart.setTransparentCircleRadius(61f);
 
         // センターテキストの有無
-        pieChart.setDrawCenterText(true);
+        pieChart.setDrawCenterText(false);
 
         pieChart.setRotationAngle(0);
         // enable rotation of the chart by touch
@@ -174,10 +200,6 @@ public class HomeFrag_First extends BaseFragment {
         pieChart.setEntryLabelTextSize(12f);
 
 
-        // データを取得
-//        Bundle bundle = getArguments();
-//        itemList = (ArrayList<Item>) bundle.getSerializable("itemList");
-
         /**
          * データの振り分け作業
          */
@@ -195,14 +217,9 @@ public class HomeFrag_First extends BaseFragment {
         // PieEntryを使ってentriesにデータをセット
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-//<<<<<<< HEAD:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Home/HomeFrag_First.java
         for (int i = 0; i < chartLabel.length; i++) {
             entries.add(new PieEntry(chartAmount[i], chartLabel[i]));
         }
-//=======
-//        entries.add(new PieEntry(14, "終わったタスク"));
-//        entries.add(new PieEntry(11, "残っているタスク"));
-//>>>>>>> dev2:app/src/main/java/com/lifeistech/android/testschedule/Fragments_Home/HomeFirstFragment.java
 
         PieDataSet dataSet = new PieDataSet(entries, "");
 
@@ -232,6 +249,16 @@ public class HomeFrag_First extends BaseFragment {
         pieChart.highlightValues(null);
 
         pieChart.invalidate();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // リスナーを削除します
+        realm.removeChangeListener(realmListener);
+        // Realmインスタンスを閉じます
+        realm.close();
     }
 
 }

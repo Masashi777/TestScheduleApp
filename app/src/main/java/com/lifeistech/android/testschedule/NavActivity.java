@@ -1,16 +1,11 @@
 package com.lifeistech.android.testschedule;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/23.
@@ -19,7 +14,6 @@ import android.widget.TextView;
 public class NavActivity extends BaseActivity {
 
     private TextView textView;
-    private Button button;
     private String infoText;
 
     @Override
@@ -29,7 +23,6 @@ public class NavActivity extends BaseActivity {
         setContentView(R.layout.activity_navigation);
 
         textView = (TextView) findViewById(R.id.info);
-        button = (Button) findViewById(R.id.button);
 
         infoText = "Copyright © 2017\n" +
                 "Masashi Hamaguchi\n" +
@@ -46,14 +39,6 @@ public class NavActivity extends BaseActivity {
         string.setSpan(new ForegroundColorSpan(Color.parseColor("#E91E63")), 97, 104, 0);
 
         textView.setText(string);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
 
     }
 

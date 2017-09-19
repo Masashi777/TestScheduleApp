@@ -18,7 +18,6 @@
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="80dp"
-        app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -47,6 +46,12 @@
                 android:layout_marginTop="32dp"
                 android:elevation="0dp"
                 android:gravity="center" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/newCatEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="新しいカテゴリを追加" />
 
             <CheckBox
                 android:id="@+id/checkBox"
