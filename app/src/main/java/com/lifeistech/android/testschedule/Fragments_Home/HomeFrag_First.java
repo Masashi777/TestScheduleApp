@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,14 +36,12 @@ public class HomeFrag_First extends BaseFragment {
 
     private PieChart pieChart;
     private TextView commentText;
-    private Button detailBtn;
     private ListView itemListView;
 
     private ItemListAdapter itemListAdapter;
     private ArrayList<Item> itemList = new ArrayList<Item>();
-    private String chartLabel[] = {"終わったタスク", "残ってるタスク"};
-    private int chartAmount[] = new int[2];
-    private int a, b;
+    private String chartLabel[] = {"勉強", "遊び", "ゲーム"};
+    private int chartAmount[] = {10, 2, 5};
 
     private Realm realm;
     private RealmChangeListener realmListener;
@@ -54,6 +53,16 @@ public class HomeFrag_First extends BaseFragment {
         "気になったらとりあえずタスクしよう！",
         "やらなきゃいけないことは早めに！",
         "グラフで優先してやるタスクを見つけよう！"
+    };
+
+    private String[] items = {
+            "日本史レポート",
+            "文化祭打ち合わせい",
+            "ポスター作成",
+            "実験レポート",
+            "練習試合",
+            "動画撮影",
+            "単語テスト"
     };
 
     @Override
@@ -85,17 +94,7 @@ public class HomeFrag_First extends BaseFragment {
 
         pieChart = (PieChart) view.findViewById(R.id.pieChart);
         commentText = (TextView) view.findViewById(R.id.commentText);
-        detailBtn = (Button) view.findViewById(R.id.detailBtn);
         itemListView = (ListView) view.findViewById(R.id.itemList);
-
-        // Detail Btn
-        detailBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity().getApplicationContext(), DetailActivity.class);
-//                startActivity(intent);
-            }
-        });
 
         // リストへのボタンの配置
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -104,6 +103,7 @@ public class HomeFrag_First extends BaseFragment {
 
                 Intent intent = new Intent(getContext(), EditActivity.class);
                 intent.putExtra("position", position);
+                intent.putExtra("edit", true);
                 startActivity(intent);
 
 //                if (view.getId() == R.id.checkBox) {
@@ -133,12 +133,15 @@ public class HomeFrag_First extends BaseFragment {
         // ListViewへの表示
         RealmResults<Item> result = realm.where(Item.class).findAll();
 
-        for (int i = 0; i < result.size(); i++) {
-            itemList.add(result.get(i));
-        }
+//        for (int i = 0; i < result.size(); i++) {
+//            itemList.add(result.get(i));
+//        }
 
-        itemListAdapter = new ItemListAdapter(getContext(), R.layout.list_item, itemList);
-        itemListView.setAdapter(itemListAdapter);
+//        itemListAdapter = new ItemListAdapter(getContext(), result);
+//        itemListView.setAdapter(itemListAdapter);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, items);
+        itemListView.setAdapter(arrayAdapter);
 
         realm.close();
 
@@ -200,11 +203,6 @@ public class HomeFrag_First extends BaseFragment {
         pieChart.setEntryLabelTextSize(12f);
 
 
-        /**
-         * データの振り分け作業
-         */
-        a = 5;
-        b = 11;
 
         setData();
 
@@ -223,7 +221,7 @@ public class HomeFrag_First extends BaseFragment {
 
         PieDataSet dataSet = new PieDataSet(entries, "");
 
-        //アイコンの有無
+        // アイコンの有無
         dataSet.setDrawIcons(false);
 
         dataSet.setSliceSpace(3f);
@@ -232,8 +230,9 @@ public class HomeFrag_First extends BaseFragment {
 
         // add a lot of colors (カラーの設定)
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(Color.parseColor("#E91E63"));
-        colors.add(Color.parseColor("#448AFF"));
+        colors.add(Color.parseColor("#FA4C4C"));
+        colors.add(Color.parseColor("#1985FF"));
+        colors.add(Color.parseColor("#FAC804"));
 
         dataSet.setColors(colors);
         //dataSet.setSelectionShift(0f);

@@ -1,7 +1,5 @@
 package com.lifeistech.android.testschedule.ItemClass;
 
-import java.io.Serializable;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by Masashi Hamaguchi on 2017/08/25.
  */
 
-public class Item extends RealmObject implements Serializable {
+public class Item extends RealmObject {
 
     @PrimaryKey
     public String key;

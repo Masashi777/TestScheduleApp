@@ -42,7 +42,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
 
     //Realm
-//    compile 'io.realm:realm-android:0.71.+'
+    compile 'io.realm:android-adapters:1.0.1'
 
     //MaterialDesignLibrary
 //    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'

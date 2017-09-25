@@ -15,29 +15,33 @@ import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmBaseAdapter;
+import io.realm.RealmResults;
+
 /**
  * Created by Masashi Hamaguchi on 2017/07/22.
  */
 
-public class ItemListAdapter extends ArrayAdapter<Item> {
+public class ItemListAdapter extends RealmBaseAdapter<Item> {
 
-    private ArrayList<Item> itemList = new ArrayList<Item>();
+    RealmResults<Item> resultList;
     private ArrayList<String> categoryList = new ArrayList<String>();
 
-    public ItemListAdapter(Context context, int layoutResourceId, ArrayList<Item> objects) {
-        super(context, layoutResourceId, objects);
+    public ItemListAdapter(Context context, RealmResults<Item> result) {
+        super(context, result);
 
-        itemList = objects;
+        resultList = result;
     }
 
     @Override
     public int getCount() {
-        return itemList.size();
+        return resultList.size();
     }
 
     @Override
     public Item getItem(int position) {
-        return itemList.get(position);
+        return resultList.get(position);
     }
 
     @Override
@@ -45,7 +49,7 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
         final ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder); //ここでtagを設定しておかないと落ちる
         } else {

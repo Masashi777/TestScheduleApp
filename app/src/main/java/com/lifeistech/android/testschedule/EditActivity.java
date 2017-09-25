@@ -1,6 +1,7 @@
 package com.lifeistech.android.testschedule;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
@@ -35,8 +36,8 @@ public class EditActivity extends AppCompatActivity {
     private Boolean edit;
 
     // Realm
-    private Realm realm;
-    private RealmResults<Item> result;
+    Realm realm;
+    RealmResults<Item> result;
 
     private ArrayList<String> categoryList = new ArrayList<String>();
 
@@ -72,8 +73,11 @@ public class EditActivity extends AppCompatActivity {
         picItem();
 
         // スピナーの設定
+
+        // Realm全体の初期化
+        Realm.init(getApplicationContext());
+        // このスレッドのためのRealmインスタンスを取得
         realm = Realm.getDefaultInstance();
-//        realm.beginTransaction();
         result = realm.where(Item.class).findAll();
 
         for (int i = 0; i < result.size(); i++) {
@@ -108,29 +112,55 @@ public class EditActivity extends AppCompatActivity {
 
                 } else {
 
+//                    realm.beginTransaction();
+
                     if (edit) {
                         // edit task
-                        Item item = realm.createObject(Item.class);
-                        item.setKey(result.get(position).getKey());
-                        item.setItemName(editText.getText().toString());
-                        // カテゴリの設定
-                        if (newCatEdit.getText().toString().matches("")) {
-                            item.setCategory(categorySpinner.getSelectedItem().toString());
-                        } else {
-                            item.setCategory(newCatEdit.getText().toString());
-                        }
-                        item.setChecked(checkBox.isChecked());
-                        realm.commitTransaction();
+
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                final Item item = new Item();
+                                // データセット
+                                item.setKey(result.get(position).getKey());
+                                item.setItemName(editText.getText().toString());
+                                // カテゴリの設定
+                                if (newCatEdit.getText().toString().matches("")) {
+                                    item.setCategory(categorySpinner.getSelectedItem().toString());
+                                } else {
+                                    item.setCategory(newCatEdit.getText().toString());
+                                }
+                                item.setChecked(checkBox.isChecked());
+
+                                // プライマリーキーが同じならアップデート
+                                realm.copyToRealmOrUpdate(item);
+                            }
+                        });
 
                     } else {
                         // new task
-                        Item item = realm.createObject(Item.class);
-                        item.setKey(UUID.randomUUID().toString());
-                        item.setItemName(editText.getText().toString());
-                        item.setChecked(checkBox.isChecked());
-                        realm.commitTransaction();
 
-                        Log.d("UUID", item.getKey());
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                final Item item = new Item();
+                                // データセット
+                                item.setKey(UUID.randomUUID().toString());
+                                item.setItemName(editText.getText().toString());
+                                // カテゴリの設定
+                                if (newCatEdit.getText().toString().matches("")) {
+                                    item.setCategory(categorySpinner.getSelectedItem().toString());
+                                } else {
+                                    item.setCategory(newCatEdit.getText().toString());
+                                }
+                                item.setChecked(checkBox.isChecked());
+
+                                // プライマリーキーが同じならアップデート
+                                realm.copyToRealmOrUpdate(item);
+
+                                Log.d("UUID", item.getKey());
+                            }
+                        });
 
                     }
 
@@ -154,15 +184,9 @@ public class EditActivity extends AppCompatActivity {
     private void picItem() {
 
         // 編集の場合
-        // データの編集
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
-
-        if (String.valueOf(position) == null) {
-            edit = false;
-        } else {
-            edit = true;
-        }
+        edit = intent.getBooleanExtra("edit", false);
     }
 
     @Override

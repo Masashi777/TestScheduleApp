@@ -50,8 +50,11 @@ public class HomeFrag_Second extends BaseFragment {
 
         // データの取得
         realm = Realm.getInstance(Realm.getDefaultConfiguration());
-        realm.beginTransaction();
-        result = realm.where(Item.class).findAll();
+        try {
+            result = realm.where(Item.class).findAll();
+        } catch (Exception e) {
+
+        }
 
         for (int i = 0; i < result.size(); i++) {
             if (categoryList.lastIndexOf(result.get(i)) == 0) {
@@ -91,8 +94,8 @@ public class HomeFrag_Second extends BaseFragment {
         });
 
         // Adapter
-        itemListAdapter = new ItemListAdapter(getContext(), R.layout.list_item, itemList);
-        itemListView.setAdapter(itemListAdapter);
+//        itemListAdapter = new ItemListAdapter(getContext(), R.layout.list_item, itemList);
+//        itemListView.setAdapter(itemListAdapter);
 
         return view;
     }
