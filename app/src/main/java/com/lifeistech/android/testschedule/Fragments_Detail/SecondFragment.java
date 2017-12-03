@@ -36,7 +36,7 @@ import com.lifeistech.android.testschedule.R;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
+//import io.realm.Realm;
 
 /**
  * Created by Masashi Hamaguchi on 2017/07/26.
@@ -48,7 +48,7 @@ public class SecondFragment extends BaseFragment implements OnChartValueSelected
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
 
-    protected Realm mRealm;
+//    protected Realm mRealm;
 
 //    private Example example = new Example();
 

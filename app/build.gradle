@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.lifeistech.android.testschedule"
         minSdkVersion 23
@@ -39,7 +39,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
 
     //Realm
-    compile 'io.realm:realm-android:0.71.+'
+//    compile 'io.realm:realm-android:0.71.+'
 
     //MaterialDesignLibrary
 //    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
@@ -50,5 +50,8 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     //ArrayPagerAdapter
     compile 'com.nakama.arraypageradapter:arraypageradapter:0.1.2'
+
+    //Stetho
+    compile 'com.facebook.stetho:stetho:1.4.1'
 
 }
