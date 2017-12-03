@@ -67,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     final Item item = new Item();
                     item.setItemName(editText.getText().toString());
-                    item.setId(getPrimaryKey());
+                    item.setPRIMARY_KEY(getPrimaryKey());
                     item.setCategory("Category");
                     item.setChecked(true);
                     realm.executeTransaction(new Realm.Transaction() {
@@ -86,19 +86,24 @@ public class HomeActivity extends AppCompatActivity {
 
         // すべてのオブジェクトを取得する問い合わせを発行
         final RealmResults<Item> items = realm.where(Item.class).findAll();
-        items.size(); // => まだRealmへは一つもオブジェクトが保存されていないので0を返します
+//        items.size(); // => まだRealmへは一つもオブジェクトが保存されていないので0を返します
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+//        try {
+//            for (int i = 0; i < items.size(); i++) {
+//                itemList.add(items.get(i));
+//            }
+//        } catch (Exception e) {
+//
+//        }
 
-        for (int i = 0; i < items.size(); i++) {
-            arrayAdapter.add(items.get(i).getItemName());
-        }
 
-        listView.setAdapter(arrayAdapter);
+        final ItemAdapter itemAdapter = new ItemAdapter(this, R.layout.list_item, items);
+
+        listView.setAdapter(itemAdapter);
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 // クエリを発行し結果を取得
                 final RealmResults<Item> deleteResults = realm.where(Item.class).findAll();
@@ -119,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
 //                        deleteResults.deleteFromRealm();
                     }
                 });
-                
+
                 return false;
             }
         });
@@ -135,12 +140,7 @@ public class HomeActivity extends AppCompatActivity {
                 final RealmResults<Item> items = realm.where(Item.class).findAll();
                 items.size(); // => まだRealmへは一つもオブジェクトが保存されていないので0を返します
 
-                arrayAdapter.clear();
-                for (int i = 0; i < items.size(); i++) {
-                    arrayAdapter.add(items.get(i).getItemName());
-                }
-
-                listView.setAdapter(arrayAdapter);
+                listView.setAdapter(itemAdapter);
             }
         });
 

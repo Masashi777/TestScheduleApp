@@ -18,11 +18,12 @@ public class Item extends RealmObject implements Serializable {
     private boolean checked;
 
 
-    public long getId() {
+
+    public long getPRIMARY_KEY() {
         return PRIMARY_KEY;
     }
 
-    public void setId(long PRIMARY_KEY) {
+    public void setPRIMARY_KEY(long PRIMARY_KEY) {
         this.PRIMARY_KEY = PRIMARY_KEY;
     }
 
