@@ -19,22 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".EditActivity"
-            android:label="@string/title_activity_edit"
-            android:theme="@style/AppTheme.MyApp"/>
-        <activity
-            android:name=".CategoryEditActivity"
-            android:label="@string/title_activity_categoryedit"
-            android:theme="@style/AppTheme.MyApp" />
-        <activity
-            android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"
-            android:theme="@style/AppTheme.MyApp" />
-        <activity
-            android:name=".NavActivity"
-            android:label="@string/title_activity_nav"
-            android:theme="@style/Nav.MyApp" />
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.lifeistech.android.testschedule.ItemClass;
 import java.io.Serializable;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Masashi Hamaguchi on 2017/08/25.
@@ -10,8 +11,20 @@ import io.realm.RealmObject;
 
 public class Item extends RealmObject implements Serializable {
 
-    public String itemName;
-    public boolean checked;
+    @PrimaryKey
+    private long PRIMARY_KEY;
+    private String itemName;
+    private String category;
+    private boolean checked;
+
+
+    public long getId() {
+        return PRIMARY_KEY;
+    }
+
+    public void setId(long PRIMARY_KEY) {
+        this.PRIMARY_KEY = PRIMARY_KEY;
+    }
 
     public String getItemName() {
         return itemName;
@@ -19,6 +32,14 @@ public class Item extends RealmObject implements Serializable {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public boolean isChecked() {
